@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova Grammar 책 뷰어</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="viewer-data.js"></script>
+<style>
+  :root {
+    --main: #2494D3; --deep: #0070B8; --navy: #003068; --lime: #9FCD60; --pale: #EEF5FD;
+    --bg: #E4E9EF; --bar: #FFFFFF; --ink: #1A1A1A; --sub: #6B7480; --line: #D5DCE4;
+    --page-ratio: calc(215 / 290);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--ink); font-family: "Pretendard", sans-serif; display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+  button { font: inherit; cursor: pointer; }
+
+  /* 상단 막대 */
+  header { background: var(--bar); border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; padding: 8px 14px; flex-wrap: wrap; }
+  .brand { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 20px; color: var(--navy); white-space: nowrap; }
+  .brand b { color: var(--main); }
+  .brand small { font-size: 12px; color: var(--sub); font-weight: 600; margin-left: 4px; }
+  .tabs { display: flex; gap: 4px; background: var(--pale); border-radius: 999px; padding: 3px; }
+  .tabs button { border: 0; background: transparent; padding: 6px 14px; border-radius: 999px; font-weight: 600; color: var(--deep); font-size: 14px; }
+  .tabs button[aria-pressed="true"] { background: var(--main); color: #fff; }
+  .spacer { flex: 1; }
+  .nav { display: flex; align-items: center; gap: 6px; }
+  .icon { border: 1px solid var(--line); background: #fff; border-radius: 8px; width: 36px; height: 34px; display: inline-flex; align-items: center; justify-content: center; color: var(--navy); font-size: 16px; }
+  .icon:hover { border-color: var(--main); color: var(--main); }
+  .icon[aria-pressed="true"] { background: var(--pale); border-color: var(--main); color: var(--main); }
+  .pg { display: flex; align-items: center; gap: 4px; font-size: 14px; color: var(--sub); }
+  .pg input { width: 64px; height: 34px; border: 1px solid var(--line); border-radius: 8px; text-align: center; font: inherit; font-weight: 600; color: var(--navy); }
+
+  /* 본문: 목차 + 무대 */
+  .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: 0; }
+  body.toc-off .wrap { grid-template-columns: 0 1fr; }
+  nav.toc { background: var(--bar); border-right: 1px solid var(--line); overflow: auto; padding: 10px 0 30px; transition: none; }
+  body.toc-off nav.toc { visibility: hidden; }
+  .toc h2 { font-family: "Do Hyeon", sans-serif; font-weight: 400; color: var(--navy); font-size: 18px; margin: 4px 16px 8px; }
+  .toc a { display: block; padding: 6px 16px; color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.35; border-left: 3px solid transparent; }
+  .toc a.d1 { padding-left: 30px; font-size: 13px; color: #3E4752; }
+  .toc a.d0 { font-weight: 700; color: var(--navy); margin-top: 4px; }
+  .toc a:hover { background: var(--pale); }
+  .toc .pv-note { margin: 0 16px 10px; padding: 8px 10px; background: var(--pale); border-radius: 8px; font-size: 12.5px; line-height: 1.5; color: var(--deep); }
+  .brand .pv { display: inline-block; margin-left: 8px; background: var(--lime); color: var(--navy); font-family: "Pretendard", sans-serif; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; vertical-align: 3px; }
+  .toc a.on { border-left-color: var(--main); background: var(--pale); color: var(--deep); }
+  .toc a .n { float: right; color: var(--sub); font-weight: 400; font-size: 12px; margin-left: 8px; }
+
+  .stage { position: relative; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .spread { position: relative; display: flex; perspective: 2600px; }
+  .slot { position: relative; background: #fff center / 100% 100% no-repeat; overflow: hidden; box-shadow: 0 8px 22px rgba(20, 40, 70, .18); }
+  .slot.blank { background: transparent; }
+  .slot.L { border-radius: 4px 0 0 4px; }
+  .slot.R { border-radius: 0 4px 4px 0; }
+  .slot.C { border-radius: 4px; }
+  .slot.L::after, .slot.R::before { content: ""; position: absolute; top: 0; bottom: 0; width: 26px; pointer-events: none; z-index: 2; }
+  .slot.L::after { right: 0; background: linear-gradient(to left, rgba(0, 0, 0, .10), rgba(0, 0, 0, 0)); }
+  .slot.R::before { left: 0; background: linear-gradient(to right, rgba(0, 0, 0, .10), rgba(0, 0, 0, 0)); }
+  .slot.blank::after, .slot.blank::before { display: none; }
+  .slot iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; visibility: hidden; }
+  .slot iframe.on { visibility: visible; }
+  .slot iframe.wait { opacity: 0; }
+  /* 넘어가는 종이 (세로 띠를 이어 붙여 둥글게 휘게 한다) */
+  .leaf { position: absolute; top: 0; z-index: 5; transform-style: preserve-3d; pointer-events: none; }
+  .leaf .strip { position: absolute; top: 0; transform-style: preserve-3d; }
+  .leaf .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; background-color: #fff; background-repeat: no-repeat; }
+  .leaf .face.back { transform: rotateY(180deg); }
+  .leaf .face.paper { background: linear-gradient(to right, #f3f3f0, #fff); }
+  .leaf .shade { position: absolute; inset: 0; background: #0b1a2c; opacity: 0; pointer-events: none; }
+  .slot .loading { position: absolute; right: 10px; bottom: 10px; display: flex; align-items: center; color: var(--sub); font-size: 12px; background: rgba(255, 255, 255, .9); padding: 4px 10px 4px 6px; border-radius: 999px; z-index: 1; box-shadow: 0 1px 4px rgba(0, 0, 0, .12); }
+  .slot .loading::before { content: ""; width: 14px; height: 14px; border: 2px solid var(--pale); border-top-color: var(--main); border-radius: 50%; margin-right: 8px; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .edge { position: absolute; top: 0; bottom: 0; width: 64px; display: flex; align-items: center; justify-content: center; border: 0; background: transparent; color: var(--navy); font-size: 30px; opacity: .35; z-index: 3; }
+  .edge:hover { opacity: .9; }
+  .edge.prev { left: 0; } .edge.next { right: 0; }
+  .edge:disabled { opacity: .08; cursor: default; }
+
+  footer { background: var(--bar); border-top: 1px solid var(--line); padding: 8px 18px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--sub); }
+  footer input[type=range] { flex: 1; accent-color: var(--main); }
+  footer .where { min-width: 220px; text-align: right; color: var(--navy); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  @media (max-width: 860px) {
+    .wrap, body.toc-off .wrap { grid-template-columns: 1fr; }
+    .stage { grid-column: 1 / -1; grid-row: 1; padding: 10px; }
+    nav.toc { position: absolute; z-index: 10; top: 0; bottom: 0; left: 0; width: 82%; max-width: 320px; box-shadow: 8px 0 24px rgba(0, 0, 0, .18); }
+    body.toc-off nav.toc { display: none; }
+    .wrap { position: relative; }
+    .brand small, .pg .tot { display: none; }
+    footer .where { min-width: 0; max-width: 45%; }
+    .edge { width: 44px; }
+  }
+</style>
+</head>
+<body class="toc-off">
+<header>
+  <div class="brand">Nova <b>Grammar</b><small>LEVEL 1</small></div>
+  <button class="icon" id="tocBtn" title="목차 (T)" aria-pressed="false">☰</button>
+  <div class="tabs" id="tabs"></div>
+  <div class="spacer"></div>
+  <div class="nav">
+    <button class="icon" id="firstBtn" title="처음 (Home)">⏮</button>
+    <button class="icon" id="prevBtn" title="이전 (←)">◀</button>
+    <div class="pg"><input id="pgIn" aria-label="쪽 번호" inputmode="numeric"><span class="tot" id="pgTot"></span></div>
+    <button class="icon" id="nextBtn" title="다음 (→)">▶</button>
+    <button class="icon" id="modeBtn" title="펼침면 / 한 쪽 (M)" aria-pressed="true">▯▯</button>
+    <button class="icon" id="sndBtn" title="넘김 소리 켜기/끄기 (S)" aria-pressed="true">♪</button>
+    <button class="icon" id="fsBtn" title="전체 화면 (F)">⛶</button>
+  </div>
+</header>
+<div class="wrap">
+  <nav class="toc" id="toc"></nav>
+  <div class="stage" id="stage">
+    <button class="edge prev" id="edgePrev" aria-label="이전 쪽">‹</button>
+    <div class="spread" id="spread"></div>
+    <button class="edge next" id="edgeNext" aria-label="다음 쪽">›</button>
+  </div>
+</div>
+<footer>
+  <span id="bookName"></span>
+  <input type="range" id="scrub" min="0" value="0" aria-label="쪽 이동">
+  <span class="where" id="where"></span>
+</footer>
+<script>
+(function () {
+  var D = window.VIEWER;
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { b: 0, i: 0, spread: true };
+  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  // ---------- 펼침면 계산 ----------
+  function spreads(book, two) {
+    var P = book.pages, out = [], i = 0;
+    while (i < P.length) {
+      var p = P[i];
+      if (!two || p.s === 'C') { out.push([i]); i++; continue; }
+      if (p.s === 'L') {
+        if (i + 1 < P.length && P[i + 1].s === 'R') { out.push([i, i + 1]); i += 2; }
+        else { out.push([i, null]); i++; }
+      } else { out.push([null, i]); i++; }
+    }
+    return out;
+  }
+  var SP = [];
+  function rebuild() { SP = spreads(D.books[state.b], state.spread); }
+  function spreadOf(i) { for (var k = 0; k < SP.length; k++) if (SP[k].indexOf(i) >= 0) return k; return 0; }
+
+  // ---------- 쪽 틀(iframe 모음) ----------
+  var slots = {}, waiting = new Map();
+  function slotEl(key) {
+    if (!slots[key]) {
+      var el = document.createElement('div'); el.className = 'slot';
+      slots[key] = { el: el, pool: [] };
+    }
+    return slots[key];
+  }
+  function imgOf(i) {
+    var bk = D.books[state.b];
+    if (i === null || i === undefined) return '';
+    var pg = bk.pages[i];
+    if (pg && pg.im) return pg.im;                    // 맛보기판: 쪽마다 그림 경로를 따로 가진다
+    return bk.img ? bk.img + String(i).padStart(3, '0') + '.jpg' : '';
+  }
+  function showPage(slot, page, idx) {
+    var el = slot.el;
+    el.style.backgroundImage = page && imgOf(idx) ? 'url("' + imgOf(idx) + '")' : 'none';   // 불러오는 동안 미리 보기
+    if (!page) { slot.pool.forEach(function (x) { x.fr.classList.remove('on'); }); setLoading(slot, false); return; }
+    var hit = null;
+    slot.pool.forEach(function (x) { if (x.f === page.f) hit = x; });
+    if (!hit) {
+      var fr = document.createElement('iframe');
+      fr.setAttribute('title', page.f);
+      hit = { f: page.f, fr: fr };
+      slot.pool.push(hit); el.appendChild(fr);
+      if (slot.pool.length > 4) { var old = slot.pool.shift(); old.fr.remove(); }
+    } else {
+      slot.pool.splice(slot.pool.indexOf(hit), 1); slot.pool.push(hit);
+    }
+    slot.pool.forEach(function (x) { x.fr.classList.toggle('on', x === hit); });
+    var target = page.f + '#v=' + encodeURIComponent(page.p);
+    if (hit.cur === target) { hit.fr.classList.toggle('wait', !hit.ready); setLoading(slot, !hit.ready); return; }
+    hit.cur = target; hit.ready = false; hit.fr.classList.add('wait'); setLoading(slot, true);
+    waiting.set(hit.fr, { slot: slot, hit: hit, p: page.p });
+    hit.fr.src = target;
+  }
+  function setLoading(slot, on) {
+    var l = slot.el.querySelector('.loading');
+    if (on && !l) { l = document.createElement('div'); l.className = 'loading'; l.textContent = '불러오는 중'; slot.el.appendChild(l); }
+    if (!on && l) l.remove();
+  }
+  window.addEventListener('message', function (e) {
+    if (!e.data || !e.data.vw) return;
+    waiting.forEach(function (w, fr) {
+      if (fr.contentWindow === e.source && w.p === e.data.page) {
+        w.hit.ready = true; fr.classList.remove('wait'); setLoading(w.slot, false); waiting.delete(fr);
+      }
+    });
+  });
+
+  // ---------- 크기 맞추기 ----------
+  var PW = 0, PH = 0;
+  function layout() {
+    var st = $('stage'), sp = SP[spreadOf(state.i)] || [];
+    var n = sp.length === 1 ? 1 : 2;
+    var narrow = window.innerWidth <= 860;
+    var W = st.clientWidth - (narrow ? 20 : 36 + 2 * 40), H = st.clientHeight - (narrow ? 20 : 36);
+    PH = Math.min(H, (W / n) * 290 / 215); PW = PH * 215 / 290;
+    $('spread').querySelectorAll('.slot').forEach(function (s) { s.style.width = PW + 'px'; s.style.height = PH + 'px'; });
+  }
+
+  // ---------- 그리기 ----------
+  var shown = null, flipping = null;
+  function drawSpread(sp) {
+    var book = D.books[state.b], box = $('spread');
+    // 쪽 틀은 한 번만 붙이고 보이기만 바꾼다 (떼었다 붙이면 iframe이 다시 불러와진다)
+    ['L', 'C', 'R'].forEach(function (key) { var s = slotEl(key); if (s.el.parentNode !== box) box.appendChild(s.el); });
+    var keys = sp.length === 1 ? ['C'] : ['L', 'R'];
+    ['L', 'C', 'R'].forEach(function (key) {
+      var s = slotEl(key), j = keys.indexOf(key);
+      s.el.style.display = j < 0 ? 'none' : '';
+      if (j >= 0) {
+        var ix = sp[j] === null || sp[j] === undefined ? null : sp[j];
+        var pg = ix === null ? null : book.pages[ix];
+        showPage(s, pg, ix);
+        s.el.className = 'slot ' + (pg ? key : 'blank');
+      }
+    });
+    layout();
+  }
+  // ---------- 종이 넘기는 소리 (Web Audio로 합성: 파일 없음) ----------
+  // 들릴 때 '사르륵'(띠 대역 노이즈를 잘게 흔듦) + 내려앉을 때 '탁'(낮은 노이즈 짧게). 넘길 때마다 조금씩 달라진다.
+  var sound = { on: store.get('nova-viewer-sound') !== 'off', ctx: null, noise: null };
+  function audio() {
+    if (!sound.ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      sound.ctx = new AC();
+      var n = sound.ctx.sampleRate * 1.5, buf = sound.ctx.createBuffer(1, n, sound.ctx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      sound.noise = buf;
+    }
+    if (sound.ctx.state === 'suspended') sound.ctx.resume();
+    return sound.ctx;
+  }
+  function burst(ctx, t, dur, type, f, q, peak, attack, grain) {
+    var src = ctx.createBufferSource(); src.buffer = sound.noise;
+    src.playbackRate.value = 0.8 + Math.random() * 0.4;
+    var flt = ctx.createBiquadFilter(); flt.type = type; flt.frequency.value = f; flt.Q.value = q;
+    var g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + attack);
+    if (grain) {                                   // 종이 결: 짧은 간격으로 세기를 흔든다
+      var steps = Math.floor(dur / 0.018);
+      for (var k = 1; k < steps; k++) g.gain.setValueAtTime(peak * (0.45 + Math.random() * 0.55) * (1 - k / steps * 0.7), t + attack + k * 0.018);
+    }
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(flt); flt.connect(g); g.connect(ctx.destination);
+    src.start(t, Math.random() * 0.5); src.stop(t + dur + 0.05);
+    return flt;
+  }
+  function flipSound(ms) {
+    if (!sound.on) return;
+    var ctx = audio(); if (!ctx) return;
+    var t = ctx.currentTime + 0.01, len = ms / 1000;
+    var sweep = burst(ctx, t, len * 0.55, 'bandpass', 2600 + Math.random() * 900, 0.9, 0.16, 0.05, true);   // 사르륵
+    sweep.frequency.setValueAtTime(sweep.frequency.value, t);
+    sweep.frequency.exponentialRampToValueAtTime(1400 + Math.random() * 400, t + len * 0.55);
+    burst(ctx, t + len * 0.18, len * 0.45, 'highpass', 5200, 0.7, 0.05, 0.03, true);                          // 가장자리 스침
+    burst(ctx, t + len * 0.78, 0.13, 'lowpass', 900 + Math.random() * 200, 0.8, 0.22, 0.008, false);          // 탁
+  }
+  function setSound(on) {
+    sound.on = on; store.set('nova-viewer-sound', on ? 'on' : 'off');
+    $('sndBtn').setAttribute('aria-pressed', String(on)); $('sndBtn').textContent = on ? '♪' : '♪̸';
+    $('sndBtn').title = on ? '넘김 소리 끄기 (S)' : '넘김 소리 켜기 (S)';
+  }
+
+  // 종이 한 장이 둥글게 넘어가는 모션
+  // 종이를 세로 띠 N개로 나눠 이어 붙이고(띠마다 앞면·뒷면), 바깥쪽 띠가 먼저 들리고 가운데(제본) 쪽 띠가 뒤따르게 하면
+  // 띠 사이 각도가 생겨 종이가 둥글게 휜다. 처음과 끝에는 모든 띠가 같은 각도라 평평하다.
+  function leaf(side, left, frontImg, backImg, to, ms, done, fadeOut) {
+    var box = $('spread'), N = 20, sw = PW / N;
+    var root = document.createElement('div');
+    root.className = 'leaf ' + side;
+    root.style.width = PW + 'px'; root.style.height = PH + 'px'; root.style.left = left + 'px';
+    var strips = [], parent = root;
+    for (var k = 0; k < N; k++) {
+      var st = document.createElement('div');
+      st.className = 'strip';
+      st.style.width = (sw + 0.8) + 'px'; st.style.height = PH + 'px';
+      // R: 제본(왼쪽)에서 바깥(오른쪽)으로 / L: 제본(오른쪽)에서 바깥(왼쪽)으로 이어 붙인다
+      if (side === 'R') { st.style.left = (k === 0 ? 0 : sw) + 'px'; st.style.transformOrigin = 'left center'; }
+      else { st.style.left = (k === 0 ? PW - sw : -sw) + 'px'; st.style.transformOrigin = 'right center'; }
+      var fx = side === 'R' ? k * sw : PW - (k + 1) * sw;          // 앞면: 지금 쪽에서 이 띠가 차지하는 x
+      var bx = side === 'R' ? PW - (k + 1) * sw : k * sw;          // 뒷면: 새 쪽(반대편)에서 이 띠가 놓일 x
+      var f = document.createElement('div'), bk = document.createElement('div'), sh = document.createElement('div');
+      f.className = 'face front'; bk.className = 'face back'; sh.className = 'shade';
+      [[f, frontImg, fx], [bk, backImg, bx]].forEach(function (z) {
+        if (z[1]) { z[0].style.backgroundImage = 'url("' + z[1] + '")'; z[0].style.backgroundSize = PW + 'px ' + PH + 'px'; z[0].style.backgroundPosition = (-z[2]) + 'px 0'; }
+        else z[0].classList.add('paper');
+      });
+      st.appendChild(f); st.appendChild(bk); f.appendChild(sh);
+      var sh2 = document.createElement('div'); sh2.className = 'shade'; bk.appendChild(sh2);
+      parent.appendChild(st); strips.push({ el: st, sh: sh, sh2: sh2 });
+      parent = st;
+    }
+    box.appendChild(root);
+    var t0 = null, D = 0.32, raf = 0, finished = false;
+    var ease = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var clamp = function (x) { return Math.max(0, Math.min(1, x)); };
+    function frame(now) {
+      if (t0 === null) t0 = now;
+      var t = clamp((now - t0) / ms);
+      var prev = 0, ang = [], dk = [];
+      for (var k = 0; k < N; k++) {
+        var pk = clamp((t - D * (1 - k / (N - 1))) / (1 - D));   // 바깥 띠일수록 먼저 출발
+        var A = to * ease(pk);
+        strips[k].el.style.transform = 'rotateY(' + (A - prev) + 'deg)';
+        ang.push(A);
+        // 빛: 종이가 세워질수록, 그리고 많이 휘는 곳일수록 조금 어둡게
+        dk.push(Math.abs(Math.sin(A * Math.PI / 180)) * 0.16 + Math.min(Math.abs(A - prev) / 30, 1) * 0.12);
+        prev = A;
+      }
+      // 띠 경계에서 명암이 끊기지 않게 이웃 띠 값과 이어지는 그라데이션으로 칠한다
+      var dirF = side === 'R' ? 'to right' : 'to left', dirB = side === 'R' ? 'to left' : 'to right';
+      for (var j = 0; j < N; j++) {
+        var a0 = j ? (dk[j - 1] + dk[j]) / 2 : dk[j], a1 = j < N - 1 ? (dk[j] + dk[j + 1]) / 2 : dk[j];
+        var c = function (x) { return 'rgba(11,26,44,' + x.toFixed(3) + ')'; };
+        strips[j].sh.style.background = 'linear-gradient(' + dirF + ',' + c(a0) + ',' + c(a1) + ')';
+        strips[j].sh2.style.background = 'linear-gradient(' + dirB + ',' + c(a0) + ',' + c(a1) + ')';
+        strips[j].sh.style.opacity = 1; strips[j].sh2.style.opacity = 1;
+      }
+      if (fadeOut) root.style.opacity = t < .55 ? 1 : 1 - (t - .55) / .45;
+      if (t < 1) raf = requestAnimationFrame(frame); else end();
+    }
+    function end() {
+      if (finished) return; finished = true;
+      cancelAnimationFrame(raf); if (root.parentNode) root.remove(); flipping = null; if (done) done();
+    }
+    raf = requestAnimationFrame(frame);
+    flipping = { finish: end };
+  }
+  function render(dir) {
+    var book = D.books[state.b], k = spreadOf(state.i), sp = SP[k];
+    if (flipping) flipping.finish();
+    var old = shown; shown = sp;
+    var two = function (x) { return x && x.length === 2; };
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var MS = 900;
+    if (dir && old && old !== sp) flipSound(900);
+    if (dir && old && old !== sp && !reduce && (book.img || book.pages[0].im)) {
+      if (two(old) && two(sp) && dir > 0) {
+        // 다음: 오른쪽 쪽이 가운데를 축으로 들려 왼쪽으로 넘어간다
+        drawSpread([old[0], sp[1]]);
+        leaf('R', PW, imgOf(old[1]), imgOf(sp[0]), -180, MS, function () { drawSpread(sp); });
+      } else if (two(old) && two(sp) && dir < 0) {
+        // 이전: 왼쪽 쪽이 들려 오른쪽으로 넘어간다
+        drawSpread([sp[0], old[1]]);
+        leaf('L', 0, imgOf(old[0]), imgOf(sp[1]), 180, MS, function () { drawSpread(sp); });
+      } else if (dir > 0) {
+        // 한 쪽 보기·표지: 지금 쪽이 왼쪽 끝을 축으로 들리며 사라지고, 아래에서 새 쪽이 나온다
+        var cur = old.filter(function (x) { return x !== null; });
+        var oldLeft = two(old) ? PW : 0;
+        drawSpread(sp);
+        leaf('R', two(sp) ? PW : 0, imgOf(cur[cur.length - 1]), null, -170, MS, null, true);
+      } else {
+        // 한 쪽 보기·표지 되돌리기: 지금 쪽이 오른쪽으로 둥글게 넘어가며 사라지고 앞 쪽이 나온다
+        var cur2 = old.filter(function (x) { return x !== null; });
+        drawSpread(sp);
+        leaf('L', two(sp) ? 0 : 0, imgOf(cur2[0]), null, 170, MS, null, true);
+      }
+    } else {
+      drawSpread(sp);
+    }
+
+    var idx = sp.filter(function (x) { return x !== null; });
+    var labels = idx.map(function (x) { return book.pages[x].n; });
+    $('pgIn').value = labels.join('-');
+    $('pgTot').textContent = '/ ' + book.pages.length + '쪽';
+    $('scrub').max = SP.length - 1; $('scrub').value = k;
+    var t = currentToc(idx[0]);
+    $('where').textContent = t ? t.t : '';
+    $('bookName').textContent = book.name;
+    $('prevBtn').disabled = $('edgePrev').disabled = $('firstBtn').disabled = k === 0;
+    $('nextBtn').disabled = $('edgeNext').disabled = k === SP.length - 1;
+    markToc(idx[0]);
+    store.set('nova-viewer-' + state.b, String(idx[0]));
+    store.set('nova-viewer-book', String(state.b));
+    history.replaceState(null, '', '#b=' + state.b + '&p=' + idx[0]);
+  }
+  function currentToc(i) {
+    var toc = D.books[state.b].toc, best = null, best0 = null;
+    toc.forEach(function (e) { if (e.i <= i) { best = e; if (e.d === 0) best0 = e; } });
+    if (best && best0 && best !== best0) return { t: best0.t + ' · ' + best.t };
+    return best;
+  }
+
+  // ---------- 목차 ----------
+  function buildToc() {
+    var book = D.books[state.b], nav = $('toc');
+    nav.innerHTML = '<h2>' + book.name + ' 차례</h2>' + (D.preview ? '<p class="pv-note">' + D.preview + '</p>' : '');
+    book.toc.forEach(function (e) {
+      var a = document.createElement('a');
+      a.href = '#'; a.className = 'd' + e.d; a.dataset.i = e.i;
+      var pg = book.pages[e.i] ? book.pages[e.i].n : '';
+      a.innerHTML = '<span class="n">' + (/^\d+$/.test(pg) ? 'p.' + pg : '') + '</span>' + e.t;
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault(); go(+this.dataset.i, 0);
+        if (window.innerWidth <= 860) toggleToc(false);
+      });
+      nav.appendChild(a);
+    });
+  }
+  function markToc(i) {
+    var on = null;
+    $('toc').querySelectorAll('a').forEach(function (a) { a.classList.remove('on'); if (+a.dataset.i <= i) on = a; });
+    if (on) { on.classList.add('on'); if (!document.body.classList.contains('toc-off')) on.scrollIntoView({ block: 'nearest' }); }
+  }
+  function toggleToc(force) {
+    var off = force === undefined ? !document.body.classList.contains('toc-off') : !force;
+    document.body.classList.toggle('toc-off', off);
+    $('tocBtn').setAttribute('aria-pressed', String(!off));
+    setTimeout(layout, 0);
+  }
+
+  // ---------- 이동 ----------
+  function go(i, dir) {
+    var n = D.books[state.b].pages.length;
+    state.i = Math.max(0, Math.min(n - 1, i));
+    render(dir);
+  }
+  function step(d) {
+    var k = spreadOf(state.i) + d;
+    if (k < 0 || k >= SP.length) return;
+    var sp = SP[k], first = sp.filter(function (x) { return x !== null; })[0];
+    go(first, d);
+  }
+  function setBook(b, i) {
+    state.b = b; rebuild(); buildToc();
+    document.querySelectorAll('#tabs button').forEach(function (x, j) { x.setAttribute('aria-pressed', String(j === b)); });
+    var saved = store.get('nova-viewer-' + b);
+    go(i !== undefined ? i : (saved !== null ? +saved : 0), 0);
+  }
+  function setMode(two) {
+    state.spread = two; $('modeBtn').setAttribute('aria-pressed', String(two));
+    $('modeBtn').textContent = two ? '▯▯' : '▯';
+    rebuild(); render(0);
+  }
+  function jump(v) {
+    v = String(v).trim(); if (!v) return;
+    var P = D.books[state.b].pages;
+    for (var j = 0; j < P.length; j++) if (P[j].n === v) { go(j, 0); return; }
+    var num = parseInt(v, 10), best = null;
+    if (!isNaN(num)) P.forEach(function (p, j) { var x = parseInt(p.n, 10); if (!isNaN(x) && x <= num) best = j; });
+    if (best !== null) go(best, 0); else render(0);
+  }
+
+  // ---------- 연결 ----------
+  D.books.forEach(function (bk, j) {
+    var t = document.createElement('button'); t.textContent = bk.name;
+    t.addEventListener('click', function () { setBook(j); });
+    $('tabs').appendChild(t);
+  });
+  $('prevBtn').onclick = $('edgePrev').onclick = function () { step(-1); };
+  $('nextBtn').onclick = $('edgeNext').onclick = function () { step(1); };
+  $('firstBtn').onclick = function () { go(0, -1); };
+  $('tocBtn').onclick = function () { toggleToc(); };
+  $('modeBtn').onclick = function () { setMode(!state.spread); };
+  $('sndBtn').onclick = function () { setSound(!sound.on); if (sound.on) flipSound(900); };
+  $('fsBtn').onclick = function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () {});
+  };
+  $('pgIn').addEventListener('keydown', function (e) { if (e.key === 'Enter') { jump(this.value); this.blur(); } });
+  $('scrub').addEventListener('input', function () {
+    var sp = SP[+this.value]; var first = sp.filter(function (x) { return x !== null; })[0];
+    var t = currentToc(first); $('where').textContent = (t ? t.t : '') + ' · ' + D.books[state.b].pages[first].n;
+  });
+  $('scrub').addEventListener('change', function () {
+    var sp = SP[+this.value]; go(sp.filter(function (x) { return x !== null; })[0], 0);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); step(1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
+    else if (e.key === 'Home') go(0, -1);
+    else if (e.key === 'End') go(D.books[state.b].pages.length - 1, 1);
+    else if (e.key === 't' || e.key === 'T') toggleToc();
+    else if (e.key === 'm' || e.key === 'M') setMode(!state.spread);
+    else if (e.key === 'f' || e.key === 'F') $('fsBtn').click();
+    else if (e.key === 's' || e.key === 'S') $('sndBtn').click();
+    else if (e.key === '1' || e.key === '2' || e.key === '3') setBook(+e.key - 1);
+  });
+  // 휴대폰: 가장자리에서 밀어 넘기기
+  var tx = null;
+  ['edgePrev', 'edgeNext', 'stage'].forEach(function (id) {
+    $(id).addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    $(id).addEventListener('touchend', function (e) {
+      if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
+      if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+    });
+  });
+  window.addEventListener('resize', function () {
+    var narrow = window.innerWidth < 900;
+    if (narrow && state.spread && !state.userMode) { state.spread = false; $('modeBtn').setAttribute('aria-pressed', 'false'); $('modeBtn').textContent = '▯'; rebuild(); render(0); }
+    else layout();
+  });
+  $('modeBtn').addEventListener('click', function () { state.userMode = true; });
+
+  // ---------- 시작 ----------
+  if (D.preview) { var tag = document.createElement('span'); tag.className = 'pv'; tag.textContent = '미리 보기'; document.querySelector('.brand').appendChild(tag); }
+  setSound(sound.on);
+  var h = location.hash.match(/b=(\d+)&p=(\d+)/);
+  if (window.innerWidth < 900) { state.spread = false; $('modeBtn').setAttribute('aria-pressed', 'false'); $('modeBtn').textContent = '▯'; }
+  if (window.innerWidth > 1100) toggleToc(true);
+  var b0 = h ? +h[1] : (store.get('nova-viewer-book') !== null ? +store.get('nova-viewer-book') : 0);
+  setBook(Math.min(b0, D.books.length - 1), h ? +h[2] : undefined);
+})();
+</script>
+</body>
+</html>
