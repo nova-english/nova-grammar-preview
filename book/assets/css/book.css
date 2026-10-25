@@ -995,3 +995,7 @@ i, em { font-style: italic; }
 .side-plus .sp-why { margin-top: 1.4mm; background: #fff; border-radius: 2mm; padding: 1.4mm 1.8mm; }
 .side-plus b { color: var(--c-main-deep); }
 .side-plus s { color: #8A9AA6; }
+
+/* ---------- 반 권 표지(1-1·1-2) — assets/js/cover-part.js가 ?part=1|2 일 때 붙임 (2026-10-25) ---------- */
+.cover .cv-level b.part { font-size: 29pt; letter-spacing: -.02em; line-height: 1.05; }
+.cover .cv-chips span.part { background: var(--c-lime); border-color: var(--c-lime); color: var(--c-navy); font-weight: 700; }

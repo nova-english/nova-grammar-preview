@@ -1,0 +1,183 @@
+/* =========================================================
+   Nova Grammar LEVEL 2 — 1권 공통 스타일(book/assets/css/book.css) 위에 덮어쓰는 2권 테마
+   색: 초록·청록 / 포인트: 노바의 별 노랑 / 마스코트: 노바(nova-01~08, 평면), 표지는 클레이
+   ========================================================= */
+
+:root {
+  --book-level: "LEVEL 2";
+
+  --c-main: #149C92;        /* 청록: 도입 배경, Unit 탭 */
+  --c-point: #0F8C83;       /* POINT 박스 */
+  --c-main-deep: #0A746E;   /* 워크북 탭, 표 머리 */
+  --c-navy: #0B3B45;        /* 제목, 문항 번호 (청록 계열 짙은 남색) */
+  --c-navy-band: #1A5960;
+  --c-test-title: #0A746E;
+  --c-lime: #FFD24A;        /* 1권의 연두 자리 → 노바 별 노랑 */
+  --c-leaf: #6CC56A;        /* 초록 잎: 보조 장식 */
+  --c-lime-pale: #DDF2E8;   /* Unit 위 띠 */
+  --c-sky-pale: #EAF7F2;
+  --c-sky-line: #9CD6C6;
+  --c-checkup: #36B39F;
+  --c-shade: #EFF5F3;
+}
+
+/* ---------- 1권 CSS에 직접 박힌 파랑 계열을 청록으로 ---------- */
+.band-top .arc { background: #F1FAF5; }
+.flow .blk.s { border-color: #8DCFC0; background: #EFF9F5; }
+.opener .op-art { box-shadow: 0 1.6mm 0 rgba(11, 59, 69, .25); }
+.cover .cv-level { box-shadow: 0 1.5mm 0 rgba(11, 59, 69, .25); }
+
+/* ---------- 도입: 바탕에 아주 옅은 점무늬 + 잎 띠 ---------- */
+.opener {
+  background-color: var(--c-main);
+  background-image: radial-gradient(rgba(255, 255, 255, .09) .55mm, transparent .6mm);
+  background-size: 6mm 6mm;
+}
+.opener .deco.leaf { background: var(--c-leaf); }
+.opener-head .num .d1 { border-color: var(--c-lime); }
+.op-point .lines::before { color: var(--c-leaf); }
+
+/* 도입 오른쪽: Unit 목록 옆 노바 */
+.opener .op-nova { position: absolute; right: 16mm; top: 34mm; width: 24mm; z-index: 1; }
+.opener .op-nova img { width: 100%; display: block; mix-blend-mode: multiply; border-radius: 50%; }
+.opener .op-nova::before { content: ""; position: absolute; inset: -1.5mm -1.5mm -1.5mm -1.5mm; background: #fff; border-radius: 50%; z-index: -1; }
+
+/* ---------- 노바 한마디: POINT 박스 아래 사이드 칸 ---------- */
+.point-box .nova-tip {
+  position: absolute; left: 0; right: 0; top: calc(100% + 5mm);
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.nova-tip .bubble {
+  position: relative; width: 100%;
+  background: var(--c-sky-pale); border: .35mm solid var(--c-sky-line); border-radius: 3mm;
+  padding: 1.8mm 2.2mm 2mm; font-family: var(--f-hand); font-size: 10.5pt; line-height: 1.32; color: #2A3A3E;
+  text-align: center; word-break: keep-all;
+}
+.nova-tip .bubble b { color: var(--c-main-deep); }
+.nova-tip .bubble .en { font-family: inherit; }
+.nova-tip .bubble .x { color: var(--c-hard); text-decoration: line-through; }
+.nova-tip .bubble::after {
+  content: ""; position: absolute; left: 6mm; bottom: -2.4mm; width: 4mm; height: 4mm;
+  background: var(--c-sky-pale); border-right: .35mm solid var(--c-sky-line); border-bottom: .35mm solid var(--c-sky-line);
+  transform: rotate(45deg);
+}
+.nova-tip img { height: 16mm; margin: 2.2mm 0 0 2mm; mix-blend-mode: multiply; }
+.nova-tip .who { font-family: var(--f-en-display); font-weight: 600; font-size: 7pt; color: var(--c-main); letter-spacing: .06em; margin: -1mm 0 0 4mm; }
+
+/* ---------- 앞표지 (2권) ---------- */
+.page.cover.l2 {
+  background-color: var(--c-main);
+  background-image: radial-gradient(rgba(255, 255, 255, .08) .6mm, transparent .65mm);
+  background-size: 6.5mm 6.5mm;
+}
+.cover.l2 .cv-kicker { color: var(--c-main-deep); }
+.cover.l2 .cv-title .w2 { color: var(--c-lime); }
+.cover.l2 .cv-level { background: var(--c-lime); color: var(--c-navy); }
+.cover.l2 .cv-sub b { color: var(--c-lime); }
+.cover.l2 .deco-bar { background: var(--c-lime); }
+.cover.l2 .deco-bar.leaf { background: var(--c-leaf); }
+.cover.l2 .cv-art { background: #F3FBF8; }
+.cover.l2 .cv-bubble { color: var(--c-navy); }
+/* 클레이 그림(l2-cover-main)의 큰 빈 말풍선 가운데: 그림 가로 74%, 세로 21% */
+.cover.l2 .cv-bubble { left: 150mm; top: 31.5mm; width: 84mm; font-size: 23pt; line-height: 1.08; color: var(--c-main-deep); }
+.cover.l2 .cv-bubble small { display: block; font-family: var(--f-ko-display); font-weight: 400; font-size: 12pt; color: var(--c-navy); margin-top: 1.6mm; }
+
+/* 도입 노바: 흰 원 안에 */
+.opener .op-nova { width: 30mm; height: 30mm; border-radius: 50%; background: #fff; overflow: hidden; display: grid; place-items: center; box-shadow: 0 1.2mm 0 rgba(11, 59, 69, .22); }
+.opener .op-nova::before { content: none; }
+.opener .op-nova img { width: auto; height: 86%; border-radius: 0; margin-top: 3mm; }
+/* 도입 카드 오른쪽 아래에 서 있는 노바 */
+.opener-card .op-nova-card { position: absolute; right: 14mm; bottom: 8mm; height: 34mm; }
+.opener-card .op-nova-card img { height: 100%; mix-blend-mode: multiply; }
+.page.odd .opener-card .op-nova-card.r { right: 26mm; bottom: 10mm; height: 30mm; }
+
+/* ---------- 노바 쌤 한마디 (선생님 캐릭터: Chapter 단위 안내·격려) ---------- */
+:root { --c-ssam: #E2606C; --c-ssam-pale: #FFF4F2; --c-ssam-line: #F3B2AA; }
+.ssam-say { display: flex; align-items: flex-end; gap: 2mm; margin: 5mm 0 6mm; }
+.ssam-say img { height: 26mm; flex: none; mix-blend-mode: multiply; }
+.ssam-say .bubble {
+  position: relative; flex: 1; margin-bottom: 7mm;
+  background: var(--c-ssam-pale); border: .4mm solid var(--c-ssam-line); border-radius: 3.5mm;
+  padding: 2.2mm 4mm 2.6mm; font-family: var(--f-hand); font-size: 11.5pt; line-height: 1.38; color: #3B2E2E;
+}
+.ssam-say .bubble b { color: var(--c-ssam); }
+.ssam-say .bubble::after {
+  content: ""; position: absolute; right: -2.3mm; bottom: 4mm; width: 4mm; height: 4mm;
+  background: var(--c-ssam-pale); border-right: .4mm solid var(--c-ssam-line); border-top: .4mm solid var(--c-ssam-line);
+  transform: rotate(45deg);
+}
+.ssam-say .who {
+  display: block; font-family: var(--f-ko-display); font-size: 9.5pt; color: var(--c-ssam); letter-spacing: .02em; margin-bottom: .6mm;
+}
+/* 도입 카드 안: 아래쪽 빈 자리에 */
+.opener-card .ssam-say.op { position: absolute; left: 24.5mm; right: 22mm; bottom: 6mm; margin: 0; }
+.opener-card .ssam-say.op img { height: 34mm; }
+
+/* ---------- 시간선(현재완료 설명) — 판면 장식: 선과 점만 ---------- */
+.tline { margin: 1mm 0 3mm; }
+.tl-bar { position: relative; display: flex; align-items: center; gap: 2mm; height: 9mm; }
+.tl-dot { flex: none; font-size: 8.6pt; font-weight: 700; color: #fff; background: var(--c-main); border-radius: 4mm; padding: .6mm 2.6mm; line-height: 1.4; }
+.tl-dot.past { background: var(--c-navy); }
+.tl-dot.now { background: var(--c-main); }
+.tl-dot.q { background: #9AA1AB; }
+.tl-arrow { flex: 1; height: 1.2mm; background: var(--c-main); border-radius: 1mm; position: relative; }
+.tl-arrow::after { content: ""; position: absolute; right: -1mm; top: 50%; transform: translateY(-50%); border-left: 2.6mm solid var(--c-main); border-top: 1.8mm solid transparent; border-bottom: 1.8mm solid transparent; }
+.tl-gap { flex: 1; border-top: .5mm dashed #B5BBC4; }
+.tl-cap { margin: .6mm 0 0; font-size: 9.2pt; color: #444; }
+.tl-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 2mm 0 3mm; }
+.tl-card { border: .4mm solid var(--c-line); border-radius: 3mm; padding: 2.6mm 3.4mm 2.4mm; }
+.tl-card.pf { border-color: var(--c-main); background: var(--c-sky-pale); }
+.tl-card h3 { margin: 0 0 1.6mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 11.5pt; color: var(--c-navy); }
+.tl-card h3 .en { font-family: "Source Sans 3", sans-serif; font-size: 10pt; margin-left: 1.5mm; color: #333; }
+.tl-card p { margin: 1.4mm 0 0; font-size: 9pt; color: #444; }
+
+/* ---------- 과거분사 한눈에 보기 ---------- */
+.pp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; align-items: start; }
+.pp-h { margin: 0 0 1.4mm; font-family: var(--f-en-display); font-weight: 700; font-size: 12pt; color: var(--c-main-deep); }
+.pp-h small { font-family: var(--f-body); font-weight: 400; font-size: 8.4pt; color: var(--c-sub); margin-left: 1.5mm; }
+.vtable.pp { font-size: 9.4pt; }
+.vtable.pp td { padding: 1.05mm .8mm; border-bottom-color: #A6DCCD; }
+.vtable.pp thead th { padding: 1.1mm .8mm; }
+.cu-grid.c5 { grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 4mm; }
+
+/* ---------- to는 화살표, for는 하트 (Ch01 POINT 3 Plus) ---------- */
+.tf-fig { text-align: center; margin: 1mm 0 2mm; }
+.tf-fig img { width: 128mm; display: inline-block; border-radius: 3mm; }
+.tf-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 0 0 2mm; }
+.tf-card { border: .45mm solid var(--c-main); border-radius: 3mm; padding: 2.2mm 3.4mm 2.4mm; background: var(--c-sky-pale); }
+.tf-card.for { border-color: var(--c-ssam-line); background: var(--c-ssam-pale); }
+.tf-card h3 { margin: 0 0 1mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 12pt; color: var(--c-navy); }
+.tf-card h3 .en { font-family: var(--f-en-display); font-weight: 700; font-size: 14pt; color: var(--c-main-deep); }
+.tf-card.for h3 .en { color: var(--c-ssam); }
+.tf-card h3 small { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); margin-left: 1mm; }
+.tf-card p { margin: .8mm 0 0; font-size: 9pt; line-height: 1.5; }
+.tf-card .vb { color: var(--c-main-deep); font-weight: 600; }
+.tf-card.for .vb { color: var(--c-ssam); }
+.tf-card .ex span { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); margin-left: 1mm; }
+.ssam-say.sm { margin: 3mm 0 2mm; }
+.ssam-say.sm img { height: 19mm; }
+.ssam-say.sm .bubble { font-size: 10.5pt; margin-bottom: 4mm; padding: 1.6mm 3.4mm 1.8mm; }
+
+/* 상태동사 해석 힌트: (~한 상태로) */
+.exr .t .st { color: var(--c-main-deep); font-weight: 600; margin-left: 1.2mm; white-space: nowrap; }
+.term.state { border-left-color: var(--c-main-deep); }
+
+/* +α 설명 상자: 교과서식 규칙 뒤에 붙이는 ‘쉽게 이해하기·헷갈릴 때 TIP’ */
+.plus { position: relative; margin: 5.6mm 0 3mm; border: .4mm dashed var(--c-main); border-radius: 3mm; background: #F4FBFA; padding: 3mm 3.6mm 2.2mm; font-size: 9.3pt; line-height: 1.62; }
+.plus .lbl { position: absolute; left: 3mm; top: -3.3mm; background: var(--c-main); color: #fff; border-radius: 3mm; padding: 0 2.6mm; font-family: var(--f-ko-display); font-size: 9pt; line-height: 1.65; }
+.plus .lbl::before { content: "+α "; color: var(--c-yellow, #FFD24A); font-family: var(--f-en-display); }
+/* 노바 아래 왼쪽 빈 칸의 +α 설명 상자 (point_page(side=…)) */
+.nova-tip .side-plus { position: relative; width: 100%; box-sizing: border-box; margin-top: 6mm; border: .4mm dashed var(--c-main); border-radius: 3mm; background: #F4FBFA; padding: 4mm 2.6mm 2.4mm; font-size: 8.6pt; line-height: 1.55; color: #2A3A3E; word-break: keep-all; }
+.side-plus .lbl { position: absolute; left: 2.4mm; top: -3.2mm; background: var(--c-main); color: #fff; border-radius: 3mm; padding: 0 2.2mm; font-family: var(--f-ko-display); font-size: 8.6pt; line-height: 1.65; white-space: nowrap; }
+.side-plus .lbl::before { content: "+α "; color: #FFD24A; font-family: var(--f-en-display); }
+.side-plus h4 { margin: 0 0 1.4mm; font-family: var(--f-ko-display); font-size: 10.5pt; color: var(--c-main-deep); font-weight: 400; }
+.side-plus ol { margin: 0 0 1.6mm; padding-left: 4mm; }
+.side-plus li { margin-bottom: .6mm; }
+.side-plus .sp-ex { border-top: .3mm dotted #9CCFCB; padding-top: 1.4mm; margin-top: 1.2mm; }
+.side-plus .sp-ex p { margin: 0 0 .9mm; }
+.side-plus .sp-why { margin-top: 1.4mm; background: #fff; border-radius: 2mm; padding: 1.4mm 1.8mm; }
+.side-plus b { color: var(--c-main-deep); }
+
+/* 예문 듣기 QR: 2권은 Unit 제목이 길 수 있어서 제목 줄 대신 도입 설명 오른쪽에 둔다 (tools/make_listen.py --l2) */
+.unit-head .listen-qr { top: 33mm; }
+.unit-head:has(.listen-qr) .unit-lead { padding-right: 22mm; }

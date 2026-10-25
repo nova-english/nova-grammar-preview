@@ -25,6 +25,7 @@
   .brand { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 20px; color: var(--navy); white-space: nowrap; }
   .brand b { color: var(--main); }
   .brand small { font-size: 12px; color: var(--sub); font-weight: 600; margin-left: 4px; }
+  .vol { border: 1px solid var(--pale); background: #fff; color: var(--deep); border-radius: 999px; padding: 5px 10px; font: 600 14px "Pretendard", sans-serif; }
   .tabs { display: flex; gap: 4px; background: var(--pale); border-radius: 999px; padding: 3px; }
   .tabs button { border: 0; background: transparent; padding: 6px 14px; border-radius: 999px; font-weight: 600; color: var(--deep); font-size: 14px; }
   .tabs button[aria-pressed="true"] { background: var(--main); color: #fff; }
@@ -51,8 +52,31 @@
   .toc a.on { border-left-color: var(--main); background: var(--pale); color: var(--deep); }
   .toc a .n { float: right; color: var(--sub); font-weight: 400; font-size: 12px; margin-left: 8px; }
 
-  .stage { position: relative; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 18px; }
-  .spread { position: relative; display: flex; perspective: 2600px; }
+  .stage { position: relative; min-width: 0; min-height: 0; }
+  .scroller { position: absolute; inset: 0; overflow: hidden; display: flex; padding: 18px; }
+  .stage.zoomed .scroller { overflow: auto; cursor: grab; }
+  .stage.zoomed .scroller.drag { cursor: grabbing; }
+  .spread { position: relative; display: flex; perspective: 2600px; margin: auto; }
+  .zoom { display: inline-flex; align-items: center; gap: 4px; }
+  .zoom span { min-width: 44px; text-align: center; font-size: 13px; font-weight: 600; color: var(--navy); }
+  /* 책장(첫 화면) */
+  .home { position: fixed; inset: 0; z-index: 50; background: var(--bg); overflow: auto; padding: 28px 24px 40px; }
+  .home[hidden] { display: none; }
+  .home .hd { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; max-width: 1180px; margin: 0 auto 6px; }
+  .home h1 { font-family: "Fredoka", sans-serif; font-size: 30px; margin: 0; color: var(--navy); }
+  .home h1 b { color: var(--main); }
+  .home .lead { color: var(--sub); font-size: 14px; }
+  .home .note { max-width: 1180px; margin: 8px auto 0; background: #fff; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--deep); }
+  .home section { max-width: 1180px; margin: 26px auto 0; }
+  .home h2 { font-family: "Do Hyeon", sans-serif; font-weight: 400; font-size: 22px; color: var(--navy); margin: 0 0 12px; }
+  .home .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+  .home .card { border: 0; background: transparent; padding: 0; text-align: left; }
+  .home .card .cv { display: block; width: 100%; aspect-ratio: 215 / 290; border-radius: 6px; background: #fff center / cover no-repeat; box-shadow: 0 6px 16px rgba(20, 40, 70, .18); transition: transform .15s, box-shadow .15s; }
+  .home .card .cv.none { display: flex; align-items: center; justify-content: center; color: var(--deep); font-family: "Do Hyeon", sans-serif; font-size: 20px; background: linear-gradient(160deg, #fff, var(--pale)); }
+  .home .card:hover .cv { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(20, 40, 70, .24); }
+  .home .card .t { display: block; margin-top: 8px; font-weight: 700; color: var(--navy); font-size: 14px; }
+  .home .card .n { display: block; color: var(--sub); font-size: 12px; }
+  .spread .slot iframe { pointer-events: auto; }
   .slot { position: relative; background: #fff center / 100% 100% no-repeat; overflow: hidden; box-shadow: 0 8px 22px rgba(20, 40, 70, .18); }
   .slot.blank { background: transparent; }
   .slot.L { border-radius: 4px 0 0 4px; }
@@ -86,7 +110,9 @@
 
   @media (max-width: 860px) {
     .wrap, body.toc-off .wrap { grid-template-columns: 1fr; }
-    .stage { grid-column: 1 / -1; grid-row: 1; padding: 10px; }
+    .stage { grid-column: 1 / -1; grid-row: 1; }
+    .scroller { padding: 10px; }
+    .zoom span { display: none; }
     nav.toc { position: absolute; z-index: 10; top: 0; bottom: 0; left: 0; width: 82%; max-width: 320px; box-shadow: 8px 0 24px rgba(0, 0, 0, .18); }
     body.toc-off nav.toc { display: none; }
     .wrap { position: relative; }
@@ -98,7 +124,9 @@
 </head>
 <body class="toc-off">
 <header>
-  <div class="brand">Nova <b>Grammar</b><small>LEVEL 1</small></div>
+  <div class="brand">Nova <b>Grammar</b><small id="volName">LEVEL 1</small></div>
+  <select class="vol" id="vol" aria-label="책 고르기" hidden></select>
+  <button class="icon" id="homeBtn" title="책장 (H)">▦</button>
   <button class="icon" id="tocBtn" title="목차 (T)" aria-pressed="false">☰</button>
   <div class="tabs" id="tabs"></div>
   <div class="spacer"></div>
@@ -107,6 +135,7 @@
     <button class="icon" id="prevBtn" title="이전 (←)">◀</button>
     <div class="pg"><input id="pgIn" aria-label="쪽 번호" inputmode="numeric"><span class="tot" id="pgTot"></span></div>
     <button class="icon" id="nextBtn" title="다음 (→)">▶</button>
+    <span class="zoom"><button class="icon" id="zoomOut" title="축소 (-)">−</button><span id="zoomVal">100%</span><button class="icon" id="zoomIn" title="확대 (+)">＋</button></span>
     <button class="icon" id="modeBtn" title="펼침면 / 한 쪽 (M)" aria-pressed="true">▯▯</button>
     <button class="icon" id="sndBtn" title="넘김 소리 켜기/끄기 (S)" aria-pressed="true">♪</button>
     <button class="icon" id="fsBtn" title="전체 화면 (F)">⛶</button>
@@ -116,9 +145,13 @@
   <nav class="toc" id="toc"></nav>
   <div class="stage" id="stage">
     <button class="edge prev" id="edgePrev" aria-label="이전 쪽">‹</button>
-    <div class="spread" id="spread"></div>
+    <div class="scroller" id="scroller"><div class="spread" id="spread"></div></div>
     <button class="edge next" id="edgeNext" aria-label="다음 쪽">›</button>
   </div>
+</div>
+<div class="home" id="home" hidden>
+  <div class="hd"><h1>Nova <b>Grammar</b></h1><span class="lead">읽고 싶은 책을 고르세요</span></div>
+  <div id="shelves"></div>
 </div>
 <footer>
   <span id="bookName"></span>
@@ -128,8 +161,13 @@
 <script>
 (function () {
   var D = window.VIEWER;
+  // 여러 권(1권·2권·별책): D.vols = [{name, books}], 없으면 한 권짜리 예전 자료
+  var VOLS = D.vols || [{ name: 'LEVEL 1', books: D.books }];
+  var MULTI = VOLS.length > 1;
   var $ = function (id) { return document.getElementById(id); };
-  var state = { b: 0, i: 0, spread: true };
+  var state = { v: 0, b: 0, i: 0, spread: true, zoom: 1 };
+  var ZOOMS = [1, 1.25, 1.5, 1.75, 2, 2.5];
+  function VK() { return MULTI ? state.v + '-' : ''; }
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 
@@ -209,7 +247,7 @@
     var n = sp.length === 1 ? 1 : 2;
     var narrow = window.innerWidth <= 860;
     var W = st.clientWidth - (narrow ? 20 : 36 + 2 * 40), H = st.clientHeight - (narrow ? 20 : 36);
-    PH = Math.min(H, (W / n) * 290 / 215); PW = PH * 215 / 290;
+    PH = Math.min(H, (W / n) * 290 / 215) * state.zoom; PW = PH * 215 / 290;
     $('spread').querySelectorAll('.slot').forEach(function (s) { s.style.width = PW + 'px'; s.style.height = PH + 'px'; });
   }
 
@@ -387,9 +425,9 @@
     $('prevBtn').disabled = $('edgePrev').disabled = $('firstBtn').disabled = k === 0;
     $('nextBtn').disabled = $('edgeNext').disabled = k === SP.length - 1;
     markToc(idx[0]);
-    store.set('nova-viewer-' + state.b, String(idx[0]));
-    store.set('nova-viewer-book', String(state.b));
-    history.replaceState(null, '', '#b=' + state.b + '&p=' + idx[0]);
+    store.set('nova-viewer-' + VK() + state.b, String(idx[0]));
+    store.set('nova-viewer-book' + (MULTI ? '-' + state.v : ''), String(state.b));
+    history.replaceState(null, '', '#' + (MULTI ? 'vol=' + state.v + '&' : '') + 'b=' + state.b + '&p=' + idx[0]);
   }
   function currentToc(i) {
     var toc = D.books[state.b].toc, best = null, best0 = null;
@@ -441,7 +479,7 @@
   function setBook(b, i) {
     state.b = b; rebuild(); buildToc();
     document.querySelectorAll('#tabs button').forEach(function (x, j) { x.setAttribute('aria-pressed', String(j === b)); });
-    var saved = store.get('nova-viewer-' + b);
+    var saved = store.get('nova-viewer-' + VK() + b);
     go(i !== undefined ? i : (saved !== null ? +saved : 0), 0);
   }
   function setMode(two) {
@@ -458,16 +496,90 @@
     if (best !== null) go(best, 0); else render(0);
   }
 
+  function setZoom(z) {
+    var sc = $('scroller'), cx = (sc.scrollLeft + sc.clientWidth / 2) / Math.max(1, sc.scrollWidth),
+        cy = (sc.scrollTop + sc.clientHeight / 2) / Math.max(1, sc.scrollHeight);
+    state.zoom = Math.max(ZOOMS[0], Math.min(ZOOMS[ZOOMS.length - 1], z));
+    $('zoomVal').textContent = Math.round(state.zoom * 100) + '%';
+    $('stage').classList.toggle('zoomed', state.zoom > 1);
+    $('zoomOut').disabled = state.zoom <= ZOOMS[0]; $('zoomIn').disabled = state.zoom >= ZOOMS[ZOOMS.length - 1];
+    layout();
+    sc.scrollLeft = cx * sc.scrollWidth - sc.clientWidth / 2; sc.scrollTop = cy * sc.scrollHeight - sc.clientHeight / 2;
+  }
+  function zoomStep(d) {
+    var k = ZOOMS.indexOf(state.zoom); if (k < 0) k = 0;
+    setZoom(ZOOMS[Math.max(0, Math.min(ZOOMS.length - 1, k + d))]);
+  }
+  // 확대했을 때 끌어서 옮기기 (쪽 가장자리·빈 곳을 잡고)
+  (function () {
+    var sc = $('scroller'), d = null;
+    sc.addEventListener('mousedown', function (e) {
+      if (state.zoom <= 1 || e.button !== 0) return;
+      d = { x: e.clientX, y: e.clientY, l: sc.scrollLeft, t: sc.scrollTop }; sc.classList.add('drag'); e.preventDefault();
+    });
+    window.addEventListener('mousemove', function (e) { if (d) { sc.scrollLeft = d.l - (e.clientX - d.x); sc.scrollTop = d.t - (e.clientY - d.y); } });
+    window.addEventListener('mouseup', function () { d = null; sc.classList.remove('drag'); });
+  })();
+
+  // ---------- 책장(첫 화면) ----------
+  function coverOf(bk) {
+    var p = bk.pages[0];
+    if (p && p.im) return p.im;
+    return bk.img ? bk.img + '000.jpg' : '';
+  }
+  function buildHome() {
+    var box = $('shelves'); box.innerHTML = '';
+    if (D.preview) { var nt = document.createElement('div'); nt.className = 'note'; nt.textContent = D.preview; box.appendChild(nt); }
+    VOLS.forEach(function (vol, v) {
+      var sec = document.createElement('section');
+      sec.innerHTML = '<h2>' + vol.name + '</h2><div class="shelf"></div>';
+      vol.books.forEach(function (bk, b) {
+        var c = document.createElement('button'); c.className = 'card';
+        var img = coverOf(bk);
+        c.innerHTML = '<span class="cv' + (img ? '' : ' none') + '"' + (img ? ' style="background-image:url(\'' + img + '\')"' : '') + '>' + (img ? '' : bk.name) + '</span>' +
+                      '<span class="t">' + bk.name + '</span><span class="n">' + bk.pages.length + '쪽</span>';
+        c.addEventListener('click', function () { showHome(false); setVol(v, b); });
+        sec.querySelector('.shelf').appendChild(c);
+      });
+      box.appendChild(sec);
+    });
+  }
+  var opened = false;
+  function showHome(on) {
+    $('home').hidden = !on;
+    if (on) history.replaceState(null, '', location.pathname + location.search);
+  }
+
   // ---------- 연결 ----------
-  D.books.forEach(function (bk, j) {
-    var t = document.createElement('button'); t.textContent = bk.name;
-    t.addEventListener('click', function () { setBook(j); });
-    $('tabs').appendChild(t);
-  });
+  function buildTabs() {
+    $('tabs').innerHTML = '';
+    D.books.forEach(function (bk, j) {
+      var t = document.createElement('button'); t.textContent = bk.name;
+      t.addEventListener('click', function () { setBook(j); });
+      $('tabs').appendChild(t);
+    });
+  }
+  function setVol(v, b, i) {
+    opened = true;
+    state.v = v; D.books = VOLS[v].books;
+    $('volName').textContent = VOLS[v].name; $('vol').value = String(v);
+    store.set('nova-viewer-vol', String(v));
+    buildTabs();
+    if (b === undefined) { var sb = store.get('nova-viewer-book' + (MULTI ? '-' + v : '')); b = sb !== null ? +sb : 0; }
+    setBook(Math.min(b, D.books.length - 1), i);
+  }
+  if (MULTI) {
+    VOLS.forEach(function (vol, j) { var o = document.createElement('option'); o.value = String(j); o.textContent = vol.name; $('vol').appendChild(o); });
+    $('vol').hidden = false;
+    $('vol').addEventListener('change', function () { setVol(+this.value); this.blur(); });
+  }
   $('prevBtn').onclick = $('edgePrev').onclick = function () { step(-1); };
   $('nextBtn').onclick = $('edgeNext').onclick = function () { step(1); };
   $('firstBtn').onclick = function () { go(0, -1); };
   $('tocBtn').onclick = function () { toggleToc(); };
+  $('homeBtn').onclick = function () { showHome(true); };
+  $('zoomIn').onclick = function () { zoomStep(1); };
+  $('zoomOut').onclick = function () { zoomStep(-1); };
   $('modeBtn').onclick = function () { setMode(!state.spread); };
   $('sndBtn').onclick = function () { setSound(!sound.on); if (sound.on) flipSound(900); };
   $('fsBtn').onclick = function () {
@@ -483,6 +595,11 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.target.tagName === 'INPUT') return;
+    if (!$('home').hidden) { if (e.key === 'Escape' && opened) showHome(false); return; }
+    if (e.key === '+' || e.key === '=') { zoomStep(1); return; }
+    if (e.key === '-' || e.key === '_') { zoomStep(-1); return; }
+    if (e.key === '0') { setZoom(1); return; }
+    if (e.key === 'h' || e.key === 'H') { showHome(true); return; }
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); step(1); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
     else if (e.key === 'Home') go(0, -1);
@@ -491,7 +608,7 @@
     else if (e.key === 'm' || e.key === 'M') setMode(!state.spread);
     else if (e.key === 'f' || e.key === 'F') $('fsBtn').click();
     else if (e.key === 's' || e.key === 'S') $('sndBtn').click();
-    else if (e.key === '1' || e.key === '2' || e.key === '3') setBook(+e.key - 1);
+    else if ((e.key === '1' || e.key === '2' || e.key === '3') && +e.key <= D.books.length) setBook(+e.key - 1);
   });
   // 휴대폰: 가장자리에서 밀어 넘기기
   var tx = null;
@@ -499,6 +616,7 @@
     $(id).addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
     $(id).addEventListener('touchend', function (e) {
       if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
+      if (state.zoom > 1 && id === 'stage') return;   // 확대 중에는 밀면 쪽 안을 움직인다
       if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
     });
   });
@@ -512,11 +630,13 @@
   // ---------- 시작 ----------
   if (D.preview) { var tag = document.createElement('span'); tag.className = 'pv'; tag.textContent = '미리 보기'; document.querySelector('.brand').appendChild(tag); }
   setSound(sound.on);
-  var h = location.hash.match(/b=(\d+)&p=(\d+)/);
+  var h = location.hash.match(/b=(\d+)&p=(\d+)/), hv = location.hash.match(/vol=(\d+)/);
   if (window.innerWidth < 900) { state.spread = false; $('modeBtn').setAttribute('aria-pressed', 'false'); $('modeBtn').textContent = '▯'; }
   if (window.innerWidth > 1100) toggleToc(true);
-  var b0 = h ? +h[1] : (store.get('nova-viewer-book') !== null ? +store.get('nova-viewer-book') : 0);
-  setBook(Math.min(b0, D.books.length - 1), h ? +h[2] : undefined);
+  var v0 = hv ? +hv[1] : (MULTI && store.get('nova-viewer-vol') !== null ? +store.get('nova-viewer-vol') : 0);
+  buildHome(); setZoom(1);
+  if (h) { setVol(Math.min(v0, VOLS.length - 1), +h[1], +h[2]); opened = true; }
+  else { setVol(Math.min(v0, VOLS.length - 1)); showHome(true); }
 })();
 </script>
 </body>
