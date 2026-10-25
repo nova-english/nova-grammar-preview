@@ -930,3 +930,68 @@ i, em { font-style: italic; }
 .back-cover.wb .bc-band { background: var(--c-main-deep); }
 .back-cover.ak .bc-band { background: var(--c-main); }
 .cover.wb .cv-art, .cover.ak .cv-art { height: 138mm; }
+
+
+/* ---------- 노바 Tip(POINT 박스 아래)·노바 쌤 한마디 — 2권 level2.css에서 옮겨 와 1권에도 씀 (2026-10-25) ---------- */
+.point-box .nova-tip {
+  position: absolute; left: 0; right: 0; top: calc(100% + 5mm);
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.nova-tip .bubble {
+  position: relative; width: 100%;
+  background: var(--c-sky-pale); border: .35mm solid var(--c-sky-line); border-radius: 3mm;
+  padding: 1.8mm 2.2mm 2mm; font-family: var(--f-hand); font-size: 10.5pt; line-height: 1.32; color: #2A3A3E;
+  text-align: center; word-break: keep-all;
+}
+.nova-tip .bubble b { color: var(--c-main-deep); }
+.nova-tip .bubble .en { font-family: inherit; }
+.nova-tip .bubble .x { color: var(--c-hard); text-decoration: line-through; }
+.nova-tip .bubble::after {
+  content: ""; position: absolute; left: 6mm; bottom: -2.4mm; width: 4mm; height: 4mm;
+  background: var(--c-sky-pale); border-right: .35mm solid var(--c-sky-line); border-bottom: .35mm solid var(--c-sky-line);
+  transform: rotate(45deg);
+}
+.nova-tip img { height: 16mm; margin: 2.2mm 0 0 2mm; mix-blend-mode: multiply; }
+.nova-tip .who { font-family: var(--f-en-display); font-weight: 600; font-size: 7pt; color: var(--c-main); letter-spacing: .06em; margin: -1mm 0 0 4mm; }
+
+:root { --c-ssam: #E2606C; --c-ssam-pale: #FFF4F2; --c-ssam-line: #F3B2AA; }
+.ssam-say { display: flex; align-items: flex-end; gap: 2mm; margin: 5mm 0 6mm; }
+.ssam-say img { height: 26mm; flex: none; mix-blend-mode: multiply; }
+.ssam-say .bubble {
+  position: relative; flex: 1; margin-bottom: 7mm;
+  background: var(--c-ssam-pale); border: .4mm solid var(--c-ssam-line); border-radius: 3.5mm;
+  padding: 2.2mm 4mm 2.6mm; font-family: var(--f-hand); font-size: 11.5pt; line-height: 1.38; color: #3B2E2E;
+}
+.ssam-say .bubble b { color: var(--c-ssam); }
+.ssam-say .bubble::after {
+  content: ""; position: absolute; right: -2.3mm; bottom: 4mm; width: 4mm; height: 4mm;
+  background: var(--c-ssam-pale); border-right: .4mm solid var(--c-ssam-line); border-top: .4mm solid var(--c-ssam-line);
+  transform: rotate(45deg);
+}
+.ssam-say .who {
+  display: block; font-family: var(--f-ko-display); font-size: 9.5pt; color: var(--c-ssam); letter-spacing: .02em; margin-bottom: .6mm;
+}
+/* 도입 카드 안: 아래쪽 빈 자리에 */
+.opener-card .ssam-say.op { position: absolute; left: 24.5mm; right: 22mm; bottom: 6mm; margin: 0; }
+.opener-card .ssam-say.op img { height: 34mm; }
+.ssam-say.sm { margin: 3mm 0 2mm; }
+.ssam-say.sm img { height: 19mm; }
+.ssam-say.sm .bubble { font-size: 10.5pt; margin-bottom: 4mm; padding: 1.6mm 3.4mm 1.8mm; }
+
+/* 따로 된 책(「명사와 관사」·「전치사」)으로 이어 주는 줄 — book/_src/put_xrefs.py */
+.xref { margin: 1.6mm 0 2.4mm; padding: 1.4mm 2.6mm; border-left: .8mm solid var(--c-lime); background: var(--c-sky-pale); border-radius: 0 1.6mm 1.6mm 0; font-size: 8.8pt; line-height: 1.55; color: #3A4450; }
+.xref b { color: var(--c-main-deep); margin-right: 1.6mm; }
+
+/* ---------- 노바 아래 왼쪽 빈 칸 ‘+α’ 상자 — 2권 .side-plus를 1권 파랑으로 (2026-10-25) ---------- */
+.nova-tip .side-plus { position: relative; width: 100%; box-sizing: border-box; margin-top: 6mm; border: .4mm dashed var(--c-main); border-radius: 3mm; background: #F3F9FE; padding: 4mm 2.6mm 2.4mm; font-size: 8.6pt; line-height: 1.55; color: #2A3A3E; word-break: keep-all; }
+.side-plus .lbl { position: absolute; left: 2.4mm; top: -3.2mm; background: var(--c-main); color: #fff; border-radius: 3mm; padding: 0 2.2mm; font-family: var(--f-ko-display); font-size: 8.6pt; line-height: 1.65; white-space: nowrap; }
+.side-plus .lbl::before { content: "+α "; color: #FFE36A; font-family: var(--f-en-display); }
+.side-plus h4 { margin: 0 0 1.4mm; font-family: var(--f-ko-display); font-size: 10.5pt; color: var(--c-main-deep); font-weight: 400; }
+.side-plus h4 + * { margin-top: 0; }
+.side-plus ol { margin: 0 0 1.6mm; padding-left: 4mm; }
+.side-plus li { margin-bottom: .6mm; }
+.side-plus .sp-ex { border-top: .3mm dotted #9CC6E8; padding-top: 1.4mm; margin: 1.2mm 0; }
+.side-plus .sp-ex p { margin: 0 0 .9mm; }
+.side-plus .sp-why { margin-top: 1.4mm; background: #fff; border-radius: 2mm; padding: 1.4mm 1.8mm; }
+.side-plus b { color: var(--c-main-deep); }
+.side-plus s { color: #8A9AA6; }
