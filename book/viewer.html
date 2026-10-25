@@ -62,20 +62,22 @@
   /* 책장(첫 화면) */
   .home { position: fixed; inset: 0; z-index: 50; background: var(--bg); overflow: auto; padding: 28px 24px 40px; }
   .home[hidden] { display: none; }
-  .home .hd { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; max-width: 1180px; margin: 0 auto 6px; }
+  .home .hd { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 6px auto 22px; text-align: center; }
   .home h1 { font-family: "Fredoka", sans-serif; font-size: 30px; margin: 0; color: var(--navy); }
   .home h1 b { color: var(--main); }
   .home .lead { color: var(--sub); font-size: 14px; }
-  .home .note { max-width: 1180px; margin: 8px auto 0; background: #fff; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--deep); }
+  .home .note { max-width: 760px; margin: 26px auto 0; background: #fff; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--deep); text-align: center; }
   .home section { max-width: 1180px; margin: 26px auto 0; }
   .home h2 { font-family: "Do Hyeon", sans-serif; font-weight: 400; font-size: 22px; color: var(--navy); margin: 0 0 12px; }
-  .home .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+  .home .shelf { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; }
+  .home .shelf .card { width: 190px; }
+  @media (max-width: 860px) { .home .shelf .card { width: 42%; } }
   .home .card { border: 0; background: transparent; padding: 0; text-align: left; }
   .home .card .cv { display: block; width: 100%; aspect-ratio: 215 / 290; border-radius: 6px; background: #fff center / cover no-repeat; box-shadow: 0 6px 16px rgba(20, 40, 70, .18); transition: transform .15s, box-shadow .15s; }
   .home .card .cv.none { display: flex; align-items: center; justify-content: center; color: var(--deep); font-family: "Do Hyeon", sans-serif; font-size: 20px; background: linear-gradient(160deg, #fff, var(--pale)); }
   .home .card:hover .cv { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(20, 40, 70, .24); }
-  .home .card .t { display: block; margin-top: 8px; font-weight: 700; color: var(--navy); font-size: 14px; }
-  .home .card .n { display: block; color: var(--sub); font-size: 12px; }
+  .home .card .t { display: block; margin-top: 10px; font-weight: 700; color: var(--navy); font-size: 15px; text-align: center; }
+  .home .card .n { display: block; color: var(--sub); font-size: 12px; text-align: center; }
   .spread .slot iframe { pointer-events: auto; }
   .slot { position: relative; background: #fff center / 100% 100% no-repeat; overflow: hidden; box-shadow: 0 8px 22px rgba(20, 40, 70, .18); }
   .slot.blank { background: transparent; }
@@ -528,21 +530,18 @@
     return bk.img ? bk.img + '000.jpg' : '';
   }
   function buildHome() {
+    // 첫 화면: 권마다 본책 표지 하나 (워크북·해설은 책을 연 뒤 위쪽 탭에서)
     var box = $('shelves'); box.innerHTML = '';
-    if (D.preview) { var nt = document.createElement('div'); nt.className = 'note'; nt.textContent = D.preview; box.appendChild(nt); }
+    var shelf = document.createElement('div'); shelf.className = 'shelf'; box.appendChild(shelf);
     VOLS.forEach(function (vol, v) {
-      var sec = document.createElement('section');
-      sec.innerHTML = '<h2>' + vol.name + '</h2><div class="shelf"></div>';
-      vol.books.forEach(function (bk, b) {
-        var c = document.createElement('button'); c.className = 'card';
-        var img = coverOf(bk);
-        c.innerHTML = '<span class="cv' + (img ? '' : ' none') + '"' + (img ? ' style="background-image:url(\'' + img + '\')"' : '') + '>' + (img ? '' : bk.name) + '</span>' +
-                      '<span class="t">' + bk.name + '</span><span class="n">' + bk.pages.length + '쪽</span>';
-        c.addEventListener('click', function () { showHome(false); setVol(v, b); });
-        sec.querySelector('.shelf').appendChild(c);
-      });
-      box.appendChild(sec);
+      var bk = vol.books[0], img = coverOf(bk);
+      var c = document.createElement('button'); c.className = 'card';
+      c.innerHTML = '<span class="cv' + (img ? '' : ' none') + '"' + (img ? ' style="background-image:url(&quot;' + img + '&quot;)"' : '') + '>' + (img ? '' : vol.name) + '</span>' +
+                    '<span class="t">' + vol.name + '</span><span class="n">' + vol.books.map(function (b) { return b.name; }).join(' · ') + '</span>';
+      c.addEventListener('click', function () { showHome(false); setVol(v, 0); });
+      shelf.appendChild(c);
     });
+    if (D.preview) { var nt = document.createElement('div'); nt.className = 'note'; nt.textContent = D.preview; box.appendChild(nt); }
   }
   var opened = false;
   function showHome(on) {
