@@ -6,6 +6,23 @@
   function build() {
     var src = document.getElementById('ak-source');
     if (!src) return;
+    // 간단판(?short): 정답·핵심 한 줄(‘그래서’)·다른 정답만 남긴다. 상세판과 원고는 같다.
+    if (/[?&]short\b/.test(location.search) || document.documentElement.classList.contains('ak-short')) {
+      document.documentElement.classList.add('ak-short');
+      src.querySelectorAll('.k.tr, .k.wr, .k.step, .k.vc').forEach(function (k) { var p = k.closest('p'); if (p) p.remove(); });
+      src.querySelectorAll('.ak-box.caution, .ak-box.score').forEach(function (b) { b.remove(); });
+      src.querySelectorAll('.k.ex').forEach(function (k) {
+        var p = k.closest('p'); if (!p) return;
+        var whys = Array.prototype.slice.call(p.querySelectorAll('b.why'));
+        var pick = function (t) { return whys.filter(function (b) { return b.textContent.trim() === t; })[0]; };
+        var why = pick('그래서') || pick('규칙');      // ‘그래서’가 없으면 ‘규칙’ 한 줄
+        if (why) {                                   // 고른 꼬리표 뒤 한 줄만 남긴다
+          var keep = document.createElement('span'); var n = why.nextSibling;
+          while (n && !(n.nodeName === 'BR')) { var nx = n.nextSibling; keep.appendChild(n); n = nx; }
+          p.innerHTML = ''; p.appendChild(k); p.appendChild(keep);
+        }
+      });
+    }
     var book = document.querySelector('main.book');
     var pageNo = parseInt(src.dataset.startPage || '2', 10);
     var chapterHtml = src.dataset.chapter || '';

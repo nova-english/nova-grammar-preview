@@ -67,3 +67,11 @@
 .nb-face .h { font-weight: 700; color: var(--c-navy); background: var(--c-sky-pale); }
 .nb-face .w { font-family: var(--f-en-display); font-weight: 700; color: var(--c-main-deep); font-size: 10.5pt; }
 .nb-face .en { font-size: 9.4pt; }
+
+/* 뒤표지: 띠를 줄이고 특징·미리 보기를 올려 아래 ‘구성’ 띠와 겹치지 않게 (2026-10-27) */
+.back-cover .bc-band { height: 100mm; }
+.back-cover .bc-art { top: 33mm; }
+.back-cover .bc-feats { top: 110mm; }
+.back-cover .bc-pages-hd { top: 175mm; }
+.back-cover .bc-pages { top: 184mm; }
+.back-cover .bc-set { bottom: 22mm; }

@@ -1,0 +1,8 @@
+/* 1권(LEVEL 1)만 쓰는 판면 조정 — 2026-10-27
+   - Unit 첫 쪽: 도입 설명 바로 아래에서 POINT가 시작하게(설명 길이에 맞춰 머리 높이를 정하고, 그 아래 간격은 4mm로 고정 —
+     page-fill.js가 여기에는 간격을 더하지 않고 쪽의 다른 곳에 나눠 준다)
+   - 아래 단어 줄을 1.5mm 내려 본문 자리를 조금 넓힌다(쪽 번호 줄과는 떨어져 있게) */
+.unit-head { height: auto; padding-top: 38.5mm; padding-bottom: 0; }
+.unit-head .unit-lead { position: static; margin-left: calc(var(--side-w) + var(--side-gap)); }
+.unit-head + * { margin-top: 4mm !important; }
+.vocab { bottom: 1.5mm; }

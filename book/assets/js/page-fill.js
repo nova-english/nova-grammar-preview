@@ -5,11 +5,24 @@
    - Chapter Test처럼 2단인 쪽은 단마다 따로 맞춘다.
    - 간격 하나에 더하는 양은 MAX_MM × 가중치를 넘지 않는다(내용이 너무 적은 쪽은 아래가 남는다).
      내용이 아래 끝선을 넘으면 간격을 MIN_MM × 가중치까지 줄인다.
-   - 도입(.opener), 정답 및 해설(.ans-page), .no-fill 쪽은 건드리지 않는다. */
+   - 도입(.opener), 정답 및 해설(.ans-page), .no-fill 쪽은 건드리지 않는다.
+   - 워크북 쪽(주소에 /workbook/)은 문항 사이를 WB_ITEM_MM, Test 문항 사이를 WB_Q_MM까지만 늘리고
+     나머지는 세트(A·B·C) 사이에 준다(WB_SET_MM). 그래도 아래가 WB_LEFT_MM보다 많이 남으면
+     그만큼만 남기고 문항 사이에도 고르게 나눈다. 짧은 문항끼리 너무 멀어지지 않게 — 2026-10-27. */
 (function () {
   var MM = 96 / 25.4;
   var MAX_MM = 14;
   var MIN_MM = 2;   // 내용이 단어 줄에 너무 붙은 쪽은 간격 하나를 최대 2mm까지 줄인다
+  var IS_WB = /\/workbook\//.test(location.pathname);
+  var WB_ITEM_MM = 2.5, WB_Q_MM = 8, WB_SET_MM = 14, WB_LEFT_MM = 15, WB_TOP_MM = 7;
+  function capOf(g) {                                         // 간격 하나에 더할 수 있는 최대(px)
+    if (!IS_WB) return MAX_MM * MM;
+    if (g.top) return WB_TOP_MM * MM;
+    if (g.el.matches('.set, .pass, .box-title, h3, h4')) return WB_SET_MM * MM;
+    if (g.el.matches('.q')) return WB_Q_MM * MM;
+    if (g.el.closest('.set')) return WB_ITEM_MM * MM;
+    return MAX_MM * MM;
+  }
 
   function cssMm(name) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -62,10 +75,18 @@
     return b;
   }
 
-  function fill(container, limit) {
+  function fill(container, limit, capped) {
+    if (capped === undefined) capped = IS_WB;
     var gaps = collect(container, []);
     if (!gaps.length) return;
+    gaps.forEach(function (g) { g.el.style.marginTop = ''; g.prev.style.marginBottom = ''; }); // 두 번째로 맞출 때를 위해 원래 간격으로
+    var first = kids(container)[0];
+    if (IS_WB && container.matches('.page-body') && first && first.matches('.set')) {   // 머리 없이 세트로 시작하는 워크북 쪽: 위에도 조금
+      container.style.paddingTop = '';
+      gaps.unshift({ el: container, w: 1.5, top: true, base: parseFloat(getComputedStyle(container).paddingTop) || 0 });
+    }
     gaps.forEach(function (g) {
+      if (g.top) { g.cap = capped ? capOf(g) : WB_TOP_MM * MM; return; }
       var cs = getComputedStyle(g.el);
       var own = parseFloat(cs.marginTop) || 0;
       // 부모가 일반 블록이면 앞 블록의 아래 여백과 겹치므로(margin collapse) 큰 쪽을 기준으로 한다
@@ -73,18 +94,25 @@
       var prevMb = parseFloat(getComputedStyle(g.prev).marginBottom) || 0;
       g.collapse = pd === 'block' || pd === 'flow-root';
       g.base = g.collapse ? Math.max(own, prevMb) : own;
+      g.cap = capped ? capOf(g) : MAX_MM * MM;
     });
     function apply(k) {
       gaps.forEach(function (g) {
+        if (g.top) { g.el.style.paddingTop = (g.base + Math.max(0, Math.min(k * g.w, g.cap))) + 'px'; return; }
         if (g.collapse) g.prev.style.marginBottom = '0px';   // 겹침을 없애고 간격을 margin-top 하나로 정한다
-        g.el.style.marginTop = Math.max(0, g.base + k * g.w) + 'px';
+        var add = k * g.w;
+        if (add > 0) add = Math.min(add, g.cap);
+        g.el.style.marginTop = Math.max(0, g.base + add) + 'px';
       });
     }
     function fits(k) { apply(k); return bottomOf(container) <= limit; }
     var lo, hi;
     if (fits(0)) {
-      lo = 0; hi = MAX_MM * MM;
-      if (fits(hi)) return;                                  // 최대로 늘려도 남으면 그대로 둔다
+      lo = 0; hi = (capped ? WB_SET_MM : MAX_MM) * MM;
+      if (fits(hi)) {                                        // 최대로 늘려도 남으면
+        if (capped && limit - bottomOf(container) > WB_LEFT_MM * MM) fill(container, limit - WB_LEFT_MM * MM, false);
+        return;
+      }
     } else {
       lo = -MIN_MM * MM; hi = 0;                             // 넘치면 간격을 조금 줄인다
       if (!fits(lo)) return;

@@ -653,6 +653,10 @@ i, em { font-style: italic; }
 .exr + .exr { margin-top: .9mm; }
 .exr.wrap { grid-template-columns: 1fr; }
 .exr.wrap .t { padding-left: 1mm; }
+.exr.tight { column-gap: 1.5mm; }                        /* 한 줄에 겨우 안 들어갈 때: 영어 → 번호 → 해석 간격만 좁힘 */
+.exr.tight .ex-no { margin-left: 1.2mm; padding: 0 1.5mm; }
+.exr.wrap.compact { line-height: 1.45; }                   /* 해석을 아래로 내린 쪽이 빠듯할 때 */
+.exr.compact + .exr.compact { margin-top: .5mm; }
 
 /* 용어 풀이 박스 */
 .term { border-left: 1.2mm solid var(--c-main); background: var(--c-sky-pale); padding: 1.6mm 3mm; margin: 2.6mm 0; font-size: 9.2pt; line-height: 1.6; border-radius: 0 2mm 2mm 0; }
@@ -999,3 +1003,11 @@ i, em { font-style: italic; }
 /* ---------- 반 권 표지(1-1·1-2) — assets/js/cover-part.js가 ?part=1|2 일 때 붙임 (2026-10-25) ---------- */
 .cover .cv-level b.part { font-size: 29pt; letter-spacing: -.02em; line-height: 1.05; }
 .cover .cv-chips span.part { background: var(--c-lime); border-color: var(--c-lime); color: var(--c-navy); font-weight: 700; }
+
+/* ---------- 정답 및 해설 간단판(?short) — answers-paginate.js가 html에 .ak-short를 붙임 (2026-10-26) ---------- */
+.ak-short .ak-item { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 2mm; }
+.ak-short .ak-item .ak-head { flex: none; margin: 0; }
+.ak-short .ak-item .ak-head .ak-tag { display: none; }
+.ak-short .ak-item > p { flex: 1 1 60%; margin: 0; }
+.ak-short .ak-item > p .k.ex { display: none; }
+.ak-short .ak-item > p:has(.k.alt) { flex-basis: 100%; }

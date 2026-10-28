@@ -138,3 +138,11 @@
 .pp-err .why { font-size: 8.2pt; color: var(--c-sub); }
 .pu-thumbs figure.cmp { border-style: dashed; }
 .pp-plus .taste { position: absolute; top: -2.6mm; right: 3mm; background: #B9A9DF; color: #fff; font-size: 7.6pt; font-weight: 700; border-radius: 1.2mm; padding: .3mm 2mm; }
+
+/* 뒤표지: 띠를 줄이고 특징·미리 보기를 올려 아래 ‘구성’ 띠와 겹치지 않게 (2026-10-27) */
+.back-cover .bc-band { height: 100mm; }
+.back-cover .bc-art { top: 33mm; }
+.back-cover .bc-feats { top: 110mm; }
+.back-cover .bc-pages-hd { top: 175mm; }
+.back-cover .bc-pages { top: 184mm; }
+.back-cover .bc-set { bottom: 22mm; }
