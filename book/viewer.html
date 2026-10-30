@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nova Grammar 책 뷰어</title>
+<title>Nova Books</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
@@ -55,6 +55,10 @@
   .stage { position: relative; min-width: 0; min-height: 0; }
   .scroller { position: absolute; inset: 0; overflow: hidden; display: flex; padding: 18px; }
   .stage.zoomed .scroller { overflow: auto; cursor: grab; }
+  /* 확대했을 때: 쪽(iframe)이 마우스를 가로채지 않게 해서 휠·끌기·손가락으로 위아래·좌우 이동 (2026-10-30 사용자) */
+  .stage.zoomed .slot iframe { pointer-events: none; }
+  .zoomhint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 6; background: rgba(0, 48, 104, .82); color: #fff; font-size: 13px; padding: 6px 14px; border-radius: 999px; pointer-events: none; opacity: 0; transition: opacity .3s; }
+  .zoomhint.on { opacity: 1; }
   .stage.zoomed .scroller.drag { cursor: grabbing; }
   .spread { position: relative; display: flex; perspective: 2600px; margin: auto; }
   .zoom { display: inline-flex; align-items: center; gap: 4px; }
@@ -62,22 +66,41 @@
   /* 책장(첫 화면) */
   .home { position: fixed; inset: 0; z-index: 50; background: var(--bg); overflow: auto; padding: 28px 24px 40px; }
   .home[hidden] { display: none; }
-  .home .hd { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 6px auto 22px; text-align: center; }
+  .home .hd { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 6px auto 0; text-align: center; }
   .home h1 { font-family: "Fredoka", sans-serif; font-size: 30px; margin: 0; color: var(--navy); }
   .home h1 b { color: var(--main); }
   .home .lead { color: var(--sub); font-size: 14px; }
   .home .note { max-width: 760px; margin: 26px auto 0; background: #fff; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--deep); text-align: center; }
   .home section { max-width: 1180px; margin: 26px auto 0; }
   .home h2 { font-family: "Do Hyeon", sans-serif; font-weight: 400; font-size: 22px; color: var(--navy); margin: 0 0 12px; }
-  .home .shelf { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; }
-  .home .shelf .card { width: 190px; }
-  @media (max-width: 860px) { .home .shelf .card { width: 42%; } }
-  .home .card { border: 0; background: transparent; padding: 0; text-align: left; }
-  .home .card .cv { display: block; width: 100%; aspect-ratio: 215 / 290; border-radius: 6px; background: #fff center / cover no-repeat; box-shadow: 0 6px 16px rgba(20, 40, 70, .18); transition: transform .15s, box-shadow .15s; }
+  /* 책장: 책마다 흰 카드(표지 + 이름 + 학년 + 들어 있는 책 + ‘책 펼치기’ 버튼) — 2026-10-30 사용자: 그림만으로는 초보자가 알아보기 어렵다 */
+  .home .lead { font-size: 16px; color: var(--navy); font-weight: 600; }
+  .home .how { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; max-width: 900px; margin: 0 auto; font-size: 13.5px; color: var(--sub); }
+  .home .how span b { display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: var(--main); color: #fff; font-size: 12px; align-items: center; justify-content: center; margin-right: 6px; }
+  .home .group { max-width: 1180px; margin: 30px auto 0; }
+  .home .group h2 { display: flex; align-items: baseline; gap: 10px; border-bottom: 2px solid var(--line); padding-bottom: 6px; margin: 0 0 16px; }
+  .home .group h2 small { font-family: "Pretendard", sans-serif; font-size: 13px; color: var(--sub); }
+  .home .series { max-width: 1040px; margin: 24px auto 0; font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 18px; color: var(--navy); border-bottom: 2px solid var(--line); padding-bottom: 4px; }
+  .home .series b { color: var(--main); }
+  .home .shelf { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; max-width: 1180px; margin: 14px auto 0; }
+  .home .shelf .card { width: 186px; }
+  @media (max-width: 860px) { .home .shelf .card { width: 44%; } }
+  .home .card { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 10px 10px 12px; text-align: left; display: flex; flex-direction: column; gap: 6px;
+                box-shadow: 0 2px 8px rgba(20, 40, 70, .06); transition: transform .15s, box-shadow .15s, border-color .15s; }
+  .home .card:hover, .home .card:focus-visible { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(20, 40, 70, .18); border-color: var(--main); outline: none; }
+  .home .card .cv { display: block; width: 100%; aspect-ratio: 215 / 290; border-radius: 6px; background: #fff center / cover no-repeat; box-shadow: 0 4px 12px rgba(20, 40, 70, .16); }
   .home .card .cv.none { display: flex; align-items: center; justify-content: center; color: var(--deep); font-family: "Do Hyeon", sans-serif; font-size: 20px; background: linear-gradient(160deg, #fff, var(--pale)); }
-  .home .card:hover .cv { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(20, 40, 70, .24); }
-  .home .card .t { display: block; margin-top: 10px; font-weight: 700; color: var(--navy); font-size: 15px; text-align: center; }
-  .home .card .n { display: block; color: var(--sub); font-size: 12px; text-align: center; }
+  .home .card .badge { align-self: flex-start; background: var(--main); color: #fff; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 10px; margin-top: 2px; }
+  .home .card .t { font-weight: 800; color: var(--navy); font-size: 15px; line-height: 1.25; }
+  .home .card .d { color: var(--sub); font-size: 12px; line-height: 1.4; margin-top: -2px; min-height: 2.8em; }
+  .home .card .parts { display: flex; flex-wrap: wrap; gap: 5px; }
+  .home .card .parts { gap: 4px; }
+  .home .card .parts i { font-style: normal; font-size: 11px; color: var(--navy); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+  .home .card .go { margin-top: auto; background: var(--main); color: #fff; font-weight: 700; font-size: 14px; text-align: center; border-radius: 9px; padding: 7px 0; }
+  .home .card:hover .go { background: var(--deep); }
+  /* 책을 연 뒤 왼쪽 위 ‘책장으로’ 버튼 */
+  .homebtn { border: 1px solid var(--main); background: #fff; color: var(--deep); border-radius: 999px; height: 34px; padding: 0 14px 0 10px; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .homebtn:hover { background: var(--main); color: #fff; }
   .spread .slot iframe { pointer-events: auto; }
   .slot { position: relative; background: #fff center / 100% 100% no-repeat; overflow: hidden; box-shadow: 0 8px 22px rgba(20, 40, 70, .18); }
   .slot.blank { background: transparent; }
@@ -126,9 +149,9 @@
 </head>
 <body class="toc-off">
 <header>
-  <div class="brand">Nova <b>Grammar</b><small id="volName">LEVEL 1</small></div>
+  <button class="homebtn" id="homeBtn" title="책장으로 돌아가기 (H · 브라우저 뒤로 가기)">‹ 책장</button>
+  <div class="brand">Nova <b>Books</b><small id="volName">Nova Grammar 1</small></div>
   <select class="vol" id="vol" aria-label="책 고르기" hidden></select>
-  <button class="icon" id="homeBtn" title="책장 (H)">▦</button>
   <button class="icon" id="tocBtn" title="목차 (T)" aria-pressed="false">☰</button>
   <div class="tabs" id="tabs"></div>
   <div class="spacer"></div>
@@ -149,10 +172,12 @@
     <button class="edge prev" id="edgePrev" aria-label="이전 쪽">‹</button>
     <div class="scroller" id="scroller"><div class="spread" id="spread"></div></div>
     <button class="edge next" id="edgeNext" aria-label="다음 쪽">›</button>
+    <div class="zoomhint" id="zoomHint">휠 · 끌기 · ↑↓ 키로 위아래로 움직여요</div>
   </div>
 </div>
 <div class="home" id="home" hidden>
-  <div class="hd"><h1>Nova <b>Grammar</b></h1><span class="lead">읽고 싶은 책을 고르세요</span></div>
+  <div class="hd"><h1>Nova <b>Books</b></h1><span class="lead">읽고 싶은 책의 ‘책 펼치기’를 눌러 보세요</span>
+    <div class="how"><span><b>1</b>책 펼치기</span><span><b>2</b>위쪽에서 본책 · 워크북 · 해설 바꾸기</span><span><b>3</b>◀ ▶ 또는 화면 양옆을 눌러 넘기기</span><span><b>4</b>‘‹ 책장’이나 뒤로 가기로 돌아오기</span></div></div>
   <div id="shelves"></div>
 </div>
 <footer>
@@ -226,7 +251,9 @@
     if (hit.cur === target) { hit.fr.classList.toggle('wait', !hit.ready); setLoading(slot, !hit.ready); return; }
     hit.cur = target; hit.ready = false; hit.fr.classList.add('wait'); setLoading(slot, true);
     waiting.set(hit.fr, { slot: slot, hit: hit, p: page.p });
-    hit.fr.src = target;
+    // src를 바꾸면 iframe 주소가 브라우저 기록에 쌓여 ‘책장’·뒤로 가기가 쪽 기록으로 돌아간다 → replace로 기록 없이
+    if (hit.fr.contentWindow && hit.loaded) { try { hit.fr.contentWindow.location.replace(new URL(target, location.href).href); } catch (e) { hit.fr.src = target; } }
+    else { hit.fr.src = target; hit.fr.addEventListener('load', function () { hit.loaded = true; }, { once: true }); }
   }
   function setLoading(slot, on) {
     var l = slot.el.querySelector('.loading');
@@ -429,7 +456,8 @@
     markToc(idx[0]);
     store.set('nova-viewer-' + VK() + state.b, String(idx[0]));
     store.set('nova-viewer-book' + (MULTI ? '-' + state.v : ''), String(state.b));
-    history.replaceState(null, '', '#' + (MULTI ? 'vol=' + state.v + '&' : '') + 'b=' + state.b + '&p=' + idx[0]);
+    if (!(history.state && history.state.view === 'home'))   // 책장 기록에는 쪽 주소를 붙이지 않는다
+    history.replaceState(history.state, '', '#' + (MULTI ? 'vol=' + state.v + '&' : '') + 'b=' + state.b + '&p=' + idx[0]);   // 기록 상태(책장에서 열었는지)는 그대로
   }
   function currentToc(i) {
     var toc = D.books[state.b].toc, best = null, best0 = null;
@@ -503,7 +531,12 @@
         cy = (sc.scrollTop + sc.clientHeight / 2) / Math.max(1, sc.scrollHeight);
     state.zoom = Math.max(ZOOMS[0], Math.min(ZOOMS[ZOOMS.length - 1], z));
     $('zoomVal').textContent = Math.round(state.zoom * 100) + '%';
+    var wasZoomed = $('stage').classList.contains('zoomed');
     $('stage').classList.toggle('zoomed', state.zoom > 1);
+    if (state.zoom > 1 && !wasZoomed) {               // 처음 확대할 때 움직이는 법을 잠깐 알려 준다
+      $('zoomHint').classList.add('on'); clearTimeout(window.__zh);
+      window.__zh = setTimeout(function () { $('zoomHint').classList.remove('on'); }, 2600);
+    }
     $('zoomOut').disabled = state.zoom <= ZOOMS[0]; $('zoomIn').disabled = state.zoom >= ZOOMS[ZOOMS.length - 1];
     layout();
     sc.scrollLeft = cx * sc.scrollWidth - sc.clientWidth / 2; sc.scrollTop = cy * sc.scrollHeight - sc.clientHeight / 2;
@@ -529,25 +562,59 @@
     if (p && p.im) return p.im;
     return bk.img ? bk.img + '000.jpg' : '';
   }
+  // 책장 카드에 붙일 설명 (권 이름으로 찾음)
+  // 권장 학년은 기준 학년보다 넓게(초등학생도 학습 가능 — 사용자 2026-10-30). badge = 권장 학년, d = 기준|잘하면 (| 는 줄바꿈)
+  var INFO = {
+    'LEVEL 1': { series: 'Nova Grammar', badge: '권장 초5 ~ 중1', t: 'Nova Grammar 1', d: '중1 문법 기준|영어를 잘하면 초3부터' },
+    'LEVEL 2': { series: 'Nova Grammar', badge: '권장 초6 ~ 중2', t: 'Nova Grammar 2', d: '중2 문법 기준|영어를 잘하면 초5부터' },
+    'LEVEL 3': { series: 'Nova Grammar', badge: '권장 중2 ~ 중3', t: 'Nova Grammar 3', d: '중3 문법 기준 · 고1 복습|영어를 잘하면 초6부터' },
+    '명사와 관사': { series: 'Nova Grammar', badge: '권장 초5 ~ 중2', t: '명사와 관사', d: '별책 · 1권 다음에|영어를 잘하면 초4부터' },
+    '전치사': { series: 'Nova Grammar', badge: '권장 초5 ~ 중2', t: '전치사', d: '별책 · 2권 전에|영어를 잘하면 초4부터' }
+  };
+  function card(vol, v) {
+    var bk = vol.books[0], img = coverOf(bk), inf = INFO[vol.name] || { badge: '', t: vol.name, d: '' };
+    var c = document.createElement('button'); c.className = 'card';
+    c.setAttribute('aria-label', inf.t + ' 펼치기');
+    c.innerHTML = '<span class="cv' + (img ? '' : ' none') + '"' + (img ? ' style="background-image:url(&quot;' + img + '&quot;)"' : '') + '>' + (img ? '' : inf.t) + '</span>' +
+                  (inf.badge ? '<span class="badge">' + inf.badge + '</span>' : '') +
+                  '<span class="t">' + inf.t + '</span>' + (inf.d ? '<span class="d">' + inf.d.replace('|', '<br>') + '</span>' : '') +
+                  '<span class="parts">' + vol.books.map(function (b) { return '<i>' + b.name + '</i>'; }).join('') + '</span>' +
+                  '<span class="go">책 펼치기 ›</span>';
+    c.addEventListener('click', function () { openVol(v); });
+    return c;
+  }
   function buildHome() {
-    // 첫 화면: 권마다 본책 표지 하나 (워크북·해설은 책을 연 뒤 위쪽 탭에서)
+    // 첫 화면: 권마다 카드 하나 (워크북·해설은 책을 연 뒤 위쪽 탭에서).
     var box = $('shelves'); box.innerHTML = '';
-    var shelf = document.createElement('div'); shelf.className = 'shelf'; box.appendChild(shelf);
-    VOLS.forEach(function (vol, v) {
-      var bk = vol.books[0], img = coverOf(bk);
-      var c = document.createElement('button'); c.className = 'card';
-      c.innerHTML = '<span class="cv' + (img ? '' : ' none') + '"' + (img ? ' style="background-image:url(&quot;' + img + '&quot;)"' : '') + '>' + (img ? '' : vol.name) + '</span>' +
-                    '<span class="t">' + vol.name + '</span><span class="n">' + vol.books.map(function (b) { return b.name; }).join(' · ') + '</span>';
-      c.addEventListener('click', function () { showHome(false); setVol(v, 0); });
-      shelf.appendChild(c);
+    // 시리즈마다 한 줄(Nova Grammar · 나중에 Nova Reading · 모의고사 …) — 사용자 2026-10-30: 뷰어 이름은 Nova Books
+    var order = [];
+    VOLS.forEach(function (vol) { var sr = (INFO[vol.name] || {}).series || 'Nova Books'; if (order.indexOf(sr) < 0) order.push(sr); });
+    order.forEach(function (sr) {
+      var h = document.createElement('div'); h.className = 'series';
+      h.innerHTML = sr.replace(/^Nova /, 'Nova <b>') + (sr.indexOf('Nova ') === 0 ? '</b>' : '');
+      box.appendChild(h);
+      var shelf = document.createElement('div'); shelf.className = 'shelf'; box.appendChild(shelf);
+      VOLS.forEach(function (vol, v) { if (((INFO[vol.name] || {}).series || 'Nova Books') === sr) shelf.appendChild(card(vol, v)); });
     });
     if (D.preview) { var nt = document.createElement('div'); nt.className = 'note'; nt.textContent = D.preview; box.appendChild(nt); }
   }
   var opened = false;
-  function showHome(on) {
-    $('home').hidden = !on;
-    if (on) history.replaceState(null, '', location.pathname + location.search);
+  // 책장 ↔ 책 사이를 브라우저 기록에 남겨서 ‘뒤로 가기’로 책장에 돌아오게 한다 (2026-10-30 사용자)
+  function showHome(on) { $('home').hidden = !on; if (on) $('home').scrollTop = 0; }
+  function openVol(v) {
+    history.pushState({ view: 'book' }, '', location.pathname + location.search + '#' + (MULTI ? 'vol=' + v + '&' : '') + 'b=0&p=0');
+    showHome(false); setVol(v, 0);
   }
+  function goHome() {
+    showHome(true);                                                        // 쪽을 몇 장 넘겼든 바로 책장으로
+    if (history.state && history.state.view === 'book') history.back();   // 책장에서 열었으면 기록도 되돌린다
+    else history.pushState({ view: 'home' }, '', location.pathname + location.search);
+  }
+  window.addEventListener('popstate', function () {
+    var h = location.hash.match(/b=(\d+)&p=(\d+)/), hv = location.hash.match(/vol=(\d+)/);
+    if (!h || (history.state && history.state.view === 'home')) { showHome(true); return; }   // 기록에 적어 둔 화면(책장/책)으로 판단
+    showHome(false); setVol(hv ? Math.min(+hv[1], VOLS.length - 1) : state.v, +h[1], +h[2]);
+  });
 
   // ---------- 연결 ----------
   function buildTabs() {
@@ -561,22 +628,22 @@
   function setVol(v, b, i) {
     opened = true;
     state.v = v; D.books = VOLS[v].books;
-    $('volName').textContent = VOLS[v].name; $('vol').value = String(v);
+    $('volName').textContent = (INFO[VOLS[v].name] || { t: VOLS[v].name }).t; $('vol').value = String(v);
     store.set('nova-viewer-vol', String(v));
     buildTabs();
     if (b === undefined) { var sb = store.get('nova-viewer-book' + (MULTI ? '-' + v : '')); b = sb !== null ? +sb : 0; }
     setBook(Math.min(b, D.books.length - 1), i);
   }
   if (MULTI) {
-    VOLS.forEach(function (vol, j) { var o = document.createElement('option'); o.value = String(j); o.textContent = vol.name; $('vol').appendChild(o); });
-    $('vol').hidden = false;
+    VOLS.forEach(function (vol, j) { var o = document.createElement('option'); o.value = String(j); o.textContent = (INFO[vol.name] || { t: vol.name }).t; $('vol').appendChild(o); });
+    $('vol').hidden = false; $('volName').hidden = true;   // 권 고르기 목록에 이름이 보이니 겹치지 않게
     $('vol').addEventListener('change', function () { setVol(+this.value); this.blur(); });
   }
   $('prevBtn').onclick = $('edgePrev').onclick = function () { step(-1); };
   $('nextBtn').onclick = $('edgeNext').onclick = function () { step(1); };
   $('firstBtn').onclick = function () { go(0, -1); };
   $('tocBtn').onclick = function () { toggleToc(); };
-  $('homeBtn').onclick = function () { showHome(true); };
+  $('homeBtn').onclick = goHome;
   $('zoomIn').onclick = function () { zoomStep(1); };
   $('zoomOut').onclick = function () { zoomStep(-1); };
   $('modeBtn').onclick = function () { setMode(!state.spread); };
@@ -594,11 +661,14 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.target.tagName === 'INPUT') return;
-    if (!$('home').hidden) { if (e.key === 'Escape' && opened) showHome(false); return; }
+    if (!$('home').hidden) { if (e.key === 'Escape' && opened) history.forward(); return; }
     if (e.key === '+' || e.key === '=') { zoomStep(1); return; }
     if (e.key === '-' || e.key === '_') { zoomStep(-1); return; }
     if (e.key === '0') { setZoom(1); return; }
-    if (e.key === 'h' || e.key === 'H') { showHome(true); return; }
+    if (state.zoom > 1 && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {   // 확대 중 위아래 이동
+      e.preventDefault(); $('scroller').scrollBy({ top: (e.key === 'ArrowDown' ? 1 : -1) * 160, behavior: 'smooth' }); return;
+    }
+    if (e.key === 'h' || e.key === 'H') { goHome(); return; }
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); step(1); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
     else if (e.key === 'Home') go(0, -1);
@@ -634,8 +704,13 @@
   if (window.innerWidth > 1100) toggleToc(true);
   var v0 = hv ? +hv[1] : (MULTI && store.get('nova-viewer-vol') !== null ? +store.get('nova-viewer-vol') : 0);
   buildHome(); setZoom(1);
-  if (h) { setVol(Math.min(v0, VOLS.length - 1), +h[1], +h[2]); opened = true; }
-  else { setVol(Math.min(v0, VOLS.length - 1)); showHome(true); }
+  if (h) {                                   // 주소로 바로 연 책: 뒤로 가기를 누르면 책장이 나오게 기록을 하나 깔아 둔다
+    var hash = location.hash;
+    history.replaceState({ view: 'home' }, '', location.pathname + location.search);
+    history.pushState({ view: 'book' }, '', location.pathname + location.search + hash);
+    setVol(Math.min(v0, VOLS.length - 1), +h[1], +h[2]); opened = true;
+  }
+  else { history.replaceState({ view: 'home' }, '', location.pathname + location.search); setVol(Math.min(v0, VOLS.length - 1)); showHome(true); }
 })();
 </script>
 </body>
