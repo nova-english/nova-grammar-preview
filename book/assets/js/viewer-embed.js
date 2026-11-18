@@ -44,7 +44,9 @@
     if (isAnswers && !root.classList.contains('ak-ready')) { setTimeout(start, 80); return; }
     started = true;
     // requestAnimationFrame은 다른 출처 iframe에서 멈출 수 있어 타이머로 기다린다
-    setTimeout(function () { root.classList.add('vw-active'); show(); }, 250);
+    // 리딩 교재는 rd-fit.js(쪽 맞춤)·arrows.js(꾸밈 화살표)·wb-cols.js(2단 채우기)가 끝난 뒤에 숨긴다
+    var late = document.querySelector('script[src*="arrows.js"], script[src*="wb-cols.js"], script[src*="rd-fit.js"]');
+    setTimeout(function () { root.classList.add('vw-active'); show(); }, late ? 700 : 250);
   }
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   fontsReady.then(function () {

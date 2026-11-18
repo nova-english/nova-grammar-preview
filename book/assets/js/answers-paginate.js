@@ -185,7 +185,9 @@
         if (free < 2 * MM) return;
         var base = items.map(function (el) { return parseFloat(getComputedStyle(el).marginTop) || 0; });
         var add = Math.min(MAX, free / items.length);
-        function apply(a) { items.forEach(function (el, i) { el.style.marginTop = (base[i] + a) + 'px'; }); }
+        // 끊어 읽기 문장끼리(.ak-chk 다음 .ak-chk)는 1mm까지만 벌린다 — Nova Reading 해설 지문 해석이 듬성해 보이지 않게(2026-10-31)
+        var cap = items.map(function (el) { var pv = el.previousElementSibling; return el.classList.contains('ak-chk') && pv && pv.classList.contains('ak-chk') ? 1 * MM : Infinity; });
+        function apply(a) { items.forEach(function (el, i) { el.style.marginTop = (base[i] + Math.min(a, cap[i])) + 'px'; }); }
         apply(add);
         while (col.scrollHeight > col.clientHeight + 1 && add > 0) {   // 넘치면 조금씩 되돌린다
           add = Math.max(0, add - .2 * MM);

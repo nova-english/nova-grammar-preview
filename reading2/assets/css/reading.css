@@ -1,0 +1,1048 @@
+/* Nova Reading 2 — 공통 book.css 위에 올리는 리딩 테마(Reading 1 reading.css를 복사해 색만 바꿈).
+   Reading 1과 같은 판 · 같은 코너. 테마 색은 하늘 파랑 + 주황(2026-11-01 사용자: 기획안대로).
+   문장 표시 색(□ △ 진한 주황 · ( ) < > 파랑 · [ ] 초록)은 시리즈 전체가 같아야 해서 테마 색과 따로 --c-mark로 둔다. */
+:root {
+  --book-title: "Nova Reading";
+  --book-level: "LEVEL 2";
+  --c-main: #2F8FD8;        /* 하늘 파랑 */
+  --c-point: #2F8FD8;
+  --c-main-deep: #1B6BB0;
+  --c-navy: #173A63;        /* 남색 제목 */
+  --c-navy-band: #24508A;
+  --c-lime: #FF9A3C;        /* 주황 (Grammar의 연두 자리) */
+  --c-lime-pale: #FFF0E3;
+  --c-sky-pale: #EEF6FD;
+  --c-sky-line: #A9D1F2;
+  --c-freq: #FF8A3D;        /* ✳ */
+  --c-lav: #EEF2FA; --c-lav-line: #C5D3EA;
+  --c-mark: #C84B22;        /* □ △ — Reading 1과 같은 진한 주황 */
+  --body-h: calc(var(--page-h) - 28mm);   /* 리딩 쪽은 아래 단어 줄이 없어 본문을 위에서 262mm(쪽번호 위 약 14mm)까지 채운다 (border-box: 위 여백 포함) */
+}
+.toolbar { background: var(--c-navy); }
+.page-body.fill { display: flex; flex-direction: column; height: var(--body-h); }
+
+/* ---------- 공통: 사이드 + 본문 2단 ---------- */
+.rd-row { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); column-gap: var(--side-gap); flex: 1 1 auto; min-height: 0; }
+.rd-side { display: flex; flex-direction: column; gap: 4mm; }
+
+/* 지문 번호 탭 (Grammar Unit 탭과 같은 모양) */
+.rd-tab { position: relative; height: 34mm; flex: none; }
+.rd-tab .unit-tab { height: 34mm; }
+.rd-tab .unit-tab span { top: 15mm; font-size: 13pt; }
+.rd-tab .unit-num { left: 25mm; top: 9mm; font-size: 46pt; }
+.rd-tab .star-mark { position: absolute; left: 38mm; top: 6mm; font-size: 15pt; }
+.rd-tab .rd-no { position: absolute; left: 25mm; top: 25.5mm; font-family: var(--f-en-display); font-weight: 600; font-size: 8.4pt; color: var(--c-navy); letter-spacing: .04em; white-space: nowrap; }
+.rd-card { border: .35mm solid var(--c-sky-line); border-radius: 3mm; padding: 2mm 2.4mm; font-size: 8.6pt; line-height: 1.45; }
+.rd-card .kk { display: block; font-family: var(--f-en-display); font-weight: 600; font-size: 8pt; color: var(--c-main-deep); letter-spacing: .04em; }
+.rd-card b { color: var(--c-navy); }
+.wbar { display: flex; align-items: center; gap: 1.5mm; margin-top: 1mm; }
+.wbar i { flex: 1; height: 2.2mm; border-radius: 2mm; background: #F3E3D8; position: relative; overflow: hidden; }
+.wbar i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); background: var(--c-main); border-radius: 2mm; }
+.wbar b { font-family: var(--f-en-display); font-size: 8.6pt; }
+.timer .blank { display: inline-block; width: 7mm; border-bottom: 1px solid #999; margin: 0 .6mm; }
+.rd-side .nova-tip { position: static; }
+.rd-side .nova-tip img { height: 15mm; }
+
+/* 지문 제목·지문 */
+.rd-main { min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.rd-gram { align-self: flex-start; font-family: var(--f-ko-display); font-size: 10pt; color: #fff; background: var(--c-navy); border-radius: 1.6mm; padding: .2mm 2.4mm; }
+.rd-title h1 { font-family: var(--f-ko-display); font-weight: 400; font-size: 23pt; color: var(--c-navy); margin: 2.5mm 0 0; line-height: 1.15; }
+.rd-title h2 { font-family: var(--f-en-display); font-weight: 600; font-size: 13.5pt; color: var(--c-main-deep); margin: 1mm 0 0; }
+.passage { margin-top: 4.5mm; }
+.passage .ln { position: relative; font-family: "Source Serif 4", Georgia, serif; font-size: 12.4pt; line-height: 2.05; white-space: nowrap; letter-spacing: .005em; }
+.passage .ln[data-n]::after { content: attr(data-n); position: absolute; right: -6mm; top: .2em; font-family: var(--f-body); font-size: 7.4pt; color: #A9A9B4; }
+.passage .ln.ind { text-indent: 4mm; }
+/* 줄마다 양쪽 정렬 — 원고에서 줄을 끊어 두므로 오른쪽 끝을 맞춘다(사용자 2026-10-30). 마지막 줄만 왼쪽 */
+.passage .ln { text-align: justify; text-align-last: justify; }
+.passage .ln.last { text-align-last: left; }
+.rd-fig { flex: 1 1 0; min-height: 0; position: relative; margin: 3mm 0 0; }
+.rd-fig img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.rd-fig .figure-pending { position: absolute; inset: 0; }
+
+/* 핵심 문장 상자 (쪽 아래, 전체 폭) */
+.key-box { position: relative; border: .4mm solid var(--c-main); border-radius: 3mm; padding: 4.4mm 4mm 2.6mm; margin-top: 5mm; flex: none; }
+.key-box .tag { position: absolute; left: 3mm; top: -3.4mm; font-family: var(--f-ko-display); font-size: 10.5pt; background: var(--c-lime); color: var(--c-navy); border-radius: 2mm; padding: .2mm 2.6mm; }
+.key-box .tag small { font-family: var(--f-body); font-size: 7.6pt; margin-left: 1mm; }
+.key-box .s { font-family: "Source Sans 3", sans-serif; font-size: 11.6pt; display: flex; flex-wrap: wrap; gap: 0 2.2mm; align-items: flex-start; }
+.key-box .ch { display: inline-flex; flex-direction: column; align-items: center; }
+.key-box .ch .e { white-space: nowrap; }
+.key-box .ch small { font-family: var(--f-body); font-size: 7.4pt; color: var(--c-sub); margin-top: .3mm; }
+.key-box .sl { color: var(--c-navy-band); font-weight: 700; }
+.mv { border: .35mm solid var(--c-mark); padding: 0 .9mm; border-radius: .6mm; }
+.key-box .ktip { margin: 2mm 0 0; font-size: 9pt; }
+.key-box .ktip b { display: inline-block; background: var(--c-navy); color: #fff; font-size: 7.6pt; border-radius: 1mm; padding: 0 1.4mm; margin-right: 1.4mm; }
+.key-box .tr { margin: 1mm 0 0; font-size: 8.4pt; color: var(--c-sub); text-align: right; }
+
+/* ---------- 문제 쪽 ---------- */
+.rd-qhead { display: flex; align-items: baseline; gap: 3mm; border-bottom: .5mm solid var(--c-main); padding-bottom: 1.6mm; margin-bottom: 1mm; flex: none; }
+.rd-qhead h2 { margin: 0; font-family: var(--f-en-display); font-weight: 700; font-size: 16pt; color: var(--c-navy); }
+.rd-qhead .star-mark { font-size: 14pt; }
+.rd-qhead .sub { font-family: var(--f-ko-display); color: var(--c-main-deep); font-size: 11pt; }
+.rd-qhead .ans-ref { margin-left: auto; font-size: 8.4pt; color: var(--c-sub); }
+.qs { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-evenly; padding: 1mm 0 3mm; }
+.rq p { margin: 0; }
+.rq .stem { display: flex; gap: 2mm; font-size: 10pt; line-height: 1.5; }
+.rq .stem .n { font-family: var(--f-en-display); font-weight: 700; color: var(--c-navy); font-size: 12pt; min-width: 4.5mm; line-height: 1.3; }
+.rq .opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1mm 3mm; margin: 2mm 0 0 6.5mm; font-size: 9.6pt; }
+.rq .opts.c1 { grid-template-columns: 1fr; } .rq .opts.c3 { grid-template-columns: repeat(3, 1fr); }
+.rq .wline { margin: 3mm 0 0 6.5mm; border-bottom: 1px solid #999; height: 7mm; }
+.rq .cond { margin: 1.2mm 0 0 6.5mm; font-size: 8.6pt; color: var(--c-sub); }
+.u { text-decoration: underline; text-underline-offset: 2px; }
+.gram-box { background: var(--c-lav); border: .35mm solid var(--c-lav-line); border-radius: 3mm; padding: 2.6mm 3.5mm; margin-top: auto; flex: none; }
+.gram-box h3 { margin: 0 0 1.4mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 11.5pt; color: var(--c-navy); }
+.gram-box h3 small { font-family: var(--f-body); font-size: 8pt; color: var(--c-sub); margin-left: 2mm; }
+.gram-box table { width: 100%; border-collapse: collapse; font-size: 9.2pt; }
+.gram-box td { padding: .9mm 1mm; border-top: 1px dotted var(--c-lav-line); vertical-align: top; }
+.gram-box tr:first-child td { border-top: 0; }
+.gram-box td.l { width: 9mm; color: var(--c-sub); font-size: 8pt; white-space: nowrap; }
+.gram-box td.r { width: 30mm; text-align: right; color: var(--c-navy); font-size: 8.2pt; white-space: nowrap; }
+.gram-box .en b { color: var(--c-main-deep); }
+.words h3 { margin: 0 0 1.4mm; font-family: var(--f-en-display); font-size: 11pt; color: var(--c-navy); border-bottom: .4mm solid var(--c-navy); padding-bottom: .8mm; }
+.words ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.3mm; font-size: 8.8pt; line-height: 1.35; }
+.words li { display: grid; grid-template-columns: 3.6mm 1fr; }
+.words li::before { content: "□"; color: var(--c-main); }
+.words li b { font-family: "Source Sans 3", sans-serif; font-weight: 600; font-size: 9.4pt; margin-right: 1.4mm; }
+.words li span { color: var(--c-sub); }
+.side-fill { flex: 1 1 auto; }
+
+/* ---------- 문장 훈련 쪽 ---------- */
+.st-guide { display: flex; gap: 4mm; align-items: center; background: var(--c-sky-pale); border-radius: 3mm; padding: 2.2mm 3.5mm; font-size: 9.2pt; margin: 2.5mm 0 1mm; flex: none; }
+.st-guide ol { margin: 0; padding-left: 4.5mm; flex: 1; }
+.st-guide .ex { font-size: 9pt; border-left: .5mm solid var(--c-main); padding-left: 3mm; }
+.sts { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-around; }
+.st { display: grid; grid-template-columns: 6mm 1fr; }
+.st .n { font-family: var(--f-en-display); font-weight: 700; color: var(--c-main); font-size: 11pt; line-height: 1.6; }
+.st .row { display: flex; flex-wrap: wrap; gap: 1.2mm 0; align-items: flex-start; }
+.st .ch { display: inline-flex; flex-direction: column; min-width: 15mm; }
+.st .ch .e { font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; padding: 0 1.2mm; }
+.st .ch .b { margin: 1.4mm 1.2mm 0; border-bottom: 1px solid #A6A3B0; height: 6.2mm; }
+.st .sl { font-family: var(--f-en-display); font-weight: 700; color: var(--c-navy-band); font-size: 12pt; line-height: 1.6; }
+.st .hint { display: inline-block; font-size: 7.6pt; color: #fff; background: #9B95AE; border-radius: 1mm; padding: 0 1.4mm; margin: 1.3mm 0 0 2mm; }
+.sec-h { display: flex; align-items: center; gap: 2.4mm; font-size: 9.6pt; margin: 0; }
+.sec-h .tag { font-family: var(--f-en-display); font-weight: 700; font-size: 10pt; color: #fff; background: var(--c-main); border-radius: 1.6mm 4mm 1.6mm 1.6mm; padding: .2mm 2.6mm; white-space: nowrap; }
+.wrow { display: grid; grid-template-columns: 6mm 1fr; font-size: 10pt; }
+.wrow .n { font-family: var(--f-en-display); font-weight: 700; color: var(--c-navy); }
+.wrow .chunks { font-family: "Source Sans 3", sans-serif; font-size: 10.6pt; }
+.wrow .chunks span { display: inline-block; border: .3mm solid var(--c-sky-line); background: #fff; border-radius: 1.6mm; padding: 0 1.8mm; margin: 0 1mm .6mm 0; }
+.wrow .ko small { color: var(--c-sub); font-size: 8.4pt; margin-left: 1.2mm; }
+.wrow .line { border-bottom: 1px solid #A6A3B0; height: 7.4mm; }
+.wrow .gap { font-family: "Source Sans 3", sans-serif; font-size: 11pt; line-height: 2; }
+.wrow .gap i { display: inline-block; width: 16mm; border-bottom: 1px solid #A6A3B0; font-style: normal; }
+.st-foot { margin-top: 3mm; display: flex; flex-wrap: wrap; gap: 2mm 6mm; font-size: 9pt; color: var(--c-navy); border-top: .3mm dashed var(--c-sky-line); padding-top: 2mm; flex: none; }
+.st-foot b { color: var(--c-main-deep); }
+
+.words li p, .wrow p, .key-box p { margin: 0; }
+.wrow .ko { margin-bottom: .8mm; }
+
+/* ---------- 실용문(포스터) ---------- */
+.poster { margin-top: 4mm; border: .6mm solid var(--c-navy); border-radius: 4mm; overflow: hidden; background: #FFFDF7; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 3mm; }
+.pst-top { background: #4E9A6B; color: #fff; padding: 3mm 5mm 3.2mm; }
+.pst-kick { font-family: var(--f-en-display); font-weight: 600; font-size: 8.4pt; letter-spacing: .14em; opacity: .9; }
+.pst-top h3 { margin: .6mm 0 0; font-family: var(--f-en-display); font-weight: 700; font-size: 19pt; line-height: 1.1; }
+.poster p { margin: 0 5mm; font-size: 11.8pt; line-height: 1.6; }
+.pst-lead { font-weight: 600; color: var(--c-navy); }
+.pst-what { color: #2F6B47; }
+.pst-tbl { margin: 0 5mm; border-collapse: collapse; font-size: 11pt; width: calc(100% - 10mm); }
+.pst-tbl th { width: 20mm; text-align: left; color: #fff; background: #7FB894; padding: 1.2mm 2.4mm; border-bottom: .6mm solid #FFFDF7; font-family: var(--f-en-display); font-weight: 600; }
+.pst-tbl td { padding: 1.2mm 3mm; background: #EEF6F0; border-bottom: .6mm solid #FFFDF7; }
+.pst-join { margin: 0 5mm; background: var(--c-lime); border-radius: 2.4mm; padding: 1.6mm 3mm; font-size: 11.4pt; }
+.pst-join b { font-family: var(--f-en-display); margin-right: 2mm; color: var(--c-navy); }
+.pst-q { font-size: 10.4pt !important; color: var(--c-sub); text-align: right; }
+.wtbl { margin: 2mm 0 0 6.5mm; border-collapse: collapse; font-size: 9.8pt; }
+.wtbl th { text-align: left; padding: 1mm 3mm 1mm 0; color: var(--c-navy); }
+.wtbl td { padding: 1mm 0; }
+
+/* ---------- Word Check ---------- */
+.wc-guide { background: var(--c-sky-pale); border-radius: 3mm; padding: 2.2mm 3.5mm; font-size: 9.2pt; margin: 2.5mm 0 1mm; flex: none; }
+.wc-wrap { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; margin-top: 2mm; }
+.wc-col { display: flex; flex-direction: column; justify-content: space-between; }
+.wc-i { display: grid; grid-template-columns: 7mm 30mm 1fr; align-items: end; column-gap: 1mm; font-size: 10.6pt; padding-bottom: 1mm; }
+.wc-i .kw { font-weight: 600; color: var(--c-navy); }
+.wc-i .n { font-family: var(--f-en-display); font-weight: 700; color: var(--c-main); font-size: 10pt; }
+.wc-i .w { font-weight: 600; }
+.wc-i .ln { border-bottom: 1px solid #A6A3B0; height: 7mm; position: relative; }
+.wc-i .ln i { position: absolute; left: 1mm; bottom: .6mm; color: #B8B4C4; font-style: normal; }
+.wc-score { display: grid; grid-template-columns: 52mm 1fr; gap: 6mm; margin-top: 6mm; border: .4mm solid var(--c-navy); border-radius: 3mm; padding: 3mm 4mm; flex: none; font-size: 9.4pt; }
+.wc-score b { display: block; color: var(--c-navy); }
+.wc-score .big { font-family: var(--f-en-display); font-size: 16pt; color: var(--c-main-deep); }
+.wc-score small { display: block; color: var(--c-sub); }
+.wc-score .lines i { display: block; border-bottom: 1px solid #A6A3B0; height: 7mm; }
+
+/* ---------- Unit Review ---------- */
+.rv-box { border: .35mm solid var(--c-sky-line); border-radius: 3mm; padding: 3mm 3.5mm; margin-top: 3mm; flex: none; }
+.rv-box h3 { margin: 0 0 2mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 11.5pt; color: var(--c-navy); }
+.rv-box h3 small { font-family: var(--f-body); font-size: 8pt; color: var(--c-sub); margin-left: 2mm; }
+.rv-tbl { width: 100%; border-collapse: collapse; font-size: 9.4pt; }
+.rv-tbl th, .rv-tbl td { border-bottom: 1px dotted var(--c-sky-line); padding: 2mm 1.5mm; text-align: center; }
+.rv-tbl tr:first-child th { color: var(--c-sub); font-weight: 500; font-size: 8.4pt; }
+.rv-tbl th:first-child { text-align: left; color: var(--c-navy); }
+.rv-tbl th small { display: block; font-weight: 400; color: var(--c-sub); font-size: 8pt; }
+.rv-tbl i { display: inline-block; width: 9mm; border-bottom: 1px solid #999; }
+.rv-tbl tr.wc td { text-align: left; }
+.rv-box.lg { flex: 1 1 auto; display: flex; flex-direction: column; }
+.lg-grid { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-around; }
+.lg-i { display: grid; grid-template-columns: 6mm 1fr; column-gap: 1mm; }
+.lg-i .n { font-family: var(--f-en-display); font-weight: 700; color: var(--c-main); grid-row: span 2; }
+.lg-i p { margin: 0; font-size: 10.6pt; }
+.lg-i .ans { font-size: 9.4pt; color: var(--c-sub); }
+.lg-i .ans { display: flex; align-items: flex-end; gap: 2mm; margin-top: 2.2mm !important; }
+.rv-box.lg .lg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 5mm; align-content: space-around; }   /* 2026-10-31: 보기 없는 빈칸과 한 쪽에 — 2×2 */
+.rv-box.lg .lg-i p { font-size: 9.8pt; }
+.rv-box.lg .lg-i .ans { margin-top: 1mm !important; flex-wrap: wrap; }
+.words .core { margin: 0 0 0 4.2mm; font-size: 7.4pt; color: var(--c-main-deep); line-height: 1.2; }
+.lg-i .ln { flex: 1; height: 8mm; border-bottom: 1px solid #A6A3B0; }
+.lg-i .ans small { white-space: nowrap; }
+.rv-next { display: flex; gap: 3mm; align-items: center; border: .4mm solid var(--c-navy); border-radius: 3mm; padding: 2.4mm 3.5mm; margin-top: 3mm; font-size: 9.4pt; flex: none; }
+.rv-next .tag { font-family: var(--f-en-display); font-weight: 700; color: #fff; background: var(--c-navy); border-radius: 2mm; padding: .3mm 2.6mm; white-space: nowrap; }
+.rv-next b { color: var(--c-navy); }
+
+/* ---------- 성장 기록표 ---------- */
+.gr-lead { font-size: 9.4pt; margin: 2.5mm 0 2mm; flex: none; }
+.gr-tbl { width: 100%; border-collapse: collapse; font-size: 8.6pt; flex: none; }
+.gr-tbl th, .gr-tbl td { border: 1px solid var(--c-sky-line); padding: 1.6mm 1mm; text-align: center; }
+.gr-tbl tr:first-child th, .gr-tbl tr:nth-child(2) th { background: var(--c-sky-pale); color: var(--c-navy); font-weight: 600; }
+.gr-tbl td { height: 6.4mm; }
+.gr-chart { flex: 1 1 auto; display: grid; grid-template-columns: 9mm 1fr; margin-top: 4mm; min-height: 40mm; }
+.gr-y { display: flex; flex-direction: column; justify-content: space-between; font-size: 7.6pt; color: var(--c-sub); padding-bottom: 5mm; }
+.gr-grid { display: grid; grid-template-columns: repeat(12, 1fr); border-left: .4mm solid var(--c-navy); border-bottom: .4mm solid var(--c-navy);
+  background-image: linear-gradient(#E7DDE9 1px, transparent 1px); background-size: 100% 25%; }
+.gr-grid i { font-style: normal; font-size: 7.6pt; color: var(--c-sub); align-self: end; text-align: center; transform: translateY(5mm); border-right: 1px dashed #EEE6EF; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.gr-cap { font-size: 8pt; color: var(--c-sub); text-align: center; margin: 6mm 0 0; flex: none; }
+.sec-h small { color: var(--c-sub); font-size: 8.4pt; }
+.rd-tipline { display: flex; gap: 3mm; align-items: center; margin-top: 3mm; flex: none; }
+.rd-tipline img { height: 17mm; flex: none; }
+.rd-tipline .bub { flex: 1; background: var(--c-sky-pale); border: .35mm solid var(--c-sky-line); border-radius: 3mm; padding: 2.2mm 3mm; font-family: var(--f-hand); font-size: 11pt; line-height: 1.35; }
+.rd-tipline .bub b { color: var(--c-main-deep); margin-right: 1.6mm; }
+
+/* 문항 라벨: 수능 유형 이름, 색은 묶음별 */
+.qt { display: inline-block; font-size: 7.8pt; font-weight: 600; border-radius: 1.4mm; padding: 0 1.8mm; margin-right: 1.6mm; vertical-align: 1px; color: #fff; }
+.qt.main { background: #3E7CC9; } .qt.detail { background: #4E9A6B; } .qt.logic { background: #8E5BC4; } .qt.infer { background: #D9534F; } .qt.lang { background: #E08A2E; } .qt.write { background: var(--c-navy); }
+.rq .qbox { margin: 1.6mm 0 0 6.5mm; border: .3mm solid #CFC5E4; border-radius: 2mm; padding: 1.6mm 2.6mm; font-size: 10pt; line-height: 1.6; background: #FCFBFE; }
+.rq .opts.en { font-family: "Source Sans 3", sans-serif; font-size: 10pt; }
+
+/* ---------- 문장 표시 (3권 부록과 같은 기호) ---------- */
+.mc { position: relative; z-index: 0; display: inline-block; padding: 0 .5em; line-height: inherit; font-weight: 700; color: var(--c-mark); white-space: nowrap; }
+.mc::before, .mc::after { content: ''; position: absolute; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.mc::before { left: 0; right: 0; top: -.32em; bottom: .02em; background: var(--c-mark); z-index: -2; }
+.mc::after { left: .16em; right: .16em; top: -.12em; bottom: .1em; background: var(--mark-bg, #fff); z-index: -1; }
+.br { font-weight: 700; margin: 0 .3mm; font-style: normal; }
+/* 색은 역할별 3가지 (2026-10-30): 뼈대 □ △ = 진한 주황 · 꾸미는 말 ( ) < > 화살표 = 파랑 · 명사절 [ ] = 초록 */
+.br.n { color: #2E8B57; } .br.j { color: #2A86C8; } .br.a { color: #2A86C8; }
+.mk-legend .g { font-weight: 700; margin-right: .8mm; } .mk-legend .g.s { color: var(--c-main-deep); } .mk-legend .g.m { color: #2A86C8; } .mk-legend .g.n { color: #2E8B57; }
+.pm-arrows { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 3; }
+.hn { text-decoration: underline solid #2A86C8; text-decoration-thickness: .3mm; text-underline-offset: 2.5px; }
+.mk-legend { margin: 1.2mm 0 0; font-size: 8.6pt; color: var(--c-sub); flex: none; }
+.mk-legend small { margin-left: 1.5mm; }
+.st-guide .ex .mc, .mk-legend .mc { --mark-bg: var(--c-sky-pale); }
+.mk-legend .mc { --mark-bg: #fff; }
+.key-box .mc { --mark-bg: #fff; }
+
+/* 3번 읽기 카드 + 지문 듣기 QR (2026-10-30) */
+.rd-card.read3 { position: relative; }
+.rd-card.read3 p { margin: 1.2mm 0 0; line-height: 1.45; }
+.rd-card.read3 p b { color: var(--c-main-deep); margin-right: .6mm; }
+.rd-card.read3 .timer { display: inline-block; margin-left: 3.6mm; }
+.rd-qr { position: absolute; top: 1.6mm; right: 1.6mm; display: block; }
+.rd-qr img { width: 13mm; height: 13mm; display: block; }
+/* Syntax Training B 앞에서부터 읽기 */
+.sts .sec-h { margin: 1.5mm 0 0; }
+.sts .sec-h small { font-weight: 400; color: var(--c-sub); margin-left: 1.5mm; font-size: 8.4pt; }
+.st-guide .ex small { color: var(--c-sub); font-size: 7.8pt; }
+.st .one { flex-basis: 100%; display: flex; align-items: flex-end; gap: 2mm; margin: 1.6mm 0 0 1.2mm; font-size: 8.4pt; color: var(--c-navy); }
+.st .one b { flex: none; background: var(--c-lime-pale); border-radius: 1mm; padding: 0 1.4mm; font-weight: 600; }
+.st .one span { flex: 1; border-bottom: 1px dashed #A6A3B0; height: 5mm; }
+
+/* 워크북: 내신 Test · 단어 테스트 (2026-10-30) */
+.rq .pts { font-size: 8.4pt; color: var(--c-sub); white-space: nowrap; }
+.rq .src { display: inline-block; font-size: 7.6pt; color: var(--c-navy); border: .25mm solid var(--c-lav-line); border-radius: 1.2mm; padding: 0 1.4mm; margin-right: 1.6mm; vertical-align: 1px; }
+.rq .wline.lab { display: flex; align-items: flex-end; }
+.rq .wline.lab span, .rq .wline .arw { font-size: 9.6pt; color: var(--c-navy); margin-right: 3mm; padding-bottom: .6mm; }
+.wb-info { display: flex; flex-wrap: wrap; gap: 1mm 6mm; font-size: 8.8pt; color: var(--c-sub); background: var(--c-sky-pale); border-radius: 2.4mm; padding: 1.6mm 3.5mm; margin: 2.5mm 0 0; flex: none; }
+.wb-info b { color: var(--c-main-deep); }
+.qs.wb { padding-top: 0; }
+.wb-score { display: flex; align-items: center; gap: 4mm; border: .4mm solid var(--c-navy); border-radius: 3mm; padding: 2.4mm 4mm; font-size: 9pt; flex: none; }
+.wb-score b { color: var(--c-navy); } .wb-score .big { font-family: var(--f-en-display); font-size: 15pt; color: var(--c-main-deep); white-space: nowrap; }
+.wt-name { display: flex; gap: 8mm; font-size: 9.6pt; color: var(--c-navy); margin: 3mm 0 1mm; flex: none; }
+.wt-name i { display: inline-block; width: 26mm; border-bottom: 1px solid #999; margin-left: 2mm; }
+.wt-name small { color: var(--c-sub); }
+.wt-grid { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; align-content: space-evenly; }
+.page-body.fill > .sec-h { margin-top: 3mm; flex: none; }
+.wt-grid .wc-i { grid-template-columns: 7mm 36mm 1fr; }
+.rq .opts.c5 { grid-template-columns: repeat(5, 1fr); }
+.wpair { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.rq .wline.fix { display: flex; align-items: flex-end; gap: 3mm; font-size: 10pt; }
+.rq .wline.fix .en { padding-bottom: .6mm; color: var(--c-ink); }
+.rq .wline.fix .arw { margin: 0 0 0 4mm; }
+
+/* 워크북 2단 (2026-10-30) — wb-cols.js가 블록을 두 단(.col)에 나누고 남는 높이를 블록 사이에 고르게 나눈다(JS가 없으면 CSS 단으로) */
+.wb2 { flex: 1 1 0; column-count: 2; column-gap: 7mm; column-rule: .3mm solid #EEE6EF; margin-top: 3mm; min-height: 0; overflow: hidden; }
+.wb2 > * { break-inside: avoid; margin-bottom: 3.5mm; }
+.wb2.cols { column-count: auto; display: flex; gap: 7mm; }
+.wb2.cols .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.wb2.cols .col.r { border-left: .3mm solid #EEE6EF; padding-left: 7mm; margin-left: -3.5mm; }
+.wb2.cols .col > * { margin-bottom: 0; flex: none; }
+.wb2 .rq .qbox { margin-left: 0; font-size: 9.4pt; line-height: 1.5; }
+.wb2 .rq .opts { margin-left: 0; font-size: 9.2pt; }
+.wb2 .rq .opts.c3 { grid-template-columns: repeat(2, 1fr); }
+.wb2 .rq .wline, .wb2 .rq .cond { margin-left: 0; }
+.wb2 .rq .stem { font-size: 9.4pt; }
+.wb2 .rq .wline.fix { flex-direction: column; align-items: flex-start; height: auto; gap: 0; }
+.wb2 .rq .wline.fix .arw { margin: 1.5mm 0 1mm 0; }
+.wb2 .wpair { column-gap: 4mm; }
+.wb-fh { font-size: 8.8pt; color: var(--c-sub); border-top: .5mm solid var(--c-main); padding-top: 1.6mm; }
+.wb-fh b { font-family: var(--f-ko-display); font-weight: 400; font-size: 11.5pt; color: var(--c-navy); margin-right: 2mm; }
+.wrow.wbf { font-size: 9.4pt; }
+.wrow.wbf .ko small { color: var(--c-sub); font-size: 7.6pt; }
+.wrow.wbf .gap { font-size: 10pt; line-height: 1.9; }
+.wrow.wbf .gap i { width: 13mm; }
+.rd-qr.slot { width: 13mm; height: 13mm; border: .3mm dashed var(--c-sky-line); border-radius: 1.5mm; display: flex; align-items: center; justify-content: center; font-family: var(--f-en-display); font-size: 7pt; color: #C9B8B0; }
+.wb-score b { white-space: nowrap; }
+.st .one.pick { gap: 5mm; flex-wrap: wrap; align-items: center; }
+.st .one.pick .o { flex: none; border: 0; height: auto; font-size: 9pt; color: var(--c-ink); }
+
+/* 일기 판면 (Unit 2 지문 ③) — 줄 공책 위에 본문, 남는 높이를 채운다 */
+.diary { flex: 1 1 auto; display: flex; flex-direction: column; border: .4mm solid var(--c-sky-line); border-radius: 3mm; overflow: hidden; background: #FFFDF8; margin-top: 3mm; }
+.dy-top { display: flex; align-items: baseline; gap: 4mm; background: #F3E2C7; padding: 2.4mm 4.5mm; }
+.dy-kick { font-family: var(--f-en-display); font-weight: 700; font-size: 9pt; letter-spacing: .14em; color: #9A6B2F; }
+.dy-date { font-family: var(--f-en-display); font-weight: 600; font-size: 12pt; color: var(--c-navy); }
+.dy-weather { margin-left: auto; font-size: 10pt; color: #9A6B2F; }
+.dy-text { flex: 1; margin: 0; text-align: justify; padding: 3mm 5mm 4mm; font-family: "Source Serif 4", Georgia, serif; font-size: 12.6pt; line-height: 10.2mm;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(10.2mm - .3mm), #E8D9C4 calc(10.2mm - .3mm), #E8D9C4 10.2mm); background-position: 0 3mm; }
+
+/* rd-fit.js: 긴 지문이면 그림을 사이드 칸으로 옮기거나 배경에 연하게, 문항이 빽빽하면 지문 속 문법을 작게 */
+.rd-fig.side { flex: none; margin: auto 0 0; }   /* 사이드 칸 맨 아래(지문 끝 높이)에 */
+.rd-main.has-bg { position: relative; }
+.rd-fig.bg { position: absolute; left: 0; right: 0; top: 30mm; bottom: 0; margin: 0; opacity: .15; z-index: 0; pointer-events: none; }
+.rd-main.has-bg > *:not(.rd-fig) { position: relative; z-index: 1; }
+.gram-box.tight { padding: 1.6mm 3mm; }
+.gram-box.tight h3 { font-size: 10pt; margin-bottom: .5mm; }
+.gram-box.tight h3 small { display: none; }
+.gram-box.tight table { font-size: 8.4pt; }
+.gram-box.tight td { padding: .45mm 1mm; }
+.gram-box.tight td.l, .gram-box.tight td.r { font-size: 7.6pt; }
+.qs.tight .rq .opts { gap: .5mm 3mm; margin-top: 1.2mm; }
+.qs.tight .rq .qbox { padding: 1.1mm 2.4mm; line-height: 1.45; margin-top: 1.2mm; }
+.qs.tight2 .rq .stem { line-height: 1.4; }
+.qs.tight2 .rq .opts { gap: .2mm 3mm; line-height: 1.4; }
+.qs.tight2 .rq .qbox { font-size: 9.5pt; line-height: 1.4; }
+
+.nw { white-space: nowrap; }
+.sec-h small .ref { margin-left: 1.5mm; color: var(--c-main-deep); font-weight: 600; white-space: nowrap; }
+/* 띄어쓰기(2026-10-30 사용자): 학생이 □ △를 그릴 수 있게 Syntax Training 문장의 낱말 사이를 넓히고, 괄호와 글자 사이도 조금 띄운다 */
+.st .ch .e { word-spacing: .3em; }
+.st .ch .e .br.j:first-child, .st .ch .e .br { margin: 0 .1em; }
+.st .ch .e .mv, .st .ch .e .mc { margin: 0 .05em; }
+.st { grid-template-columns: 6mm 1fr auto; }
+.st > .hint { align-self: start; margin: 1.4mm 0 0 2mm; white-space: nowrap; }   /* Hint는 오른쪽 칸 — 문장이 길어 줄이 넘어가도 첫 줄 옆에 */
+
+
+/* 앞부분 p.6–7 ‘문장 표시 방법’ (gen_front.py, 2026-10-30) */
+.fr-lead { font-size: 10pt; margin: 2.5mm 0 2.5mm; line-height: 1.6; }
+.fr-tbl { width: 100%; border-collapse: collapse; font-size: 9.2pt; flex: none; }
+.fr-tbl th { background: var(--c-sky-pale); color: var(--c-navy); font-weight: 600; font-size: 8.6pt; padding: 1.6mm 2mm; text-align: left; border-bottom: .4mm solid var(--c-main); }
+.fr-tbl td { padding: 1.7mm 2mm; border-bottom: 1px dotted #D3CEDC; vertical-align: middle; }
+.fr-tbl .fg { width: 19mm; text-align: center; border-right: .35mm solid; line-height: 1.3; }
+.fr-tbl .fg b { display: block; font-size: 10.4pt; } .fr-tbl .fg small { color: var(--c-sub); font-size: 7.4pt; }
+.fr-tbl .fg.s { color: var(--c-main-deep); border-color: #F4C9A8; } .fr-tbl .fg.m { color: #2A86C8; border-color: #B9D8EE; } .fr-tbl .fg.n { color: #2E8B57; border-color: #B8DEC8; }
+.fr-tbl .fs { width: 12mm; text-align: center; font-size: 12pt; white-space: nowrap; }
+.fr-tbl .fs .mv { display: inline-block; width: 4.2mm; height: 4.2mm; padding: 0; vertical-align: -.8mm; }
+.fr-tbl .fs .mc { --mark-bg: #fff; padding: 0 .65em; }
+.fr-tbl .fw { width: 50mm; line-height: 1.45; } .fr-tbl .fw b { display: block; font-size: 9.8pt; color: var(--c-ink); }
+.fr-tbl .fw span { color: var(--c-sub); font-size: 8.6pt; }
+.fr-tbl .fe .en { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 1.75; padding-top: 1mm; word-spacing: .15em; }
+.fr-tbl .fe .ko { display: block; color: var(--c-sub); font-size: 8.6pt; }
+.fr-tbl .fe .mc { --mark-bg: #fff; }
+.fr-h { font-weight: 700; color: var(--c-navy); font-size: 10.4pt; margin: 0 0 2mm; }
+.fr-rules { margin: 3.5mm 0 0; background: var(--c-sky-pale); border-radius: 3mm; padding: 3mm 4mm; flex: none; }
+.fr-rule { display: grid; grid-template-columns: 62mm 1fr; gap: 3mm; font-size: 9pt; padding: 1mm 0; border-top: 1px dotted #D3CEDC; align-items: baseline; }
+.fr-rule:first-of-type { border-top: 0; }
+.fr-rule b { color: var(--c-main-deep); }
+.fr-rule .en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+.fr-rule .mv { --dummy: 0; }
+.page-body.fill .rd-tipline { margin-top: auto; }
+.fr-steps { display: flex; flex-direction: column; gap: 0; margin: 3mm 0 0; flex: none; }
+.fr-step { display: grid; grid-template-columns: 9mm 1fr; gap: 2mm; padding: 2.4mm 0; border-bottom: 1px dotted #D3CEDC; }
+.fr-step .no { width: 7mm; height: 7mm; border-radius: 50%; background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 11pt; display: flex; align-items: center; justify-content: center; }
+.fr-step .t { margin: 0; font-size: 9.2pt; color: var(--c-sub); } .fr-step .t b { color: var(--c-navy); font-size: 10pt; margin-right: 1.5mm; }
+.fr-step .en { margin: 1mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.8pt; line-height: 2; word-spacing: .15em; }
+.fr-step .mc { --mark-bg: #fff; }
+.fr-alt { font-family: Pretendard, sans-serif; font-size: 8.6pt; color: var(--c-sub); }
+.fr-chunks { display: flex; flex-wrap: wrap; align-items: flex-start; margin-top: 1.5mm; row-gap: 1.5mm; }
+.fr-chunks .ch { display: inline-flex; flex-direction: column; }
+.fr-chunks .e { font-family: "Source Serif 4", Georgia, serif; font-size: 11.8pt; line-height: 2; padding: 0 1.2mm; word-spacing: .15em; }
+.fr-chunks .k { font-size: 8.6pt; color: #2A86C8; border-top: 1px solid #A6A3B0; margin: 0 1.2mm; padding-top: .6mm; }
+.fr-chunks .sl { font-family: var(--f-en-display); font-weight: 700; color: var(--c-navy-band); font-size: 12pt; line-height: 2; }
+.fr-chunks .mc { --mark-bg: #fff; }
+.fr-sum { margin: 2mm 0 0; font-size: 9.2pt; } .fr-sum b { background: var(--c-lime-pale); border-radius: 1mm; padding: 0 1.4mm; margin-right: 2mm; font-weight: 600; color: var(--c-navy); }
+.fr-use { margin-top: auto; background: var(--c-sky-pale); border-radius: 3mm; padding: 3mm 4mm; flex: none; }
+.fr-ab { font-size: 9pt; line-height: 1.7; margin: 0 0 2.5mm; }
+.fr-ab .tag { font-family: var(--f-en-display); font-weight: 700; font-size: 9pt; color: #fff; background: var(--c-main); border-radius: 1.4mm 3mm 1.4mm 1.4mm; padding: 0 2mm; margin-right: 1.2mm; }
+.fr-ab .tag + b { margin-right: 1.2mm; }
+.fr-stage { width: 100%; border-collapse: collapse; font-size: 8.8pt; background: #fff; border-radius: 2mm; }
+.fr-stage th, .fr-stage td { padding: 1.4mm 2mm; border-bottom: 1px dotted #D3CEDC; text-align: left; }
+.fr-stage thead th { color: var(--c-navy); font-weight: 600; font-size: 8.4pt; border-bottom: .35mm solid var(--c-main); }
+.fr-stage tbody th { color: var(--c-main-deep); white-space: nowrap; }
+.fr-vs { margin: 3.5mm 0 0; border: .35mm solid #B9D8EE; border-radius: 3mm; padding: 3mm 4mm; flex: none; }
+.fr-vsr { display: grid; grid-template-columns: 78mm 1fr auto; gap: 3mm; align-items: baseline; padding: .3mm 0; }
+.fr-vsr .en { font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 2; word-spacing: .15em; }
+.fr-vsr .q { font-size: 9pt; color: var(--c-sub); }
+.fr-vsr .fr-ans { font-size: 8.6pt; font-weight: 600; color: #fff; background: #2A86C8; border-radius: 1mm; padding: .2mm 2mm; white-space: nowrap; }
+.fr-vsr .fr-ans.j { background: #5BA3D6; }
+.fr-tip { margin: 1.5mm 0 0; font-size: 9pt; } .fr-tip b { color: #2A86C8; }
+.fr-vs .mc, .fr-rules .mc { --mark-bg: #fff; }
+.fr-steps { flex: 1 1 auto; justify-content: space-evenly; }
+.fr-step .en, .fr-chunks .e { font-size: 11pt; word-spacing: .06em; }
+.fr-use { margin-top: 3mm; }
+.fr-lv { color: var(--c-sub); font-size: 7.8pt; }
+/* 떨어진 동사: 사이 쪽이 열린 □ (rlib.mark의 [can| really |swim]) */
+.mv.or { border-right-color: transparent; border-radius: .6mm 0 0 .6mm; padding-right: .3mm; }
+.mv.ol { border-left-color: transparent; border-radius: 0 .6mm .6mm 0; padding-left: .3mm; }
+.fr-step { padding: 1.7mm 0; }
+.fr-steps + .fr-vs, .fr-vs { margin-top: 2.5mm; padding: 2.2mm 4mm; }
+.fr-vsr .en { line-height: 1.75; }
+.fr-use { padding: 2.4mm 4mm; margin-top: 2.5mm; }
+.fr-stage th, .fr-stage td { padding: 1.1mm 2mm; }
+/* 지문 전체 한마디로 (2026-10-30 사용자) */
+.st.sumall { border-top: 1px dashed #D3CEDC; padding-top: 1.2mm; }
+.st.sumall .n { color: var(--c-main-deep); }
+.st.sumall .one { margin-top: 0; } .st.sumall .one b { background: var(--c-main); color: #fff; }
+
+/* 생각하며 읽기(2026-10-31): 쉬운 단어, 이 글에서는 · Unit Review 보기 없는 빈칸 */
+.easy { margin-top: 3mm; border-top: .35mm solid var(--c-main); padding-top: 1.6mm; }
+.easy h3 { margin: 0 0 1.2mm; font-size: 8.6pt; color: var(--c-main-deep); }
+.easy ul { list-style: none; margin: 0; padding: 0; }
+.easy li { font-size: 8pt; line-height: 1.35; margin-bottom: 1.6mm; }
+.easy li b { font-family: "Source Sans 3", sans-serif; font-size: 9.2pt; }
+.easy .core { color: var(--c-sub); font-size: 7.4pt; } .easy .core::before { content: none; }
+.easy .here { display: block; color: var(--c-ink); font-weight: 600; }
+.easy li i.en { display: block; font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 7.8pt; color: var(--c-sub); }
+.rv-box.bk { flex: 1 1 auto; display: flex; flex-direction: column; }
+.bk-grid { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-around; }
+.bk-i { display: grid; grid-template-columns: 6mm 1fr; column-gap: 1mm; }
+.bk-i .n { color: var(--c-main); font-weight: 700; grid-row: span 2; }
+.bk-i p { margin: 0; } .bk-i .en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.6pt; line-height: 1.7; }
+.bk-i i.bk { display: inline-block; width: 24mm; border-bottom: 1px solid #8C8798; height: 1em; vertical-align: -.15em; }
+.bk-i .why { display: flex; align-items: flex-end; gap: 2mm; font-size: 8.6pt; color: var(--c-sub); margin-top: 1mm; }
+.bk-i .why .ln { flex: 0 0 45mm; border-bottom: 1px solid #A6A3B0; height: 5mm; }
+.words li .core { grid-column: 2; margin: 0; }
+
+/* 선지 번호: 글꼴에 따라 ①② 크기가 달라 CSS로 같은 큰 원을 그린다 (2026-10-31 사용자) */
+.rq .opts .cn { display: inline-flex; align-items: center; justify-content: center; width: 1.25em; height: 1.25em; margin-right: .35em;
+  border: .9px solid currentColor; border-radius: 50%; font: normal 500 .78em/1 "Source Sans 3", sans-serif; vertical-align: .06em; flex: none; }
+.rq .opts > span { display: inline-flex; align-items: baseline; }
+
+/* 알고 읽기(배경지식) 카드 — 지문 쪽 사이드 Think! 아래 (2026-10-31 사용자) */
+.rd-card.know { font-size: 7.8pt; line-height: 1.5; color: var(--c-ink); background: #FFF8EC; border-color: #F3D9A9; }
+.rd-card.know .kk { color: #C9861A; }
+.rd-card.know b { color: var(--c-navy); margin-right: .8mm; }
+/* △ 접속사: 밑변을 □ 동사 아랫선에 맞추고 위로 올림(2026-10-31 사용자 — 아래 공간에 글자가 들어가 읽기 쉽고 □와 줄이 맞음).
+   상자 높이를 줄 간격과 상관없이 □와 같게(1.5em) 고정해, 어느 쪽에서나 같은 자리에 그려진다. */
+.mc { line-height: 1.5; vertical-align: baseline; }
+.mc::before { top: -.42em; bottom: 0; left: -.08em; right: -.08em; }
+.mc::after { top: -.2em; bottom: .07em; left: .1em; right: .1em; }
+/* △ 선 굵기를 □ 테두리(.35mm ≈ 1.32px)와 같게(2026-10-31 사용자): 겹친 두 삼각형 대신 SVG 선 하나로 그린다.
+   vector-effect로 크기가 바뀌어도 선 굵기는 그대로, 안은 비워 어떤 바탕에서도 같다. 색은 --c-main-deep(#C84B22). */
+.mc::before { clip-path: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='50,2.6 97.6,97.7 2.4,97.7' fill='none' stroke='%23C84B22' stroke-width='1.32' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%; }
+.mc::after { display: none; }
+/* 지문 전체 한마디로: ⓐ ⓑ를 같은 줄 시작에 맞춰 위아래로 */
+.st.sumall .one.pick { display: grid; grid-template-columns: auto 1fr; column-gap: 3mm; row-gap: 1.2mm; align-items: baseline; }
+.st.sumall .one.pick b { grid-row: span 2; align-self: start; }
+.st.sumall .one.pick .o { grid-column: 2; }
+
+/* 실용문 ‘문자 메시지’ 판면 (Unit 3 지문 ③, 2026-10-31) — 왼쪽 친구 · 오른쪽 나 */
+.chat { flex: 1 1 auto; display: flex; flex-direction: column; border: .4mm solid var(--c-sky-line); border-radius: 4mm; overflow: hidden; background: #F4F1F8; margin-top: 3mm; }
+.ct-top { display: flex; align-items: baseline; gap: 3mm; background: var(--c-navy); color: #fff; padding: 2.4mm 4.5mm; }
+.ct-room { font-family: var(--f-en-display); font-weight: 600; font-size: 11pt; } .ct-room small { opacity: .7; margin-left: 1mm; }
+.ct-date { margin-left: auto; font-size: 9pt; opacity: .85; }
+.ct-body { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 1.6mm; padding: 3mm 4.5mm 4mm; }
+.ct-m { display: flex; flex-direction: column; align-items: flex-start; max-width: 84%; }
+.ct-m.me { align-self: flex-end; align-items: flex-end; }
+.ct-m .nm { font-family: var(--f-en-display); font-weight: 600; font-size: 8.4pt; color: var(--c-navy); margin: 0 0 .6mm 1.5mm; }
+.ct-m .bub { margin: 0; background: #fff; border: .3mm solid #DDD6E8; border-radius: .8mm 3.2mm 3.2mm 3.2mm; padding: 1.5mm 3mm; font-family: "Source Serif 4", Georgia, serif; font-size: 11.4pt; line-height: 1.45; }
+.ct-m.me .bub { background: #DDF3C8; border-color: #BFE3A0; border-radius: 3.2mm .8mm 3.2mm 3.2mm; }
+/* 대화가 길어도 한 쪽에: 이름을 말풍선 왼쪽에 나란히(위에 두면 메시지마다 한 줄씩 늘어남) */
+.ct-m { flex-direction: row; align-items: flex-start; gap: 2mm; max-width: 92%; }
+.ct-m.me { flex-direction: row-reverse; }
+.ct-m .nm { flex: none; width: 9mm; margin: 1.7mm 0 0; text-align: right; }
+.ct-m .bub { padding: 1.2mm 2.8mm; font-size: 11pt; line-height: 1.4; }
+.ct-body { gap: 1.2mm; padding: 2.6mm 4mm 3mm; }
+/* 긴 문장을 한 줄에 맞추려고 Hint를 문장 아래 오른쪽으로 내림 (rd-fit.js ③, 2026-10-31 사용자) */
+.st.hint-low { grid-template-columns: 6mm 1fr; }
+.st.hint-low > .hint { grid-column: 2; grid-row: 2; justify-self: end; margin: 1mm 0 0; }
+/* 실용문 ‘이용 안내문’ 판면 (rlib.notice_html, Unit 4 지문 ③ 캠핑장 안내, 2026-10-31) — 숲 초록 머리 띠 + 규칙 배지 */
+.notice { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 2mm; border: .6mm solid #3E6B4F; border-radius: 4mm; overflow: hidden; background: #FBFCF7; margin-top: 3mm; padding-bottom: 3mm; }
+.nt-top { background: #3E6B4F; color: #fff; padding: 3mm 5mm 3.2mm; }
+.nt-kick { font-family: var(--f-en-display); font-weight: 600; font-size: 8.4pt; letter-spacing: .16em; opacity: .9; }
+.nt-top h3 { margin: .6mm 0 0; font-family: var(--f-en-display); font-weight: 700; font-size: 19pt; line-height: 1.1; }
+.notice p { margin: 0 5mm; font-size: 11.6pt; line-height: 1.55; }
+.nt-lead { font-weight: 600; color: var(--c-navy); }
+.nt-tbl { margin: 0 5mm; border-collapse: collapse; font-size: 10.8pt; width: calc(100% - 10mm); }
+.nt-tbl th { width: 26mm; text-align: left; color: #fff; background: #7FA98C; padding: 1mm 2.4mm; border-bottom: .6mm solid #FBFCF7; font-family: var(--f-en-display); font-weight: 600; }
+.nt-tbl td { padding: 1mm 3mm; background: #EDF4EE; border-bottom: .6mm solid #FBFCF7; }
+.nt-rules { list-style: none; margin: 0 5mm; padding: 0; display: flex; flex-direction: column; gap: 1.6mm; }
+.nt-rules li { display: flex; align-items: baseline; gap: 2.4mm; font-family: "Source Serif 4", Georgia, serif; font-size: 11.4pt; line-height: 1.45; }
+.nt-badge { flex: none; width: 11mm; text-align: center; font-family: var(--f-en-display); font-weight: 700; font-size: 7.6pt; letter-spacing: .04em; color: #fff; border-radius: 1mm; padding: .3mm 0; position: relative; top: -.2mm; }
+.nt-can .nt-badge { background: #4E9A6B; } .nt-must .nt-badge { background: #2F6FB0; } .nt-not .nt-badge { background: #D4553A; } .nt-tip .nt-badge { background: #C9861A; }
+.nt-foot { font-size: 10.6pt !important; color: var(--c-sub); text-align: right; }
+/* 2026-10-31 사용자: 내용 확인 쪽이 갑갑함 → 지문 속 문법을 Writing Training 쪽으로 옮기고 문항 안 간격을 넉넉하게 */
+.rq .stem { line-height: 1.6; }
+.rq .opts { gap: 1.8mm 3mm; margin-top: 2.4mm; line-height: 1.45; }
+.rq .qbox { line-height: 1.7; padding: 2mm 3mm; margin-top: 2mm; }
+.wb2 .rq .opts { gap: 1.1mm 3mm; margin-top: 1.6mm; }
+.wb2 .rq .qbox { padding: 1.6mm 2.6mm; line-height: 1.5; margin-top: 1.6mm; }
+.wb2 .rq .stem { line-height: 1.5; }
+.gram-box.wt { margin: 2.5mm 0 1mm; }
+/* Unit Review: 읽은 시간 표를 빼고 점수 한 줄 (2026-10-31) */
+.rv-rec { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.6mm 4.5mm; border: .35mm solid var(--c-sky-line); border-radius: 3mm; padding: 2.2mm 3.5mm; margin-top: 3mm; font-size: 9pt; color: var(--c-ink); flex: none; }
+.rv-rec .t { font-family: var(--f-ko-display); font-weight: 400; font-size: 11pt; color: var(--c-navy); }
+.rv-rec b { color: var(--c-navy); }
+.rv-rec i { display: inline-block; width: 7mm; border-bottom: 1px solid #999; margin: 0 .6mm; }
+.rv-rec small { flex-basis: 100%; font-size: 8pt; color: var(--c-sub); }
+/* 논리 연습 6개(2단 × 3줄) · 보기 없는 빈칸 6개(2단 × 3줄) */
+.rv-box.bk .bk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 5mm; align-content: space-around; }
+.bk-i .en { font-size: 10pt; line-height: 1.6; }
+.bk-i i.bk { width: 18mm; }
+.bk-i .why { flex-wrap: wrap; }
+.bk-i .why .ln { flex: 1 1 24mm; }
+.bk-i .why small { font-size: 7.6pt; color: var(--c-navy); }
+/* 지문 쪽 그림이 작을 때(28~45mm) 아래 여백에 작게 — 배경으로 깔지 않음 */
+.rd-fig.small { margin-top: 2mm; }
+/* Writing Training 쪽 균형 (2026-10-31 사용자: 지문 속 문법이 들어와 문항 간격이 좁음 → 머리 여백을 줄이고 문항 사이를 넓힘) */
+.page-body:has(> .gram-box.wt) > .rd-qhead { padding-bottom: 1.1mm; margin-bottom: 0; }
+.gram-box.wt { margin: 1.6mm 0 .4mm; padding: 1.6mm 3mm 1.4mm; }
+.gram-box.wt h3 { font-size: 10.4pt; margin-bottom: .5mm; }
+.gram-box.wt table { font-size: 8.8pt; }
+.gram-box.wt td { padding: .45mm 1mm; }
+.gram-box.wt td.l, .gram-box.wt td.r { font-size: 7.8pt; }
+.page-body:has(> .gram-box.wt) > .sts { justify-content: space-evenly; padding-top: .5mm; }
+.page-body:has(> .gram-box.wt) .wrow .ko { margin-bottom: 1mm; }
+.page-body:has(> .gram-box.wt) .wrow .gap { line-height: 1.9; padding-bottom: 1.6mm; }
+.page-body:has(> .gram-box.wt) > .st-foot { margin-top: 2mm; }
+/* Unit 5~8 한마디로 · 지문 전체 한마디로 핵심어 빈칸 (2026-10-31) */
+.st .one.key { align-items: baseline; }
+.st .one.key .kt { flex: 1; border: 0; height: auto; font-size: 9.6pt; color: var(--c-ink); line-height: 1.8; }
+.st .one.key i.bk { display: inline-block; width: 22mm; border-bottom: 1px solid #8C8798; height: 1em; vertical-align: -.15em; margin: 0 1mm; }
+/* 실용문 ‘장보기 쪽지 · 목록 · 영수증’ 판면 (rlib.shop_html, Unit 5 지문 ③, 2026-10-31) */
+.shop { flex: 1 1 auto; display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr auto; gap: 4mm 5mm; margin-top: 3mm; }
+.sh-left { display: flex; flex-direction: column; gap: 4mm; }
+.sh-note { background: #FFF6D8; border: .35mm solid #EBD58E; border-radius: 1.5mm; padding: 3mm 4mm; transform: rotate(-1deg); box-shadow: 0 .6mm 1.4mm rgba(0,0,0,.08); }
+.sh-note p, .sh-reply p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.4pt; line-height: 1.55; }
+.sh-note .to { font-weight: 600; color: var(--c-navy); }
+.sh-note .sign, .sh-reply .sign { text-align: right; color: var(--c-sub); font-size: 10.4pt; margin-top: 1mm; }
+.sh-list { flex: 1; border: .35mm solid var(--c-sky-line); border-radius: 2.5mm; padding: 3mm 4mm; background: #fff repeating-linear-gradient(#fff 0 7.4mm, #E7E3EF 7.4mm 7.6mm); }
+.sh-list h4 { margin: 0 0 1.4mm; font-family: var(--f-en-display); font-weight: 700; font-size: 12pt; color: var(--c-main-deep); }
+.sh-list ul { margin: 0; padding: 0; list-style: none; font-family: "Source Serif 4", Georgia, serif; font-size: 11.4pt; line-height: 7.6mm; }
+.sh-list li::before { content: "□"; margin-right: 2mm; color: var(--c-main); }
+.sh-rcpt { align-self: start; background: #fff; border: .35mm dashed #B9B4C6; padding: 4mm 4.5mm; font-family: "Source Sans 3", sans-serif; font-size: 10pt; }
+.sh-rcpt h4 { margin: 0; text-align: center; font-family: var(--f-en-display); font-weight: 700; font-size: 13pt; letter-spacing: .12em; color: var(--c-navy); }
+.sh-rcpt .dt { margin: .6mm 0 2.4mm; text-align: center; font-size: 8.6pt; color: var(--c-sub); }
+.sh-rcpt table { width: 100%; border-collapse: collapse; }
+.sh-rcpt td { padding: .9mm 0; border-bottom: 1px dotted #CFCAD9; }
+.sh-rcpt td:nth-child(2) { color: var(--c-sub); } .sh-rcpt td:last-child { text-align: right; }
+.sh-rcpt tr.hd td { font-size: 8.4pt; color: var(--c-sub); border-bottom: .3mm solid #B9B4C6; }
+.sh-rcpt .sum { display: flex; justify-content: space-between; margin: 1.6mm 0 0; font-size: 10.6pt; }
+.sh-rcpt .sum b { font-size: 11.4pt; color: var(--c-navy); } .sh-rcpt .sum.s2 { margin-top: .6mm; font-size: 9.6pt; color: var(--c-sub); }
+.sh-rcpt .ft { margin: 3mm 0 0; text-align: center; font-size: 8.8pt; color: var(--c-sub); border-top: .3mm dashed #B9B4C6; padding-top: 2mm; }
+.sh-reply { grid-column: 1 / -1; background: #E9F5E4; border: .35mm solid #BFDDB2; border-radius: 1.5mm; padding: 3mm 4mm; transform: rotate(.6deg); }
+.sh-rcpt { align-self: stretch; display: flex; flex-direction: column; }
+.sh-rcpt td { padding: 1.3mm 0; }
+.sh-rcpt .ft { margin-top: auto; }
+.sh-rcpt .sum.s2 + .ft, .sh-rcpt .sum:last-of-type { margin-bottom: 3mm; }
+.fr-step .t .fr-free { display: block; margin-top: .6mm; font-size: 8.4pt; color: var(--c-sub); font-weight: 400; }
+/* READ ×3 · QR을 제목 오른쪽으로 (2026-10-31 사용자) — 제목이 길면 rd-fit.js가 글자를 줄여 한 줄에 */
+.rd-head { display: flex; align-items: flex-start; gap: 3mm; flex: none; }
+.rd-hl { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.rd-title h1, .rd-title h2 { white-space: nowrap; }
+.rd-card.read3.top { flex: none; display: flex; align-items: flex-start; gap: 2mm; padding: 1.6mm 2.2mm 1.8mm; font-size: 7.8pt; line-height: 1.35; margin-top: .4mm; }
+.rd-card.read3.top .rd-qr { position: static; flex: none; }
+.rd-card.read3.top .r3 .kk { font-size: 7.6pt; margin-bottom: .2mm; }
+.rd-card.read3.top p { margin: .5mm 0 0; white-space: nowrap; }
+.rd-card.read3.top .timer { margin-left: 1mm; }
+.rd-card.read3.top .timer .blank { width: 5.5mm; }
+.rd-card.read3.top small { font-size: 6.8pt; color: var(--c-sub); }
+/* Unit Review 점수: Unit 합계 4칸을 같은 크기로 (2026-10-31 사용자: 뒤죽박죽 → 정렬) */
+.rv-rec { display: block; padding: 2mm 3.5mm 2.4mm; }
+.rv-rec .hd { display: flex; align-items: baseline; gap: 3mm; margin-bottom: 1.6mm; }
+.rv-rec .hd b { font-family: var(--f-ko-display); font-weight: 400; font-size: 11pt; color: var(--c-navy); }
+.rv-rec .hd small { flex-basis: auto; font-size: 8pt; color: var(--c-sub); }
+.rv-rec .cells { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.4mm; }
+.rv-rec .c { display: flex; align-items: baseline; justify-content: space-between; background: var(--c-sky-pale); border-radius: 2mm; padding: 1.6mm 2.6mm; }
+.rv-rec .c .l { font-size: 8.8pt; font-weight: 600; color: var(--c-navy); }
+.rv-rec .c .v { font-size: 9.4pt; color: var(--c-sub); white-space: nowrap; }
+.rv-rec .c i { width: 9mm; margin: 0 1mm 0 0; }
+/* Unit Review: 노바 쌤 한마디를 Writing Book 상자와 띄움 (2026-10-31 사용자: 너무 붙어 있음) */
+.page-body.fill .rv-next + .rd-tipline, .rv-next + .rd-tipline { margin-top: 6mm; }
+
+/* 실용문 ‘분실물 게시판’ 판면 (rlib.board_html, Unit 6 지문 ③, 2026-10-31) — 코르크 판에 쪽지 네 장 */
+.board { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 3mm; padding: 4mm 4.5mm 3.5mm; border-radius: 2.5mm;
+  background: #E9D2AE radial-gradient(rgba(140,96,48,.18) .35mm, transparent .45mm) 0 0 / 2.6mm 2.6mm; border: 1.6mm solid #B98A57; }
+.bd-head { text-align: center; margin-bottom: 3.5mm; }
+.bd-school { display: inline-block; font-family: "Source Sans 3", sans-serif; font-size: 8.6pt; letter-spacing: .08em; color: #6B4A26; }
+.bd-head h3 { margin: .4mm 0 .8mm; font-family: var(--f-en-display); font-weight: 700; font-size: 18pt; letter-spacing: .06em; color: var(--c-navy); }
+.bd-head p { margin: 0; display: inline-block; background: #fff; padding: 1mm 3.5mm; border-radius: 1mm; font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; }
+.bd-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 4.5mm 5mm; }
+.bd-card { position: relative; padding: 4.2mm 4mm 3mm; border-radius: 1mm; box-shadow: 0 .8mm 1.6mm rgba(60,40,10,.18); }
+.bd-found { background: #F1F8EC; transform: rotate(-.8deg); } .bd-lost { background: #FFF4E6; transform: rotate(.7deg); }
+.bd-card:nth-child(4) { transform: rotate(-.5deg); }
+.bd-card .pin { position: absolute; top: -1.6mm; left: 50%; width: 3.6mm; height: 3.6mm; margin-left: -1.8mm; border-radius: 50%; background: #D9534F; box-shadow: inset -.5mm -.5mm 0 rgba(0,0,0,.2); }
+.bd-found .pin { background: #4E9A5B; }
+.bd-tag { display: inline-block; font-family: "Source Sans 3", sans-serif; font-weight: 700; font-size: 8.4pt; letter-spacing: .1em; color: #fff; background: #C84B22; padding: .3mm 2mm; border-radius: .8mm; }
+.bd-found .bd-tag { background: #4E9A5B; }
+.bd-card h4 { margin: 1.2mm 0 1mm; font-family: var(--f-en-display); font-weight: 700; font-size: 12pt; color: var(--c-navy); }
+.bd-card p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.5; }
+.bd-card p.sign { margin-top: 1mm; text-align: right; font-size: 10pt; color: var(--c-sub); }
+.bd-foot { margin: 3.5mm 0 0; text-align: center; font-family: "Source Sans 3", sans-serif; font-size: 9.6pt; color: #4A3418; }
+/* 게시판이 핵심 문장 상자를 덮지 않게 촘촘히 (2026-10-31 렌더 확인) */
+.board { padding: 3mm 4mm 2.6mm; margin-top: 2mm; }
+.bd-head { margin-bottom: 2.6mm; }
+.bd-head h3 { font-size: 16pt; margin: .2mm 0 .6mm; }
+.bd-head p { font-size: 10.4pt; padding: .8mm 3mm; }
+.bd-grid { gap: 3.6mm 4.5mm; }
+.bd-card { padding: 3.6mm 3.6mm 2.4mm; }
+.bd-card h4 { font-size: 11.4pt; margin: 1mm 0 .8mm; }
+.bd-card p { font-size: 10.6pt; line-height: 1.42; }
+.bd-card p.sign { font-size: 9.6pt; margin-top: .6mm; }
+.bd-foot { margin-top: 2.4mm; font-size: 9.2pt; }
+
+/* 해설지 ‘문장 표시’ 설명 — 기호마다 띄어서 한눈에 (2026-10-31 사용자) */
+.mk-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6mm 5mm; margin: 1.6mm 0 0; padding: 2mm 3mm;
+  border: .3mm solid var(--c-sky-line); border-radius: 1.5mm; background: #fff; font-size: 9pt; color: var(--c-ink, #333); line-height: 1.6; }
+.mk-legend .lh { font-weight: 700; color: var(--c-main-deep); margin-right: 1mm; }
+.mk-legend .it { display: inline-flex; align-items: center; gap: 1.6mm; white-space: nowrap; }
+.mk-legend .it .br { font-size: 10.5pt; letter-spacing: 0; }
+.mk-legend .nt { flex-basis: 100%; font-size: 8.4pt; color: var(--c-sub); }
+
+/* 실용문 ‘제품 비교 후기’ 판면 (rlib.review_html, Unit 7 지문 ③, 2026-10-31) — 쇼핑 사이트 비교 화면 */
+.review { flex: 1 1 auto; display: flex; flex-direction: column; gap: 3.2mm; margin-top: 2.5mm; padding: 3.5mm 4mm; border: .35mm solid var(--c-sky-line); border-radius: 2.5mm; background: #FAF8FD; }
+.rv-top { text-align: center; }
+.rv-site { font-family: "Source Sans 3", sans-serif; font-weight: 700; font-size: 8.4pt; letter-spacing: .12em; color: var(--c-main); }
+.rv-top h3 { margin: .4mm 0 0; font-family: var(--f-en-display); font-weight: 700; font-size: 14pt; color: var(--c-navy); }
+.rv-items { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.rv-item { background: #fff; border: .35mm solid #DCD6E8; border-radius: 2mm; padding: 2.6mm 3.5mm 2.2mm; }
+.rv-item h4 { margin: 0; font-family: var(--f-en-display); font-weight: 700; font-size: 12.5pt; color: var(--c-main-deep); }
+.review .stars { color: #F2A516; letter-spacing: .06em; font-size: 10pt; margin: 0; }
+.rv-item table { width: 100%; border-collapse: collapse; margin-top: 1.2mm; font-family: "Source Sans 3", sans-serif; font-size: 10.2pt; }
+.rv-item td { padding: .8mm 0; border-top: 1px dotted #CFCAD9; } .rv-item td:last-child { text-align: right; font-weight: 600; }
+.rv-posts { flex: 1; display: flex; flex-direction: column; gap: 3mm; }
+.rv-post { flex: 1; background: #fff; border-left: 1.2mm solid var(--c-sky-line); border-radius: 0 1.5mm 1.5mm 0; padding: 2.4mm 3.5mm; }
+.rv-post .who { display: flex; align-items: baseline; gap: 2.4mm; margin: 0 0 .8mm; font-family: "Source Sans 3", sans-serif; font-size: 9.6pt; color: var(--c-sub); }
+.rv-post .who b { color: var(--c-navy); font-size: 10.4pt; }
+.rv-post p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.5; }
+.rv-tip { margin: 0; padding: 2.2mm 3.5mm; background: #FFF4E6; border-radius: 1.5mm; font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; line-height: 1.5; }
+.gr-tbl th.sign { width: 13mm; }
+.fr-obj { display: block; margin-top: .4mm; color: var(--c-main-deep); } .fr-obj b { color: var(--c-main-deep); }
+
+/* 실용문 ‘인터뷰 기사’ 판면 (rlib.interview_html, Unit 8 지문 ③, 2026-10-31) — 학교 신문 */
+.interview { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; padding: 3.5mm 4.5mm 3mm; background: #FFFDF7; border: .35mm solid #D9D2C3; border-radius: 1.5mm; }
+.iv-mast { display: flex; justify-content: space-between; align-items: baseline; border-bottom: .9mm double var(--c-navy); padding-bottom: 1.2mm; }
+.iv-paper { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 13pt; letter-spacing: .08em; color: var(--c-navy); }
+.iv-sec { font-family: "Source Sans 3", sans-serif; font-weight: 700; font-size: 8.2pt; letter-spacing: .12em; color: var(--c-main); }
+.interview h3 { margin: 2.4mm 0 1.2mm; font-family: var(--f-en-display); font-weight: 700; font-size: 14pt; line-height: 1.25; color: var(--c-navy); }
+.iv-lead { margin: 0 0 2.2mm; font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 10.8pt; line-height: 1.5; color: #4A4458; }
+.iv-body { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 1.6mm; }
+.iv-qa p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.5; }
+.iv-qa .q { font-weight: 600; color: var(--c-navy); }
+.iv-qa b { display: inline-block; min-width: 7mm; margin-right: 1.6mm; font-family: "Source Sans 3", sans-serif; font-size: 8.6pt; font-weight: 700; color: #fff; background: var(--c-main-deep); border-radius: .8mm; text-align: center; padding: 0 1mm; }
+.iv-qa .a b { background: #6B5E86; }
+.iv-by { margin: 2mm 0 0; text-align: right; font-family: "Source Sans 3", sans-serif; font-size: 9pt; color: var(--c-sub); }
+
+/* 지문 각주: 난이도 높은 어휘 (2026-10-31 사용자) — 본문 단어 뒤 작은 *, 지문 바로 아래 한 줄 */
+.passage sup.gl { font-size: .62em; color: var(--c-main-deep); margin-left: .05em; vertical-align: .55em; line-height: 0; }
+.rd-gloss { flex: none; margin: 1.6mm 0 0; display: flex; flex-wrap: wrap; gap: .6mm 4.5mm; font-size: 9.4pt; color: #4A4458; }
+.rd-gloss span { white-space: nowrap; } .rd-gloss i { font-style: normal; color: var(--c-main-deep); margin-right: .3mm; }
+.rd-gloss b { font-family: "Pretendard", sans-serif; font-weight: 500; font-size: 8.6pt; color: var(--c-sub); margin-left: .6mm; }
+
+/* 실용문 ‘감사 편지’ 판면 (rlib.letter_html, Unit 9 지문 ③, 2026-10-31) — 줄 친 편지지 */
+.letter { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; padding: 6mm 7mm 5mm; border-radius: 1.5mm;
+  background: #FFFCF5 repeating-linear-gradient(transparent 0 8.6mm, #EADFCF 8.6mm 8.8mm); background-position: 0 4.2mm;
+  border: .35mm solid #E2D3BC; box-shadow: 0 .8mm 1.8mm rgba(80,60,20,.1); }
+.letter p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 8.8mm; }
+.lt-to { font-weight: 600; color: var(--c-navy); }
+.lt-body { flex: 1; } .lt-body p { text-indent: 6mm; }
+.lt-close { text-align: right; margin-top: 2mm !important; }
+.lt-close b { font-family: "Gaegu", cursive; font-size: 15pt; color: var(--c-main-deep); }
+.lt-ps { font-size: 10.6pt !important; color: #5F5A6E; }
+
+/* Unit 9~ 직접 쓰기: ‘지문 전체 한마디로’ 쓰는 줄이 폭 0으로 사라지던 것 고침 + 두 줄 (2026-10-31) */
+.st.sumall .row { flex: 1; min-width: 0; }
+.st.sumall .one:not(.pick):not(.key) { width: 100%; align-items: flex-start; }
+.st.sumall .one:not(.pick):not(.key) span { height: 11mm; border-bottom: 1px dashed #A6A3B0;
+  background: linear-gradient(transparent calc(5.5mm - 1px), #A6A3B0 calc(5.5mm - 1px), #A6A3B0 5.5mm, transparent 5.5mm); }
+/* 감사 편지: 본문은 위에 붙이고 글자를 키움 — 남는 줄은 편지지 아래에 (2026-10-31) */
+.letter { padding: 7mm 8mm 5mm; background-size: 100% 10mm; background-image: repeating-linear-gradient(transparent 0 9.8mm, #EADFCF 9.8mm 10mm); background-position: 0 5.6mm; }
+.letter p { font-size: 12.4pt; line-height: 10mm; }
+.lt-body { flex: none; }
+.lt-close { margin-top: 4mm !important; }
+.lt-ps { margin-top: 2mm !important; font-size: 11pt !important; }
+
+/* Unit 9~12 흐름 지도 채우기 (Syntax 쪽 맨 아래, 2026-10-31 사용자) */
+.st.flowmap .row { display: flex; flex-direction: column; gap: 1.1mm; }
+.fm-h { margin: 0 0 .4mm; font-size: 8.4pt; color: var(--c-navy); }
+.fm-h b { background: var(--c-main); color: #fff; border-radius: 1mm; padding: 0 1.4mm; margin-right: 2mm; font-weight: 600; }
+.fm-h small { color: var(--c-sub); }
+.fm-r { display: flex; align-items: baseline; gap: 2mm; font-size: 9.4pt; line-height: 1.55; }
+.fm-s { flex: none; min-width: 7mm; text-align: center; font-size: 8pt; font-weight: 700; color: var(--c-main-deep); border: .3mm solid var(--c-sky-line); border-radius: 1mm; padding: 0 .8mm; }
+.fm-t i.bk { display: inline-block; width: 18mm; border-bottom: 1px solid #8C88A0; margin: 0 1mm; }
+.fm-r.last { align-items: flex-start; } .fm-r.last .one { flex: 1; margin: 0; }
+.fm-r.last .one span { height: 11mm; border-bottom: 1px dashed #A6A3B0;
+  background: linear-gradient(transparent calc(5.5mm - 1px), #A6A3B0 calc(5.5mm - 1px), #A6A3B0 5.5mm, transparent 5.5mm); }
+.ak-st .fm-a { margin: .4mm 0 0; font-size: 9pt; } .ak-st .fm-a b { color: var(--c-main-deep); margin-right: 1mm; }
+.fm-r.last .one { display: flex; width: auto; min-width: 0; } .fm-r.last .one span { display: block; flex: 1 1 auto; min-width: 80mm; }
+.fm-r.last > .one { flex: 1 1 0 !important; } .fm-r.last .one span { min-width: 0; }
+.st.flowmap .row { align-items: stretch; width: 100%; } .st.flowmap .fm-r { width: 100%; align-self: stretch; box-sizing: border-box; }
+
+/* 실용문 ‘의견 글’ 판면 (rlib.opinion_html, Unit 12 지문 ③, 2026-10-31) — 학교 신문 의견란 */
+.opinion { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; padding: 3.5mm 5mm 4mm; background: #FFFDF7; border: .35mm solid #D9D2C3; border-radius: 1.5mm; }
+.opinion h3 { margin: 2.6mm 0 .6mm; font-family: var(--f-en-display); font-weight: 700; font-size: 15pt; line-height: 1.25; color: var(--c-navy); }
+.op-by { margin: 0 0 2.4mm; font-family: "Source Sans 3", sans-serif; font-size: 9pt; color: var(--c-sub); }
+.op-body { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+.op-body p { margin: 0; text-indent: 5mm; font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 1.6; text-align: justify; }
+.op-body { justify-content: flex-start; gap: 4mm; } .op-body p { font-size: 12.6pt; line-height: 1.75; }
+
+/* Syntax Training A 머리줄 기호표 (2026-10-31 사용자) — 기호와 이름만, 설명은 앞부분 p.6 */
+.sts .sec-h .mleg { margin-left: auto; display: inline-flex; align-items: center; gap: 2.6mm; padding: .4mm 2.2mm; border: .3mm solid var(--c-sky-line); border-radius: 1.2mm; background: #fff; font-size: 7.8pt; font-weight: 400; color: var(--c-ink, #333); white-space: nowrap; }
+.sts .sec-h .mleg .it { display: inline-flex; align-items: center; gap: .9mm; }
+.sts .sec-h .mleg .mv { display: inline-block; width: 2.6mm; height: 2.9mm; padding: 0; border-width: .26mm; vertical-align: -.4mm; }
+.sts .sec-h .mleg .mc { font-size: .66em; padding: 0 .5em; line-height: 1.2; }
+.sts .sec-h .mleg .br { font-size: 8.6pt; }
+.sts .sec-h .mleg .ref { color: var(--c-main-deep); font-weight: 600; }
+.read3 .w0 small { font-size: 6.6pt; color: var(--c-sub); margin-left: .6mm; }
+
+/* Word Check B 문맥 빈칸 (2026-10-31 사용자) — 지문 구절 + 첫 글자 힌트 + (뜻) */
+.wc-i.cx { grid-template-columns: 7mm 1fr; align-items: end; }
+.wc-i.cx .cx-p { margin: 0; font-size: 9.6pt; line-height: 1.5; border-bottom: 1px dotted #D3CEDC; padding-bottom: .6mm; }
+.wc-i.cx .cx-p .en { font-family: "Source Serif 4", Georgia, serif; }
+.wc-i.cx i.bk { display: inline-block; min-width: 16mm; border-bottom: 1px solid #6E6A80; font-style: normal; margin: 0 .6mm; }
+.wc-i.cx i.bk b { color: #B8B4C4; font-weight: 400; padding-left: .6mm; }
+.wc-i.cx small { margin-left: 1.4mm; font-size: 8pt; color: var(--c-sub); white-space: nowrap; }
+
+/* 권말 단어장 Word List (gen_wordlist.py, 2026-10-31 사용자) — Unit마다 한 쪽, 2단 */
+.wl-grid { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0 6mm; margin-top: 3mm; }
+.wl-col { display: flex; flex-direction: column; justify-content: space-between; }
+.wl-r { display: grid; grid-template-columns: 9mm 1fr auto; grid-template-rows: auto auto; column-gap: 1.6mm; align-items: baseline; padding: .9mm 0 1mm; border-bottom: 1px dotted #D3CEDC; }
+.wl-r .ck { grid-row: span 2; font-size: 7.4pt; letter-spacing: -.05em; color: #B8B4C4; }
+.wl-r .w { margin: 0; font-size: 9.8pt; }
+.wl-r .w b { font-family: "Source Sans 3", sans-serif; font-weight: 700; color: var(--c-navy); margin-right: 1.6mm; }
+.wl-r .w .wst { color: var(--c-main); font-size: 7.6pt; margin-right: 1.2mm; }
+.wl-r .w .wk { font-size: 8.8pt; color: var(--c-ink, #333); }
+.wl-r .ph { grid-column: 2 / 4; margin: .2mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 8.2pt; color: var(--c-sub); line-height: 1.35; }
+.wl-r .ph b { color: var(--c-main-deep); font-weight: 600; }
+.wl-r .pg { grid-column: 3; grid-row: 1; font-size: 7.2pt; color: var(--c-sub); white-space: nowrap; }
+.wl-r { padding: .5mm 0 .6mm; } .wl-r .w { font-size: 9.2pt; } .wl-r .w .wk { font-size: 8.4pt; } .wl-r .ph { font-size: 7.8pt; line-height: 1.25; margin: 0; }
+.wl-grid { margin-top: 2mm; }
+
+/* 미니 실전 TEST (gen_minitest.py, 2026-10-31) — 지문 안 각주 */
+.qbox .gl { display: block; margin-top: .8mm; text-align: right; font-family: "Pretendard", sans-serif; font-size: 7.6pt; color: var(--c-sub); }
+.wb2.mt .rq .qbox { font-size: 10.6pt; line-height: 1.62; padding: 2.6mm 3.2mm; }
+.wb2.mt .rq .stem p { font-size: 9.8pt; }
+.wb2.mt .rq .opts { font-size: 9.8pt; row-gap: 1.2mm; }
+.wb2.mt .qbox .gl { font-size: 8pt; }
+.ak-quick .grid.c6 { grid-template-columns: repeat(6, 1fr); }
+
+/* 앞부분 p.1–5 (gen_front.py, 2026-10-31) — 차례 · 진도표. 구성과 특징 · 공부법은 book.css의 front-head · pv-card · steps · pass를 그대로 */
+.rd-toc .toc-ch { margin-bottom: 2.2mm; }
+.rd-toc .toc-u { font-size: 8.6pt; padding-left: 10mm; }
+.rd-toc .toc-u small { font-size: 7.4pt; color: var(--c-sub); margin-left: 1mm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40mm; }
+.rd-toc .toc-u .k { width: 9mm; }
+.rd-toc .toc-sum { margin: 1.4mm 0 0; }
+.rd-plan { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.rd-plan th, .rd-plan td { border: 1px solid var(--c-sky-line); padding: 2.1mm 1mm; text-align: center; }
+.rd-plan thead th { background: var(--c-sky-pale); color: var(--c-navy); font-weight: 600; font-size: 8.4pt; }
+.rd-plan tbody th { text-align: left; padding-left: 2.4mm; font-family: var(--f-en-display); color: var(--c-navy); white-space: nowrap; }
+.rd-plan tbody th small { margin-left: 1.6mm; font-family: var(--f-body); font-weight: 400; font-size: 7.6pt; color: var(--c-sub); }
+.rd-plan td { color: #B8B4C4; font-size: 11pt; }
+.rd-plan td.d { color: #C9C5D3; font-size: 9pt; width: 17mm; }
+.rd-plan tr.mt th { color: var(--c-main-deep); }
+.rd-plan td.sc { color: var(--c-ink, #333); font-size: 9pt; }
+.rd-toc .toc-ch { margin-bottom: 1.4mm; } .rd-toc .toc-ch .hd { margin-bottom: .4mm; padding-bottom: .6mm; }
+.rd-toc .toc-ch .no { width: 7mm; height: 7mm; font-size: 10pt; } .rd-toc .toc-ch .tt { font-size: 12pt; }
+.rd-toc .toc-u { font-size: 8.8pt; padding: 0 0 0 9mm; line-height: 1.5; }
+.rd-toc .toc-sum { margin: 1.2mm 0 0; padding: 1mm 3mm; }
+.rd-legend { display: grid; grid-template-columns: 38mm 1fr; gap: 1.8mm 3mm; font-size: 9pt; align-items: center; margin-bottom: 2mm; }
+.rd-legend .sym { font-weight: 600; color: var(--c-main-deep); white-space: nowrap; }
+.rd-legend .qt { font-size: 7.6pt; }
+
+/* 2026-11-01 전체 점검: 넘침 고침 */
+.wt-grid.dense .wc-i.cx .cx-p { font-size: 8.8pt; line-height: 1.32; padding-bottom: .3mm; }
+.wt-grid.dense .wc-i.cx i.bk { min-width: 12mm; }
+.wt-grid.dense .wc-i.cx small { font-size: 7.4pt; }
+.wl-grid { margin-top: 1.2mm; }
+.wl-r { padding: .3mm 0 .35mm; } .wl-r .w { font-size: 8.9pt; } .wl-r .w .wk { font-size: 8.1pt; } .wl-r .ph { font-size: 7.5pt; line-height: 1.18; }
+.fr-step { padding: 1.6mm 0; } .fr-step .en { line-height: 1.8; } .fr-vs { margin-top: 2.6mm; padding: 2.4mm 4mm; } .fr-use { padding: 2.4mm 4mm; }
+.fr-stage td, .fr-stage th { padding-top: 1.1mm !important; padding-bottom: 1.1mm !important; } .fr-step { padding: 1.3mm 0; }
+.fr-step .en { line-height: 1.62; } .fr-obj { font-size: 8.4pt; line-height: 1.4; }
+.fr-step { padding: 1.1mm 0; }
+
+/* 쉬운 단어 ‘기본 뜻: · 이 글에서:’ — 이름표는 주황 굵게, 뜻은 진하게(2026-11-01 사용자: 둘 다 회색이라 한 단어처럼 보임) */
+.core .lb, .here .lb { font-style: normal; font-weight: 700; color: var(--c-main-deep); margin-right: .6mm; }
+.words .core, .easy .core { color: #3A3445; }
+.easy .here { color: #3A3445; font-weight: 600; }
+/* 순서 · 문장 삽입: 맞은편 지문에 원래 문장이 있어 ‘지문을 덮고’ (2026-11-01) */
+.qcover { display: inline-block; font-size: 7.4pt; font-weight: 700; color: #8E5BC4; border: .3mm solid #8E5BC4; border-radius: 1.4mm; padding: 0 1.4mm; margin-right: 1.6mm; vertical-align: 1px; }
+
+/* 실용문 ‘이메일’ 판면 (rlib.email_html, Reading 2 Unit 1 지문 ③, 2026-11-02) — 메일 창 */
+.email { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; box-shadow: 0 .8mm 1.8mm rgba(20,50,90,.08); }
+.em-bar { display: flex; align-items: center; gap: 1.2mm; padding: 1.6mm 3mm; background: var(--c-sky-pale); border-bottom: .3mm solid var(--c-sky-line); }
+.em-bar .dot { width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--c-sky-line); }
+.em-bar .em-app { margin-left: 2mm; font-family: var(--f-en-display); font-weight: 600; font-size: 9pt; color: var(--c-main-deep); }
+.em-head { padding: 2mm 5mm 1.6mm; border-bottom: .3mm solid #E3E9F1; }
+.em-head p { margin: .5mm 0; font-family: "Source Sans 3", sans-serif; font-size: 9.6pt; color: #3F4654; }
+.em-head .k { display: inline-block; min-width: 15mm; color: var(--c-sub); font-size: 8.6pt; }
+.em-head small { color: var(--c-sub); }
+.em-subj b { color: var(--c-navy); font-size: 10.6pt; }
+.em-subj .em-date { float: right; font-size: 8.4pt; color: var(--c-sub); }
+.em-body { flex: 1; padding: 3mm 6mm 3mm; display: flex; flex-direction: column; gap: 2.4mm; }
+.em-body p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.8pt; line-height: 1.65; text-align: justify; }
+.em-body .em-greet { font-weight: 600; color: var(--c-navy); }
+.em-body .em-close { text-align: left; margin-top: 1mm; }
+.em-body .em-close b { font-family: "Gaegu", cursive; font-size: 15pt; color: var(--c-main-deep); font-weight: 700; }
+
+/* Reading 2 Sight Translation (2026-11-02 사용자: 오성호 선생님 방식 우선) */
+.key-box .kone { margin: 1.8mm 0 0; font-size: 9.4pt; color: var(--c-navy); }
+.key-box .kone b { display: inline-block; background: var(--c-lime); color: var(--c-navy); font-size: 7.6pt; border-radius: 1mm; padding: 0 1.4mm; margin-right: 1.6mm; }
+.sts .sec-h.sub { margin-top: -1mm; font-size: 9pt; }
+.sts .sec-h.sub .tag { background: #9B95AE; }
+.sec-h .ew { font-family: "Source Serif 4", Georgia, serif; font-size: 12pt; color: var(--c-main-deep); }
+
+/* 실용문 ‘블로그 글’ 판면 (rlib.blog_html, Reading 2 Unit 2 지문 ③, 2026-11-02) */
+.blog { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.bl-top { display: flex; justify-content: space-between; align-items: baseline; padding: 2mm 5mm; background: var(--c-main); color: #fff; }
+.bl-name { font-family: var(--f-en-display); font-weight: 600; font-size: 11pt; }
+.bl-url { font-family: "Source Sans 3", sans-serif; font-size: 8.4pt; opacity: .9; }
+.bl-post { flex: 1; display: flex; flex-direction: column; padding: 3mm 6mm 3mm; }
+.bl-post h3 { margin: 0; font-family: var(--f-en-display); font-weight: 700; font-size: 15pt; color: var(--c-navy); }
+.bl-meta { margin: .6mm 0 2.4mm; font-family: "Source Sans 3", sans-serif; font-size: 8.6pt; color: var(--c-sub); }
+.bl-tags span { color: var(--c-main-deep); margin-left: 1.6mm; }
+.bl-body { display: flex; flex-direction: column; gap: 2.2mm; }
+.bl-body p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.8pt; line-height: 1.65; text-align: justify; }
+.bl-like { margin: 2.6mm 0 1.4mm; padding-top: 1.6mm; border-top: .3mm solid #E3E9F1; font-family: "Source Sans 3", sans-serif; font-size: 8.8pt; color: #E0567A; }
+.bl-like span { color: var(--c-sub); margin-left: 3mm; }
+.bl-cm { display: flex; flex-direction: column; gap: 1.2mm; }
+.bl-c { display: flex; gap: 2mm; align-items: flex-start; }
+.bl-c .av { flex: none; width: 5.4mm; height: 5.4mm; border-radius: 50%; background: var(--c-sky-pale); color: var(--c-main-deep); font: 600 8pt var(--f-en-display); display: flex; align-items: center; justify-content: center; }
+.bl-c p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.6pt; line-height: 1.5; }
+.bl-c b { font-family: "Source Sans 3", sans-serif; font-size: 8.8pt; color: var(--c-navy); margin-right: 1mm; }
+
+/* 실용문 ‘FAQ’ 판면 (rlib.faq_html, Reading 2 Unit 3 지문 ③, 2026-11-02) */
+.faq { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.fq-head { padding: 3mm 6mm 2.6mm; background: var(--c-sky-pale); border-bottom: .3mm solid var(--c-sky-line); }
+.fq-school { font-family: "Source Sans 3", sans-serif; font-size: 8.6pt; font-weight: 600; color: var(--c-main-deep); letter-spacing: .04em; }
+.fq-head h3 { margin: .6mm 0 0; font-family: var(--f-en-display); font-weight: 700; font-size: 14.5pt; color: var(--c-navy); }
+.fq-date { margin: .3mm 0 0; font-family: "Source Sans 3", sans-serif; font-size: 8.4pt; color: var(--c-sub); }
+.fq-lead { margin: 1.4mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; }
+.fq-list { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; gap: 2mm; padding: 3mm 6mm; }
+.fq-i p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 1.55; display: flex; gap: 2mm; }
+.fq-i p b { flex: none; width: 5.6mm; height: 5.6mm; border-radius: 1.2mm; font: 700 9pt var(--f-en-display); display: flex; align-items: center; justify-content: center; margin-top: .6mm; }
+.fq-i .q { font-weight: 600; color: var(--c-navy); }
+.fq-i .q b { background: var(--c-main); color: #fff; }
+.fq-i .a b { background: var(--c-lime); color: var(--c-navy); }
+.fq-foot { margin: 0; padding: 2mm 6mm; border-top: .3mm dashed var(--c-sky-line); font-family: "Source Sans 3", sans-serif; font-size: 9.4pt; color: var(--c-navy); }
+
+/* Chunk Reading 시범: 해석이 영어 덩어리보다 넓으면 덩어리 사이가 벌어져 줄이 일찍 바뀌던 것 — 해석은 영어 폭 안에서 줄을 바꾼다(2026-11-02 사용자) */
+.key-box .ch small { width: 0; min-width: 100%; text-align: center; line-height: 1.3; }
+
+/* 실용문 ‘웹 뉴스 기사’ 판면 (rlib.news_html, Reading 2 Unit 4 지문 ③, 2026-11-02) */
+.news { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; padding: 3.5mm 6mm 4mm; background: #fff; border: .35mm solid #D5DCE6; border-radius: 1.5mm; }
+.nw-top { display: flex; justify-content: space-between; align-items: baseline; border-bottom: .9mm solid var(--c-navy); padding-bottom: 1.2mm; }
+.nw-site { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 13pt; letter-spacing: .08em; color: var(--c-navy); }
+.nw-sec { font-family: "Source Sans 3", sans-serif; font-weight: 700; font-size: 8.4pt; letter-spacing: .1em; color: #fff; background: var(--c-main); border-radius: 1mm; padding: .2mm 2mm; }
+.nw-head { margin: 3mm 0 .8mm; font-family: "Source Serif 4", Georgia, serif; font-weight: 700; font-size: 17pt; line-height: 1.2; color: var(--c-navy); }
+.nw-meta { margin: 0 0 2.6mm; font-family: "Source Sans 3", sans-serif; font-size: 8.8pt; color: var(--c-sub); }
+.nw-body { flex: 1; display: flex; flex-direction: column; gap: 2.6mm; }
+.nw-body p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 12pt; line-height: 1.7; text-align: justify; }
+/* Chunk Reading 상자: 해석을 영어 덩어리의 시작점에 맞춰 왼쪽 정렬(2026-11-02 사용자: 줄맞춤) */
+.key-box .ch { align-items: flex-start; }
+.key-box .ch small { text-align: left; padding-left: .2mm; }
+.key-box .s { align-items: flex-start; row-gap: 1.6mm; }
+
+/* 지문 아래 그림 칸이 35~45mm일 때: 그림 위아래 여백을 줄여 조금 더 크게(rd-fit.js .mid, 2026-11-02) */
+.rd-fig.mid { margin-top: .8mm; }
+.rd-main.has-mid > .key-box { margin-top: 3mm; }
+/* 마지막 덩어리는 오른쪽이 비어 있으니 해석이 영어보다 길어도 한 줄로(예: pods. → ‘포드’라고) */
+.key-box .ch:last-of-type small { width: auto; min-width: 0; white-space: nowrap; }
+
+/* 실용문 ‘사용 설명서’ 판면 (rlib.manual_html, Reading 2 Unit 5 지문 ③, 2026-11-02) */
+.manual { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.mn-head { padding: 3mm 6mm 2.6mm; background: var(--c-navy); color: #fff; }
+.mn-place { font-family: "Source Sans 3", sans-serif; font-size: 8.4pt; font-weight: 600; letter-spacing: .12em; color: #CFE6FA; }
+.mn-head h3 { margin: .6mm 0 0; font-family: var(--f-en-display); font-weight: 700; font-size: 15pt; line-height: 1.2; }
+.mn-lead { margin: 1.4mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; color: #EAF4FD; }
+.mn-steps { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; gap: 2.4mm; padding: 3.4mm 6mm 2.4mm; }
+.mn-step { display: flex; gap: 3.5mm; align-items: flex-start; }
+.mn-no { flex: none; width: 11mm; height: 11mm; border-radius: 50%; background: var(--c-main); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 700 14pt/1 var(--f-en-display); }
+.mn-no small { font: 700 5.6pt/1 "Source Sans 3", sans-serif; letter-spacing: .08em; margin-bottom: .4mm; }
+.mn-st { margin: 0 0 .6mm; font-family: var(--f-en-display); font-weight: 700; font-size: 12pt; color: var(--c-navy); }
+.mn-tx { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.6pt; line-height: 1.55; }
+.mn-note { margin: 0 6mm 2.6mm; padding: 2.2mm 4mm 2.2mm; background: #FFF4E8; border: .3mm solid #FFC48F; border-radius: 1.6mm; }
+.mn-nl { font: 700 8.6pt "Source Sans 3", sans-serif; letter-spacing: .08em; color: #C85A12; }
+.mn-note ul { margin: .8mm 0 0; padding-left: 4.6mm; }
+.mn-note li { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.5; }
+.mn-foot { margin: 0; padding: 2mm 6mm; border-top: .3mm dashed var(--c-sky-line); font-family: "Source Sans 3", sans-serif; font-size: 9.6pt; color: var(--c-navy); }
+
+/* ③ Chunk Reading ★ 까다로운 문장 — 반드시 구조 표시(2026-11-02 사용자) */
+.st .n .star { color: var(--c-freq); font-size: 9pt; margin-left: .3mm; vertical-align: top; }
+.sec-h .star { color: var(--c-freq); font-weight: 700; }
+.sec-h .nw { white-space: nowrap; }
+
+/* 실용문 ‘SNS 게시물 + 댓글’ 판면 (rlib.sns_html, Reading 2 Unit 6 지문 ③, 2026-11-02) */
+.sns { flex: 1 1 auto; display: flex; flex-direction: column; margin: 2.5mm 0 0; background: #fff; border: .35mm solid #D9DEE6; border-radius: 3mm; overflow: hidden; box-shadow: 0 .6mm 1.6mm rgba(0,0,0,.06); }
+.sns .av { flex: none; width: 6.6mm; height: 6.6mm; border-radius: 50%; background: #EEF1F5; color: #5B6575; font: 700 8.6pt/1 var(--f-en-display); display: flex; align-items: center; justify-content: center; }
+.sns .av.me { background: linear-gradient(135deg, #3BAA6B, #8BCF5A); color: #fff; }
+.sn-head { display: flex; align-items: center; gap: 2.4mm; padding: 1.8mm 4.5mm; border-bottom: .3mm solid #EEF0F3; }
+.sn-head .av { width: 8mm; height: 8mm; font-size: 10pt; }
+.sn-id { display: flex; flex-direction: column; line-height: 1.25; }
+.sn-id b { font: 700 10.4pt "Source Sans 3", sans-serif; color: #1F2733; }
+.sn-id small { font: 400 8.2pt "Source Sans 3", sans-serif; color: #7A8494; }
+.sn-dots { margin-left: auto; color: #A0A8B4; font-size: 8pt; letter-spacing: .1em; }
+.sn-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6mm; padding: 2.6mm 4mm; background: linear-gradient(135deg, #E9F7EC, #FFF6DC); border-bottom: .3mm solid #EEF0F3; }
+.sn-card .big { font: 800 16pt/1.1 var(--f-en-display); color: #2E8B57; }
+.sn-card .small { font: 600 9pt "Source Sans 3", sans-serif; letter-spacing: .06em; color: #6B7A5A; }
+.sn-body { padding: 2.6mm 5mm 0; display: flex; flex-direction: column; gap: 1.8mm; }
+.sn-body p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.2pt; line-height: 1.55; text-align: justify; }
+.sn-body .sn-tags { font: 600 9pt "Source Sans 3", sans-serif; color: #2F7FC1; text-align: left; }
+.sn-body .sn-tags span { margin-right: 1.6mm; }
+.sn-like { margin: 2mm 5mm 1.2mm; padding-top: 1.6mm; border-top: .3mm solid #EEF0F3; font: 600 8.8pt "Source Sans 3", sans-serif; color: #E0567A; }
+.sn-like span { color: #7A8494; margin-left: 3mm; font-weight: 400; }
+.sn-cm { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; gap: 1mm; padding: 0 5mm 2.4mm; }
+.sn-c { display: flex; gap: 2mm; align-items: flex-start; }
+.sn-c.re { margin-left: 8.6mm; }
+.sn-c p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; line-height: 1.42; }
+.sn-c b { font-family: "Source Sans 3", sans-serif; font-size: 8.8pt; color: #1F2733; margin-right: 1mm; }
+
+/* 실용문 ‘전시 안내 리플릿’ 판면 (rlib.leaflet_html, Reading 2 Unit 7 지문 ③, 2026-11-02) */
+.leaflet { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.lf-head { padding: 3.2mm 6mm 3mm; background: linear-gradient(120deg, #3B2A7A 0%, #2F6FD0 55%, #22A6B3 100%); color: #fff; }
+.lf-kick { font: 600 8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: #D9E6FF; }
+.lf-head h3 { margin: .6mm 0 0; font: 800 20pt/1.1 var(--f-en-display); letter-spacing: .01em; }
+.lf-lead { margin: 1.4mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.2pt; line-height: 1.5; color: #F2F6FF; }
+.lf-info { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 4mm; padding: 2.4mm 6mm; background: #F3F7FD; border-bottom: .3mm solid var(--c-sky-line); }
+.lf-i { display: flex; gap: 2mm; align-items: baseline; font-family: "Source Sans 3", sans-serif; }
+.lf-i span { flex: none; width: 13mm; font-size: 8pt; font-weight: 700; letter-spacing: .06em; color: var(--c-main-deep); text-transform: uppercase; }
+.lf-i b { font-size: 9.4pt; font-weight: 600; color: var(--c-navy); }
+.lf-zones { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; padding: 3mm 5mm; }
+.lf-z { border: .3mm solid #E1E7F0; border-top: 1.2mm solid var(--c-main); border-radius: 1.4mm; padding: 2mm 2.6mm 2.4mm; display: flex; flex-direction: column; }
+.lf-z:nth-child(2) { border-top-color: #6C5BD8; }
+.lf-z:nth-child(3) { border-top-color: #22A6B3; }
+.lf-rn { font: 700 7.8pt "Source Sans 3", sans-serif; letter-spacing: .1em; color: #8A94A6; text-transform: uppercase; }
+.lf-z h4 { margin: .4mm 0 1.2mm; font: 700 11.4pt/1.2 var(--f-en-display); color: var(--c-navy); }
+.lf-z p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; line-height: 1.5; text-align: left; }
+.lf-note { margin: 0 5mm 2.4mm; padding: 2mm 4mm; background: #FFF4E8; border: .3mm solid #FFC48F; border-radius: 1.6mm; }
+.lf-nl { font: 700 8.4pt "Source Sans 3", sans-serif; letter-spacing: .08em; color: #C85A12; }
+.lf-note ul { margin: .6mm 0 0; padding-left: 4.6mm; }
+.lf-note li { font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; line-height: 1.45; }
+.lf-foot { margin: 0; padding: 2.2mm 6mm; background: var(--c-navy); color: #fff; font: 600 9.8pt "Source Sans 3", sans-serif; text-align: center; }
+
+/* 실용문 ‘레시피 카드’ 판면 (rlib.recipe_html, Reading 2 Unit 8 지문 ③, 2026-11-03) */
+.recipe { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #FFFDF7; border: .35mm solid #F2C98A; border-radius: 2mm; overflow: hidden; }
+.rc-head { padding: 3mm 6mm 2.6mm; background: linear-gradient(120deg, #FF8A3D 0%, #F25F7A 55%, #8E5BD8 100%); color: #fff; }
+.rc-kick { font: 600 8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: #FFE9D6; }
+.rc-head h3 { margin: .6mm 0 0; font: 800 20pt/1.1 var(--f-en-display); letter-spacing: .01em; }
+.rc-lead { margin: 1.2mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.2pt; line-height: 1.5; color: #FFF6EE; }
+.rc-info { display: flex; gap: 2mm; margin-top: 1.8mm; }
+.rc-i { display: inline-flex; align-items: baseline; gap: 1.4mm; padding: .5mm 2.6mm; background: rgba(255,255,255,.2); border-radius: 3mm; font: 600 9.2pt "Source Sans 3", sans-serif; }
+.rc-i small { font-size: 7.4pt; letter-spacing: .08em; text-transform: uppercase; color: #FFE9D6; }
+.rc-body { flex: 1; display: grid; grid-template-columns: 38mm 1fr; gap: 4mm; padding: 3mm 5mm 2.4mm; }
+.rc-lb { font: 700 8.4pt "Source Sans 3", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #C2410C; }
+.rc-ing { padding: 2mm 3mm; background: #FFF1DE; border-radius: 1.6mm; align-self: start; }
+.rc-ing ul { margin: 1mm 0 0; padding-left: 4mm; }
+.rc-ing li { font: 600 9.6pt/1.55 "Source Sans 3", sans-serif; color: var(--c-navy); }
+.rc-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 1.6mm; }
+.rc-steps li { display: flex; gap: 2.4mm; align-items: flex-start; }
+.rc-n { flex: none; width: 5.6mm; height: 5.6mm; margin-top: .4mm; border-radius: 50%; background: #FF8A3D; color: #fff; font: 700 9pt/5.6mm "Source Sans 3", sans-serif; text-align: center; }
+.rc-steps p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; line-height: 1.5; text-align: left; }
+.rc-tip { margin: 0 5mm 2.4mm; padding: 2mm 4mm; background: #F3EEFF; border: .3mm solid #C9B6F2; border-radius: 1.6mm; }
+.rc-tip .rc-lb { color: #6D3FC7; }
+.rc-tip p { margin: .6mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.8pt; line-height: 1.5; text-align: left; }
+.rc-foot { margin: 0; padding: 2.2mm 6mm; background: var(--c-navy); color: #fff; font: 600 10pt "Source Sans 3", sans-serif; text-align: center; }
+
+/* Focus Reading 두 줄 문장(rd-fit.js fitSentences, 2026-11-03 — Unit 8부터 문장이 길어짐): 줄 사이를 넓혀 첫 줄 아래에도 우리말을 쓸 자리,
+   그래도 쪽이 넘치면 .sts.dense로 한마디로 칸 · 쓰는 줄을 촘촘하게 */
+.st .ch.whole.two .e { line-height: 2.25; }
+.st .ch.whole.two .b { margin-top: .2mm; }
+.sts.dense .st .ch .b { height: 3.8mm; margin-top: .4mm; }
+.sts.dense .st .one { margin-top: 1mm; }
+.sts.dense .st .one span { height: 3.8mm; }
+.sts.dense .st.flowmap .row { gap: .6mm; }
+
+/* 실용문 ‘일정표’ 판면 (rlib.schedule_html, Reading 2 Unit 9 지문 ③, 2026-11-03) */
+.sched { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.sc-head { position: relative; padding: 3mm 6mm 2.6mm; background: linear-gradient(120deg, #0F766E 0%, #2F8FD0 60%, #4F6BD8 100%); color: #fff; }
+.sc-kick { font: 600 8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: #D6F3EF; }
+.sc-head h3 { margin: .6mm 0 0; font: 800 20pt/1.1 var(--f-en-display); letter-spacing: .01em; }
+.sc-dates { position: absolute; right: 6mm; top: 3.4mm; padding: .5mm 2.6mm; background: rgba(255,255,255,.2); border-radius: 3mm; font: 700 9pt "Source Sans 3", sans-serif; }
+.sc-lead { margin: 1.2mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.5; color: #F2FBFA; }
+.sc-days { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.6mm; padding: 2.8mm 4mm 2.2mm; }
+.sc-d { border: .3mm solid #DCE6F0; border-radius: 1.4mm; display: flex; flex-direction: column; overflow: hidden; }
+.sc-dh { display: flex; align-items: baseline; gap: 1.6mm; padding: 1mm 2.4mm; background: #EAF4FB; }
+.sc-dh b { font: 800 11pt var(--f-en-display); color: var(--c-navy); }
+.sc-dh span { font: 600 8.4pt "Source Sans 3", sans-serif; color: #5B6B80; }
+.sc-d:nth-child(2) .sc-dh { background: #E8F7F2; } .sc-d:nth-child(3) .sc-dh { background: #EEEBFB; }
+.sc-d table { border-collapse: collapse; margin: 1mm 2mm 0; }
+.sc-d th { width: 10mm; padding: .35mm 1.4mm .35mm 0; text-align: left; vertical-align: top; font: 700 8.4pt "Source Sans 3", sans-serif; color: var(--c-main-deep); white-space: nowrap; }
+.sc-d td { padding: .25mm 0; font: 500 8.4pt/1.25 "Source Sans 3", sans-serif; color: var(--c-navy); }
+.sc-memo { margin: auto 2mm 1.4mm; padding: 1.2mm 1mm 0; border-top: .3mm dashed #C8D4E2; font-family: "Source Serif 4", Georgia, serif; font-size: 10.2pt; line-height: 1.45; text-align: left; }
+.sc-notes { margin: 0 4mm 1.6mm; padding: 1.6mm 3.4mm; background: #FFF4E8; border: .3mm solid #FFC48F; border-radius: 1.6mm; }
+.sc-notes ul { margin: .6mm 0 0; padding-left: 4.2mm; column-count: 2; column-gap: 6mm; }
+.sc-notes li { break-inside: avoid; font-family: "Source Serif 4", Georgia, serif; font-size: 10.2pt; line-height: 1.42; margin-bottom: .6mm; text-align: left; }
+.sc-lb { font: 700 8.4pt "Source Sans 3", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #C85A12; }
+.sc-bring { margin: 0 4mm 2mm; padding: 1.2mm 3.4mm; background: #F3F7FD; border: .3mm solid var(--c-sky-line); border-radius: 1.6mm; font: 600 9pt "Source Sans 3", sans-serif; color: var(--c-navy); }
+.sc-bring .sc-lb { color: var(--c-main-deep); margin-right: 2.4mm; }
+.sc-foot { margin: 0; padding: 2.2mm 6mm; background: var(--c-navy); color: #fff; font: 600 9.8pt "Source Sans 3", sans-serif; text-align: center; }
+.sts.dense .st .ch.whole.two .e { line-height: 2.05; }
+
+/* 실용문 ‘도표 + 설문 기사’ 판면 (rlib.chart_html, Reading 2 Unit 10 지문 ③, 2026-11-03) — 막대는 판면 요소(숫자를 정확히) */
+.chart { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.ch-head { padding: 3mm 6mm 2.6mm; border-bottom: .9mm solid var(--c-navy); }
+.ch-kick { font: 700 8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: var(--c-main-deep); }
+.ch-head h3 { margin: .6mm 0 0; font: 800 19pt/1.12 var(--f-en-display); color: var(--c-navy); }
+.ch-box { margin: 3mm 6mm 0; padding: 2.6mm 4mm 2.8mm; background: #F5F8FC; border: .3mm solid #DCE6F0; border-radius: 1.6mm; }
+.ch-q { margin: 0 0 1.8mm; font: 700 10pt "Source Sans 3", sans-serif; color: var(--c-navy); }
+.ch-q small { margin-left: 2.4mm; font-weight: 500; font-size: 8.4pt; color: #6B7686; }
+.ch-r { display: grid; grid-template-columns: 30mm 1fr 9mm; align-items: center; gap: 2mm; margin: 1.3mm 0; }
+.ch-l { font: 600 9.2pt "Source Sans 3", sans-serif; color: var(--c-navy); text-align: right; }
+.ch-t { height: 5.2mm; background: #E6ECF4; border-radius: 1mm; overflow: hidden; }
+.ch-b { display: block; height: 100%; background: linear-gradient(90deg, #2F8FD0, #4F6BD8); border-radius: 1mm; }
+.ch-r:nth-child(2) .ch-b { background: linear-gradient(90deg, #FF8A3D, #F25F7A); }
+.ch-v { font: 800 10pt "Source Sans 3", sans-serif; color: var(--c-navy); }
+.ch-body { flex: 1; margin: 3mm 6mm 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11.4pt; line-height: 1.62; text-align: justify; }
+.ch-by { margin: 2mm 6mm 2.6mm; font: 600 8.6pt "Source Sans 3", sans-serif; color: #6B7686; text-align: right; }
+
+/* 실용문 ‘찬반 토론 카드’ 판면 (rlib.debate_html, Reading 2 Unit 11 지문 ③, 2026-11-03) */
+.debate { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid var(--c-sky-line); border-radius: 2mm; overflow: hidden; }
+.db-head { padding: 3mm 6mm 2.8mm; background: #F3F6FB; border-bottom: .3mm solid var(--c-sky-line); text-align: center; }
+.db-kick { font: 700 8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: var(--c-main-deep); }
+.db-head h3 { margin: .8mm 0 0; font: 800 18pt/1.15 var(--f-en-display); color: var(--c-navy); }
+.db-lead { margin: 1.2mm 0 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.45; }
+.db-sides { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; padding: 3.4mm 5mm; }
+.db-s { display: flex; flex-direction: column; border-radius: 1.8mm; padding: 2.6mm 3.4mm 3mm; }
+.db-s.pro { background: #EAF6FF; border: .3mm solid #A9D3F5; } .db-s.con { background: #FFF1E8; border: .3mm solid #FFC7A3; }
+.db-h { display: flex; align-items: center; gap: 2mm; margin-bottom: 1.6mm; }
+.db-k { padding: .4mm 2.4mm; border-radius: 3mm; color: #fff; font: 800 8.6pt "Source Sans 3", sans-serif; letter-spacing: .08em; }
+.db-s.pro .db-k { background: #2F8FD0; } .db-s.con .db-k { background: #F07A3A; }
+.db-h b { font: 700 11pt var(--f-en-display); color: var(--c-navy); }
+.db-s p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.58; text-align: left; }
+.db-foot { margin: 0; padding: 2.4mm 6mm; background: var(--c-navy); color: #fff; font: 600 10pt "Source Sans 3", sans-serif; text-align: center; }
+
+/* 실용문 ‘백과사전 항목’ 판면 (rlib.ency_html, Reading 2 Unit 12 지문 ③, 2026-11-03) */
+.ency { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: 2.5mm; background: #fff; border: .35mm solid #C9D2DE; border-radius: 1.4mm; overflow: hidden; }
+.ec-head { padding: 2.8mm 6mm 2.2mm; border-bottom: .3mm solid #C9D2DE; }
+.ec-kick { font: 700 7.8pt "Source Sans 3", sans-serif; letter-spacing: .12em; color: #6B7686; }
+.ec-head h3 { margin: .6mm 0 0; font: 400 21pt/1.15 "Source Serif 4", Georgia, serif; color: #1F2733; }
+.ec-sub { margin: .4mm 0 0; font: italic 400 10pt "Source Serif 4", Georgia, serif; color: #5B6575; }
+.ec-body { flex: 1; padding: 2.4mm 6mm 2mm; }
+.ec-info { float: right; width: 44mm; margin: 0 0 2mm 4mm; border-collapse: collapse; background: #F6F8FB; border: .3mm solid #C9D2DE; font: 500 8.4pt/1.35 "Source Sans 3", sans-serif; }
+.ec-info caption { padding: 1.2mm; background: #DDE6F2; font: 700 9pt "Source Sans 3", sans-serif; color: #1F2733; border: .3mm solid #C9D2DE; border-bottom: 0; }
+.ec-info th { width: 17mm; padding: .8mm 1.6mm; text-align: left; vertical-align: top; color: #5B6575; border-top: .3mm solid #E2E8F0; }
+.ec-info td { padding: .8mm 1.6mm; color: #1F2733; border-top: .3mm solid #E2E8F0; }
+.ec-body h4 { margin: 2mm 0 .8mm; padding-bottom: .5mm; border-bottom: .3mm solid #D5DCE6; font: 600 11pt "Source Serif 4", Georgia, serif; color: #1F2733; }
+.ec-body h4:first-of-type { margin-top: 0; }
+.ec-body p { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; line-height: 1.58; text-align: left; }
+.ec-see { margin: 0; padding: 1.8mm 6mm; background: #F3F6FA; border-top: .3mm solid #C9D2DE; font: 600 8.8pt "Source Sans 3", sans-serif; color: #3D5A80; }
+
+/* Reading 2 미니 실전 TEST(2026-11-03): 지문이 Reading 1보다 길어(99~123단어) 쪽마다 3문항이 두 단에 들어가게 시험지처럼 글자를 조금 줄임 */
+.wb2.mt .rq .qbox { font-size: 9.6pt; line-height: 1.5; padding: 2.2mm 3mm; }
+.wb2.mt .rq .stem p { font-size: 9.4pt; }
+.wb2.mt .rq .opts { font-size: 9.4pt; row-gap: .8mm; }
+.wb2.mt { margin-top: 1.4mm; }
+.page-body:has(> .wb2.mt) > .wb-info { margin-top: 1.4mm; padding-top: 1.2mm; padding-bottom: 1.2mm; }
+.page-body:has(> .wb2.mt) .rd-qhead { margin-bottom: 0; }
