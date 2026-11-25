@@ -3,6 +3,143 @@
    단이 넘치면 다음 단, 두 단이 다 차면 새 쪽을 만든다.
    .keep-next 블록(소제목 등)은 다음 블록과 떨어지지 않게 함께 넘긴다. */
 (function () {
+  // 줄인 판(2026-11-22): 원고는 그대로 두고 그릴 때만 줄인다.
+  //  ① check up 문항별 풀이 → 위 ‘check up 정답’ 표 + 판단법만  ② 짧은 해석은 정답 줄에 이어서
+  //  ③ 단서 · 규칙 · 그래서 꼬리표를 떼고 한 문단으로, 정답을 되풀이하는 ‘그래서’는 뺌
+  //  ④ 이유 없이 틀린 꼴만 적힌 오답 풀이, 앞 문항과 같은 이유 · 이름표와 같은 ☞ POINT는 뺌  ⑤ 앞 문항과 같은 이름표(POINT · 쪽)는 한 번만  ⑥ ‘어휘’ 줄
+  //  ⑦ 정답이 영어 문장인 문항의 해석(영작 · 배열) · 서술형 채점 기준 상자  ⑧ 동그라미 숫자는 조금 크게
+  function norm(t) { return (t || '').replace(/[\s`'’".,·→()~\[\]—\-+:;!?]/g, '').toLowerCase(); }
+  function slim(src) {
+    document.documentElement.classList.add('ak-slim');
+    var inCu = false, qp = {}, lastTag = '', lastWr = '';
+    Array.prototype.slice.call(src.children).forEach(function (it) {
+      if (it.classList.contains('ak-sec')) { inCu = false; qp = {}; lastTag = ''; lastWr = ''; return; }
+      if (it.classList.contains('ak-quick')) {            // ‘check up 정답’ 표에 실린 본책 쪽(row 이름의 p.N)
+        if (/check up/i.test((it.querySelector('.hd') || it).textContent))
+          it.querySelectorAll('.row-lbl').forEach(function (l) { var m = l.textContent.match(/p\.\s*(\d+)/); if (m) qp[m[1]] = 1; });
+        return;
+      }
+      if (it.classList.contains('ak-sub')) {               // POINT check up이고 그 쪽 정답이 표에 있을 때만 문항 풀이를 뺌(Key는 둠)
+        var pg = (it.textContent.match(/본책 p\.\s*(\d+)/) || [])[1];
+        inCu = /POINT[^]*check up/i.test(it.textContent) && !!qp[pg]; lastTag = ''; lastWr = ''; return;
+      }
+      if (!it.classList.contains('ak-item')) return;
+      var head = it.querySelector(':scope > .ak-head');
+      if (!head) return;
+      if (inCu) { it.remove(); return; }
+      var ansEl = head.querySelector('.ak-ans'), ans = norm(ansEl ? ansEl.textContent : '');
+      var tagEl = head.querySelector('.ak-tag'), tag = tagEl ? tagEl.textContent : '';
+      if (tagEl && tag === lastTag) { tagEl.remove(); tagEl = null; } else if (tag) lastTag = tag;   // ⑤ 앞 문항과 같은 이름표는 한 번만
+      // ② 해석 → 정답 줄 (정답이 영어 문장이면 — 영작 · 배열 · 문장 쓰기 — 문제에 있는 우리말이라 뺌)
+      var trk = it.querySelector(':scope > p > .k.tr');
+      var ansT = ansEl ? ansEl.textContent.trim() : '';
+      if (trk && trk.textContent.trim() === '해석' && /^[A-Z][^가-힣]*[.?!]$/.test(ansT) && ansT.split(/\s+/).length >= 4) { trk.parentNode.remove(); trk = null; }
+      // ⑦ 서술형 채점 기준 · 채점 예시 상자는 뺌
+      it.querySelectorAll('.ak-box.score').forEach(function (x) { x.remove(); });
+      if (trk && trk.textContent.trim() === '해석' && !trk.parentNode.querySelector('br, .o')
+          && trk.parentNode.textContent.length <= 70) {              // 선택지 해석처럼 긴 것은 제 줄에 둠
+        var trp = trk.parentNode; trk.remove();
+        var sp = document.createElement('span'); sp.className = 'ak-trh';
+        while (trp.firstChild) sp.appendChild(trp.firstChild);
+        head.insertBefore(sp, tagEl || null); trp.remove();
+      }
+      // ③ 해설 한 문단
+      it.querySelectorAll(':scope > p > .k.ex').forEach(function (k) {
+        if (k.textContent.trim() !== '해설') return;
+        var p = k.parentNode; k.remove();
+        var segs = [[]];
+        Array.prototype.slice.call(p.childNodes).forEach(function (n) {
+          if (n.nodeName === 'BR') segs.push([]); else segs[segs.length - 1].push(n);
+        });
+        p.innerHTML = '';
+        var kept = 0;
+        segs.forEach(function (ns) {
+          var lab = ns[0] && ns[0].nodeName === 'B' && ns[0].classList.contains('why') ? ns[0].textContent.trim() : '';
+          if (lab) ns = ns.slice(1);
+          var box = document.createElement('span'); ns.forEach(function (n) { box.appendChild(n); });
+          var t = norm(box.textContent);
+          if (lab === '그래서' && kept && ans && t.indexOf(ans) >= 0 && t.replace(ans, '').length <= 15) return;
+          if (lab === '그래서' && kept && t.length <= 6) return;
+          if (!t) return;
+          if (kept) p.appendChild(document.createTextNode(' '));
+          while (box.firstChild) p.appendChild(box.firstChild);
+          kept++;
+        });
+        if (!kept) p.remove();
+      });
+      // ⑥ ‘어휘’ 줄은 뺌(2026-11-22 사용자: 어휘 파트는 없어도 됨)
+      it.querySelectorAll(':scope > p > .k.vc').forEach(function (k) { k.parentNode.remove(); });
+      // ④ 오답 풀이
+      it.querySelectorAll(':scope > p > .k.wr').forEach(function (k) {
+        if (k.textContent.trim() !== '오답 풀이') return;
+        var p = k.parentNode;
+        var m = tag.match(/POINT\s*\d+/);
+        if (m) p.innerHTML = p.innerHTML.replace(new RegExp('\\s*☞\\s*' + m[0].replace(/\s+/, '\\s*') + '\\s*(\\((본책|워크북)?\\s*p\\.\\s*\\d+(~\\d+)?\\))?', 'g'), '');
+        var c = p.cloneNode(true); c.querySelectorAll('.k, .ak-x, .en').forEach(function (e) { e.remove(); });
+        if (!/[가-힣]/.test(c.textContent)) { p.remove(); return; }
+        var why = norm(c.textContent);
+        if (why === lastWr) { p.remove(); return; }                // 앞 문항과 같은 이유면 한 번만
+        lastWr = why;
+        p.querySelector('.k.wr').textContent = '오답';
+      });
+    });
+    // 채점 상자만 있던 블록은 지운다
+    src.querySelectorAll(':scope > .ak-item').forEach(function (it) {
+      var sc = it.querySelectorAll('.ak-box.score'); if (!sc.length) return;
+      sc.forEach(function (x) { x.remove(); });
+      if (!it.textContent.trim()) it.remove();
+    });
+    wrapCnum(src);
+    // 문항이 다 빠져 비어 버린 check up 소제목은 지운다(정답은 위 ‘check up 정답’ 표에)
+    Array.prototype.slice.call(src.children).forEach(function (el) {
+      if (!el.classList.contains('ak-sub') || !/POINT[^]*check up/i.test(el.textContent)) return;
+      var nx = el.nextElementSibling;
+      if (!nx || nx.classList.contains('ak-sub') || nx.classList.contains('ak-sec')) el.remove();
+    });
+  }
+  function wrapCnum(src) {
+    // 동그라미 숫자(정답 ①~⑳)를 조금 크게 — 글꼴 안의 원문자가 작아서
+    var tw = document.createTreeWalker(src, NodeFilter.SHOW_TEXT), tn = [], nd;
+    while ((nd = tw.nextNode())) if (/[①-⑳]/.test(nd.nodeValue) && !nd.parentNode.closest('.ak-sec, .ak-sub, .pill')) tn.push(nd);   // 소제목(‘Reading ①’)은 그대로
+    tn.forEach(function (t) {
+      var f = document.createDocumentFragment();
+      t.nodeValue.split(/([①-⑳]+)/).forEach(function (part, i) {
+        if (!part) return;
+        if (i % 2) { var c = document.createElement('span'); c.className = 'cnum'; c.textContent = part; f.appendChild(c); }
+        else f.appendChild(document.createTextNode(part));
+      });
+      t.parentNode.replaceChild(f, t);
+    });
+  }
+  // 리딩 해설 줄인 판(2026-11-22 사용자): ① 흐름 지도의 영어 첫머리 · 기호 풀이 줄은 뺌, 뒤에 흐름 지도 빈칸 정답이 있는 지문은 흐름 줄도 뺌(가리키는 말은 둠)
+  //  ② 전체 해석(끊어 읽기 해석과 겹침) ③ 문항의 [제시문](본책 지문을 다시 옮긴 것) ④ 서술형 채점 기준 상자 ⑤ 지문마다 되풀이되는 안내(채점 · Focus Reading 첫머리)는 처음 한 번만
+  function slimReading(src) {
+    document.documentElement.classList.add('ak-slim');
+    var kids = Array.prototype.slice.call(src.children), secHasFm = [], si = -1;
+    kids.forEach(function (el) { if (el.classList.contains('ak-sec')) si++; if (si >= 0 && el.querySelector('.fm-a')) secHasFm[si] = true; });
+    si = -1; var seen = {};
+    kids.forEach(function (el) {
+      if (el.classList.contains('ak-sec')) { si++; return; }
+      if (el.classList.contains('ak-flow')) {
+        el.querySelectorAll('li > .en, .lgd').forEach(function (x) { x.remove(); });
+        if (secHasFm[si]) { var ul = el.querySelector('ul'); if (ul) ul.remove(); }
+        if (!el.textContent.trim()) { var prev = el.previousElementSibling; if (prev && prev.classList.contains('ak-sub')) prev.remove(); el.remove(); }
+        else { var hd = el.previousElementSibling; if (secHasFm[si] && hd && hd.classList.contains('ak-sub')) hd.firstChild.textContent = '가리키는 말'; }
+        return;
+      }
+      el.querySelectorAll('p').forEach(function (pp) {
+        var k = pp.querySelector(':scope > .k'); var t = k ? k.textContent.trim() : '';
+        if (t === '전체 해석' || t === '제시문') pp.remove();
+      });
+      el.querySelectorAll('.ak-box.score').forEach(function (x) { x.remove(); });
+      el.querySelectorAll('.ak-box.caution, .ak-leg > .nt').forEach(function (x) {
+        var key = x.textContent.replace(/\s+/g, '').slice(0, 40);
+        if (seen[key]) x.remove(); else seen[key] = 1;
+      });
+      if (el.classList.contains('ak-item') && !el.textContent.trim()) el.remove();
+    });
+    wrapCnum(src);
+  }
   function build() {
     var src = document.getElementById('ak-source');
     if (!src) return;
@@ -23,6 +160,13 @@
         }
       });
     }
+    // 2026-11-22 사용자: ‘해설지가 너무 두껍다’ → 문법 교재 해설은 기본으로 줄인 판(?full이면 예전 판).
+    if (!document.documentElement.classList.contains('ak-short') && !/[?&]full\b/.test(location.search)
+        && /\/(book|book2|book3|book-noun|book-prep)\/answers\//.test(location.pathname)) slim(src);
+    if (!document.documentElement.classList.contains('ak-short') && !/[?&]full/.test(location.search)
+        && /\/reading[123]\/answers\//.test(location.pathname)) slimReading(src);
+    // Reading Junior(2026-11-24 사용자): 처음부터 줄인 판이라 내용은 그대로 두고, 문항 번호 옆 ‘정답’ 상자를 빼고(CSS) 동그라미 정답 숫자만 크게
+    if (/\/reading-junior\/answers\//.test(location.pathname)) { document.documentElement.classList.add('ak-jr'); wrapCnum(src); }
     var book = document.querySelector('main.book');
     var pageNo = parseInt(src.dataset.startPage || '2', 10);
     var chapterHtml = src.dataset.chapter || '';

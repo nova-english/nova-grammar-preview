@@ -1,0 +1,107 @@
+/* Nova Vocabulary 정답 및 해설: book.css의 ak-* 판 위에 더하는 것 */
+.ak-chk { padding: 1mm 0 1.1mm; border-bottom: 1px dotted #D5E1EE; break-inside: avoid; }
+.ak-chk p { margin: 0; }
+.ak-chk .en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.4pt; line-height: 1.45; }
+.ak-chk .ko { font-size: 8.6pt; color: #56625C; line-height: 1.45; }
+.ak-chk .sl { color: var(--c-main-deep); font-weight: 700; }
+.ak-chk u { text-decoration-thickness: .3mm; text-underline-offset: .5mm; font-weight: 600; }
+.ak-chk sup, .ak-item sup { color: var(--c-main-deep); font-family: var(--f-body); font-size: 7pt; }
+.ak-col > .ak-chk + .ak-chk { margin-top: 0; }
+b.ok { color: var(--c-main-deep); }
+.ak-item .en { font-family: "Source Serif 4", Georgia, serif; }
+.ak-item .alt { font-size: 8.8pt; }
+.ak-item .why { min-width: 11mm; }
+.ak-full { font-size: 8.4pt; color: #3E4A44; line-height: 1.6; }
+.k.rv { background: var(--c-lime); }
+.ak-rev { font-size: 8.4pt; }
+/* 종이 아끼기 · 간격 (2026-11-18) */
+.ak-item .why { min-width: 0; margin-right: 1.4mm; }
+.ak-quick .grid.c4 { grid-template-columns: repeat(4, auto); justify-content: space-between; column-gap: 2.4mm; }
+.ak-quick .grid .wide { grid-column: 1 / -1; }
+.ak-tag { font-size: 8pt; } .ak-tag .tn { font-size: 11.5pt; font-weight: 700; color: var(--c-main-deep); vertical-align: -.4mm; margin-left: .6mm; }
+.ak-no.wd { font-size: 10pt; margin-right: .6mm; }
+.ak-chk { padding: .7mm 0 .8mm; }
+.ak-item p { margin-top: .3mm; line-height: 1.5; }
+.ak-item + .ak-item { margin-top: 1.3mm; }
+.ak-head { flex-wrap: nowrap; } .ak-head > span:not(.ak-no):not(.ak-tag) { min-width: 0; }
+.ak-no { white-space: nowrap; }
+.ak-chk { padding: .5mm 0 .6mm; }
+.ak-chk .en, .ak-chk .ko { line-height: 1.38; }
+/* 해설 할 일 번호 (본책과 같은 1·2·3·4, 2026-11-18) */
+.ak-task { display: flex; align-items: center; font-weight: 700; color: var(--c-navy); font-size: 9pt; margin-top: 2.2mm; }
+.ak-task .cn { width: 4.4mm; height: 4.4mm; font-size: 7.4pt; margin-right: 1.4mm; }
+.ak-task small { font-weight: 400; color: var(--c-sub); font-size: 7.6pt; margin-left: 2mm; }
+/* 짧은 문장은 영어 옆에 해석(종이 아끼기, 2026-11-18) */
+.ak-chk { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 3mm; }
+.ak-chk p { flex: 0 1 auto; }
+.ak-quick .grid.c4 { font-size: 8.2pt; column-gap: 1.6mm; } .ak-quick .grid span { white-space: nowrap; } .ak-quick .row-lbl small { font-weight: 400; color: var(--c-sub); }
+.ak-task + .ak-item { margin-top: .8mm; } .ak-sub + .ak-item, .ak-sub + .ak-task, .ak-sub + .ak-chk { margin-top: 1.4mm; } .ak-item + .ak-task, .ak-item + .ak-sub, .ak-chk + .ak-task { margin-top: 2.2mm; }
+/* 정답 한눈에: 4칸 고르게, 긴 답은 칸 안에서 줄바꿈(넘침 고침, 2026-11-18) */
+.ak-quick .grid.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); justify-content: stretch; }
+.ak-quick .grid span { white-space: normal; overflow-wrap: anywhere; }
+.ak-quick .grid span.wide { grid-column: 1 / -1; }
+/* 정답 한눈에 한 줄 판 (2026-11-18) */
+.ak-quick .aq-rows { font-size: 8.3pt; }
+.ak-quick .aq-row { display: flex; align-items: baseline; padding: .45mm 0; border-top: 1px dotted #D5E1EE; }
+.ak-quick .aq-row:first-child { border-top: 0; }
+.ak-quick .aq-l { flex: none; width: 17mm; font-weight: 700; color: var(--c-navy); font-size: 7.6pt; }
+.ak-quick .aq-c { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; column-gap: 3.2mm; row-gap: .2mm; }
+.ak-quick .aq-c b { color: var(--c-main); font-family: var(--f-en-display); font-weight: 600; margin-right: 1mm; }
+/* 해설 쪽 제목을 본책 쪽 머리처럼: 주황 번호 동그라미 + 영어 이름 + 우리말 (2026-11-18) */
+.ak-sub.vt { border-left: 0; padding: 0 0 1mm; border-bottom: .45mm solid var(--c-main); gap: 1.8mm; }
+.ak-sub.vt .sn { flex: none; width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--c-lime); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 9.5pt; display: grid; place-items: center; }
+.ak-sub.vt .en { font-family: var(--f-en-display); font-weight: 700; font-size: 13pt; line-height: 1; color: var(--c-navy); }
+.ak-sub.vt .ko { font-family: var(--f-ko-display); font-weight: 400; font-size: 10pt; line-height: 1; color: var(--c-main-deep); }
+.ak-task .lt { display: inline-grid; place-items: center; min-width: 4.6mm; height: 4.6mm; border-radius: 1.1mm; background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 600; font-size: 7.8pt; margin-right: 1.4mm; }
+.ak-no .mn { display: inline-grid; place-items: center; width: 4.8mm; height: 4.8mm; border-radius: 50%; background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 8.6pt; line-height: 1; }
+.ak-head .ev { margin-left: 2.6mm; font-size: 8pt; font-weight: 600; color: var(--c-main); white-space: nowrap; } .ak-head .ev .en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; }
+/* 문항 번호 조금 작게 (2026-11-18 사용자) */
+.ak-no { font-size: 10pt; min-width: 4.4mm; } .ak-no.wd { font-size: 8.8pt; }
+.ak-head > .ht { min-width: 0; }
+.ak-item .why.in { margin-left: 1.6mm; }
+.ak-quick .aq-rows { font-size: 8pt; } .ak-quick .aq-l { width: 15mm; font-size: 7.3pt; } .ak-quick .aq-c { column-gap: 2.2mm; } .ak-quick .aq-c b { margin-right: .7mm; }
+/* 빈칸 정답: 진하게 + 밑줄 (2026-11-19 사용자: 검정과 차이가 안 남) */
+b.fa { color: #164A7E; font-weight: 700; text-decoration: underline; text-decoration-thickness: .35mm; text-underline-offset: .7mm; text-decoration-color: #2F6FB5; }
+.fxx { color: #A0453F; text-decoration: line-through; }
+/* 핵심 잇기 · 처음 보는 뜻을 더한 뒤에도 Unit당 해설 2쪽 (2026-11-19) */
+.ak-item p { line-height: 1.43; } .ak-item + .ak-item { margin-top: 1mm; } .ak-chk .en, .ak-chk .ko { line-height: 1.33; }
+/* 나만의 문장 이름표는 본책 ‘나만의 문장 만들기’와 같은 주황 띠(2026-11-19 사용자) */
+.ak-no .nw { display: inline-block; font-family: var(--f-body); font-size: 7.6pt; font-weight: 700; color: #fff; background: var(--c-lime); border-radius: 1mm; padding: 0 1.4mm; line-height: 1.5; }
+/* 다른 정답 이름표도 나만의 문장과 같은 작은 글씨(2026-11-19 사용자) — .ak-item .alt 8.8pt를 이름표에는 쓰지 않음 */
+.ak-item .k.alt { font-family: var(--f-body); font-size: 7.6pt; padding: 0 1.4mm; border-radius: 1mm; vertical-align: 0; }
+/* REVIEW D 해설: 빈칸 번호를 정답 왼쪽 위에(2026-11-20 사용자) */
+.ak-chk sup.rv-n { margin-right: .4mm; color: var(--c-main-deep); }
+.ak-chk .rv-na { white-space: nowrap; }
+
+/* 해설 여러 가지 뜻(2026-11-21 사용자): 번호 동그라미를 작게, 해석 · 왜? 줄을 뜻 글자 시작점에 맞춤(번호 4mm + 사이 1.6mm) */
+.ak-item.mp .ak-no { min-width: 0; }
+.ak-item.mp .ak-no .mn { width: 4mm; height: 4mm; font-size: 7.4pt; vertical-align: .2mm; }
+.ak-item.mp > p { padding-left: 5.6mm; }
+.ak-item.mp > p.wy { display: flex; align-items: baseline; }
+.ak-item.mp > p.wy .why { flex: none; }
+/* Nova Vocabulary 1 */
+.ak-src { font-size: 8pt; color: var(--c-sub); margin: 1.6mm 0 0; }
+.ak-src b { color: var(--c-main-deep); margin-right: 1.4mm; }
+.ak-sub .ko .en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; color: var(--c-navy); }
+/* 2026-11-23 사용자: 해설 글자 겹침 고침 */
+.ak-no.wd { flex: none; margin-right: 1.6mm; }          /* ‘나만의 문장’ 이름표가 예시 글을 덮던 것 */
+.ak-task { flex-wrap: wrap; align-items: center; }       /* 할 일 제목이 설명 때문에 두 줄로 접히던 것 → 설명을 아래 줄로 */
+.ak-task small { flex-basis: 100%; margin: .5mm 0 0 6mm; line-height: 1.45; }
+.ak-sub.vt { flex-wrap: wrap; row-gap: .6mm; }           /* WORD PICTURE 머리가 두 줄로 접히던 것 */
+.ak-sub.vt .en { font-size: 11.6pt; white-space: nowrap; }
+.ak-sub.vt .ko { font-size: 9.4pt; white-space: nowrap; }
+.ak-sub.vt .go { white-space: nowrap; }
+.ak-quick .aq-l { width: 19.5mm; padding-right: 1.4mm; white-space: nowrap; }
+/* 끊어 읽기에 근거 표시(2026-11-23 사용자): 뜻 번호 근거는 주황 밑줄, 빈칸 근거는 둥근 점선 테 */
+.ak-chk .evu { text-decoration: underline; text-decoration-color: var(--c-lime); text-decoration-thickness: .35mm; text-underline-offset: .9mm; text-decoration-skip-ink: none; }
+.ak-chk .evc { border: .3mm dashed var(--c-lime); border-radius: 2mm; padding: 0 .6mm; }
+/* 문항 번호 뒤 간격 좁게(2026-11-23 사용자: T/F 정답이 한 줄에) */
+.ak-head { gap: 1.1mm; }
+.ak-no { min-width: 3.6mm; }
+.ak-head .ev { white-space: normal; min-width: 0; } .ak-head .ak-tag { flex: none; margin-left: auto; padding-left: 2mm; }  /* 근거가 길면 줄을 바꿔 뜻 이름표와 겹치지 않게 */
+
+/* 영작 문항(FIRST TRY C · MAKE IT MINE 1, 2026-11-23 사용자): 영어 답 · 다른 정답 · 포인트를 우리말 문장 시작 자리에 맞추고 간격을 고르게 */
+.ak-item.wr .ak-no { flex: none; width: 5.6mm; min-width: 0; }
+.ak-item.wr > p { padding-left: 6.7mm; margin-top: .6mm; }
+.ak-item.wr > p.ak-ans { margin-top: .9mm; }
+.ak-item.wr > p.ak-ans { margin-top: .2mm; } .ak-item.wr > p { margin-top: .3mm; }

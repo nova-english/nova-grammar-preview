@@ -22,6 +22,8 @@
 .ak-chk .gp .k { display: inline-block; font-size: 7.4pt; font-weight: 700; color: #fff; background: var(--c-main-deep); border-radius: .8mm; padding: 0 1.2mm; margin-right: 1.4mm; }
 .ak-chk .gp b { color: var(--c-main-deep); }
 .ak-chk .gp .ak-ref { margin-left: 1.5mm; }
+.ak-chk .nat { margin: .6mm 0 0; font-size: 8.4pt; line-height: 1.45; color: var(--c-navy); }   /* 2026-11-24: 뒤 수식으로 우리말 순서가 뒤집히는 문장은 정확한 해석 한 줄 */
+.ak-chk .nat .k { display: inline-block; font-size: 7.4pt; font-weight: 700; color: var(--c-navy); background: var(--c-lime-pale); border-radius: .8mm; padding: 0 1.2mm; margin-right: 1.4mm; }
 
 /* 흐름 지도 · 가리키는 말 · 보기 없는 빈칸 답 (2026-10-31) */
 .ak-flow ul { list-style: none; margin: 0; padding: 0; }

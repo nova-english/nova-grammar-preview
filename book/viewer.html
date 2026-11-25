@@ -570,9 +570,16 @@
     'LEVEL 3': { series: 'Nova Grammar', badge: '권장 중2 ~ 중3', t: 'Nova Grammar 3', d: '중3 문법 기준 · 고1 복습|영어를 잘하면 초6부터' },
     '명사와 관사': { series: 'Nova Grammar', badge: '권장 초5 ~ 중2', t: '명사와 관사', d: '별책 · 1권 다음에|영어를 잘하면 초4부터' },
     '전치사': { series: 'Nova Grammar', badge: '권장 초5 ~ 중2', t: '전치사', d: '별책 · 2권 전에|영어를 잘하면 초4부터' },
-    'Reading 1': { series: 'Nova Reading', badge: '권장 초6 ~ 중1', t: 'Nova Reading 1', d: '중1 독해 기준 · Grammar 1과 짝|영어를 잘하면 초5부터' },
-    'Reading 2': { series: 'Nova Reading', badge: '권장 중1 ~ 중2', t: 'Nova Reading 2', d: '중2 독해 기준 · Grammar 2와 짝|영어를 잘하면 초6부터' },
-    'Reading 3': { series: 'Nova Reading', badge: '권장 중2 ~ 중3', t: 'Nova Reading 3', d: '중3 독해 기준 · 고1 모의고사 입문|영어를 잘하면 중1부터' }
+    'Reading Junior': { series: 'Nova Reading', badge: '권장 초5 ~ 초6', t: 'Nova Reading Junior', d: '초등 고학년 독해 · Vocabulary Junior와 짝|영어를 잘하면 초4부터' },
+    'Reading 1': { series: 'Nova Reading', badge: '권장 초6 ~ 중1', t: 'Nova Reading 1', d: '중1 독해 기준 · Grammar 1 · Vocabulary 1과 짝|영어를 잘하면 초5부터' },
+    'Reading 2': { series: 'Nova Reading', badge: '권장 중1 ~ 중2', t: 'Nova Reading 2', d: '중2 독해 기준 · Grammar 2 · Vocabulary 2와 짝|영어를 잘하면 초6부터' },
+    'Reading 3': { series: 'Nova Reading', badge: '권장 중2 ~ 중3', t: 'Nova Reading 3', d: '중3 독해 · 고1 모의고사 입문 · Vocabulary 3과 짝|영어를 잘하면 중1부터' },
+    'Vocabulary Starter': { series: 'Nova Vocabulary', badge: '권장 초3 ~ 초4', t: 'Nova Vocabulary Starter', d: '초등 기초 어휘 · 그림으로 여러 뜻 잡기|파닉스를 뗐으면 초2부터' },
+    'Vocabulary Junior': { series: 'Nova Vocabulary', badge: '권장 초5 ~ 초6', t: 'Nova Vocabulary Junior', d: '초등 고학년 어휘 · Reading Junior와 짝|영어를 잘하면 초4부터' },
+    'Vocabulary 1': { series: 'Nova Vocabulary', badge: '권장 중1 ~ 중2', t: 'Nova Vocabulary 1', d: '기본 동사 짝 단어 24쌍 · Reading 1과 짝|영어를 잘하면 초6부터' },
+    'Vocabulary 2': { series: 'Nova Vocabulary', badge: '권장 중2 ~ 중3', t: 'Nova Vocabulary 2', d: '중급 다의어 · 시험 단골 짝 · Reading 2와 짝|영어를 잘하면 중1부터' },
+    'Vocabulary 3': { series: 'Nova Vocabulary', badge: '권장 중3 ~ 고1', t: 'Nova Vocabulary 3', d: '쉬운 단어의 수능 속 뜻 · Reading 3과 짝|영어를 잘하면 중2부터' },
+    'Vocabulary High': { series: 'Nova Vocabulary', badge: '권장 고1 ~ 고2', t: 'Nova Vocabulary High', d: '평가원 기출 다의어 48개|영어를 잘하면 중3부터' }
   };
   function card(vol, v) {
     var bk = vol.books[0], img = coverOf(bk), inf = INFO[vol.name] || { badge: '', t: vol.name, d: '' };

@@ -124,12 +124,47 @@
     apply(lo);
   }
 
+
+  // 줄 간격 밸런스(2026-11-22 사용자: 글이 빽빽하면 알아서 줄 간격 · 여백 밸런스) — 본책 쪽만, 간격을 나누기 전에
+  //  ① 왼쪽 칸 +α 상자(.side-plus): 아래 빈자리를 써서 줄 간격을 넓힘(1.95까지, 남은 자리의 40%는 남김)
+  //  ② 오른쪽 본문 설명 · 주의: 남은 자리가 10mm를 넘으면 줄 간격을 12%까지 넓힘(남은 자리의 절반까지만)
+  function lhOf(el) { var cs = getComputedStyle(el); var lh = parseFloat(cs.lineHeight), fs = parseFloat(cs.fontSize); return lh && fs ? lh / fs : 1.55; }
+  function grow(els, base, max, ok) {
+    if (!els.length) return;
+    var lo = 1, hi = max;
+    function set(k) { els.forEach(function (e, i) { e.style.lineHeight = (base[i] * k).toFixed(3); }); }
+    set(hi); if (ok()) return;
+    set(lo); if (!ok()) { els.forEach(function (e) { e.style.lineHeight = ''; }); return; }
+    for (var i = 0; i < 14; i++) { var mid = (lo + hi) / 2; set(mid); if (ok()) lo = mid; else hi = mid; }
+    set(lo);
+  }
+  function balance(body, limit) {
+    var b0 = bottomOf(body);
+    body.querySelectorAll('.point-box .side-plus').forEach(function (sp) {
+      var room = limit - sp.getBoundingClientRect().bottom;
+      if (room < 6 * MM) return;
+      var keepBody = Math.max(b0, limit - 0.4 * Math.max(0, limit - b0));
+      var base = [lhOf(sp)];
+      grow([sp], base, 1.95 / base[0], function () { return sp.getBoundingClientRect().bottom <= limit - 0.4 * room && bottomOf(body) <= keepBody + 0.5; });
+    });
+    var b1 = bottomOf(body), left = limit - b1;
+    if (left < 10 * MM) return;
+    var els = Array.prototype.slice.call(body.querySelectorAll('.point-row > :not(.point-box) .expl, .point-row > :not(.point-box) .caution'));
+    var base = els.map(lhOf);
+    grow(els, base, 1.12, function () { return bottomOf(body) <= limit - 0.5 * left; });
+  }
   function run() {
     var gap = cssMm('--fill-gap') * MM;
     document.querySelectorAll('.page').forEach(function (pg) {
       if (pg.matches('.opener, .ans-page, .no-fill')) return;
       var body = pg.querySelector('.page-body');
       if (!body) return;
+      body.querySelectorAll('.cu-item').forEach(function (c) {   // 칸보다 긴 check up 문항: 글자를 85%까지 줄여 한 줄에, 그래도 길면 두 줄로(2026-11-22)
+        if (c.scrollWidth - c.clientWidth <= 2) return;
+        var fs = parseFloat(getComputedStyle(c).fontSize);
+        for (var k = 0.97; k >= 0.849; k -= 0.03) { c.style.fontSize = (fs * k) + 'px'; if (c.scrollWidth - c.clientWidth <= 2) return; }
+        c.style.fontSize = ''; c.style.whiteSpace = 'normal';
+      });
       var vocab = body.querySelector(':scope > .vocab');
       var br = body.getBoundingClientRect();
       var limit = (vocab ? vocab.getBoundingClientRect().top : br.bottom) - gap;
@@ -137,6 +172,7 @@
       if (cols.length) {
         cols.forEach(function (c) { fill(c, limit); });
       } else {
+        if (!IS_WB) balance(body, limit);
         fill(body, limit);
       }
     });

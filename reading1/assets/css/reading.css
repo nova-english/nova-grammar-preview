@@ -779,3 +779,8 @@
 .easy .here { color: #3A3445; font-weight: 600; }
 /* 순서 · 문장 삽입: 맞은편 지문에 원래 문장이 있어 ‘지문을 덮고’ (2026-11-01) */
 .qcover { display: inline-block; font-size: 7.4pt; font-weight: 700; color: #8E5BC4; border: .3mm solid #8E5BC4; border-radius: 1.4mm; padding: 0 1.4mm; margin-right: 1.6mm; vertical-align: 1px; }
+
+/* 생략된 that — 회색 ∧접that(접속사) · ∧목관대(목적격 관계대명사), Nova Core와 같은 표시(2026-11-24) */
+.hid { color: #8E9893; font-style: normal; font-weight: 700; font-size: .66em; vertical-align: -.55em; margin: 0 .1em; white-space: nowrap; letter-spacing: 0; font-family: "Pretendard", "Noto Sans KR", sans-serif; }
+.hid::before { content: "∧"; margin-right: .08em; font-weight: 400; }
+.fr-lv .hid, small .hid { font-size: .9em; vertical-align: -.3em; }

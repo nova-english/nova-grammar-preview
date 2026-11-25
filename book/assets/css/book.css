@@ -1011,3 +1011,17 @@ i, em { font-style: italic; }
 .ak-short .ak-item > p { flex: 1 1 60%; margin: 0; }
 .ak-short .ak-item > p .k.ex { display: none; }
 .ak-short .ak-item > p:has(.k.alt) { flex-basis: 100%; }
+
+/* ---------- 정답 및 해설 줄인 판(기본, ?full이면 예전 판) — answers-paginate.js가 html에 .ak-slim을 붙임 (2026-11-22) ---------- */
+.ak-slim .ak-head .ak-ok { display: none; }
+.ak-slim .ak-head { column-gap: 1.8mm; row-gap: .2mm; }
+.ak-slim .ak-trh { flex: 1 1 auto; font-size: 8.2pt; color: #5C636D; font-weight: 400; line-height: 1.5; }
+.ak-slim .ak-trh::before { content: ""; }
+.ak-slim .ak-item p { margin-top: .3mm; }
+
+/* 워크북 2단 세트(2026-11-22 tools/wb_pack.js — 한 줄짜리 문항만 있는 세트) */
+.set.wb .qcols { columns: 2; column-gap: 8mm; }
+.set.wb .qcols > .qrow { break-inside: avoid; }
+.ak-slim .cnum { font-size: 1.22em; line-height: 0; vertical-align: -.06em; }
+.ak-slim .ak-head .ak-ans .cnum { font-size: 1.5em; vertical-align: -.1em; }
+

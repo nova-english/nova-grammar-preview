@@ -1,0 +1,843 @@
+/* Nova Vocabulary 1 — 공통 book.css 위에 올리는 어휘 교재 테마.
+   Nova 시리즈와 같은 판(위 연한 띠, 왼쪽 44mm 사이드 칸, Unit 탭 · 큰 숫자 · ✳, 노바 말풍선), 색은 잎 초록 + 주황.
+   Unit 하나 = 4쪽: ① FIRST TRY ② WORD PICTURE ③ READING ④ MAKE IT MINE. 남는 높이는 vw-fit.js가 블록 사이에 나눈다. */
+:root {
+  --book-title: "Nova Vocabulary";
+  --book-level: "2";
+  --c-main: #14868A;
+  --c-point: #14868A;
+  --c-main-deep: #0C6266;
+  --c-navy: #123F44;
+  --c-navy-band: #1B5A60;
+  --c-lime: #F5A03A;
+  --c-lime-pale: #DDF1F0;
+  --c-sky-pale: #EEF8F7;
+  --c-sky-line: #9ED3D0;
+  --c-freq: #F5A03A;
+  --c-checkup: #6DBDB9;
+  --c-exercise: #14868A;
+  --body-h: calc(var(--page-h) - 28mm);
+}
+.band-top .arc { background: #EEF8F7; }
+.page-body.fill { display: flex; flex-direction: column; height: var(--body-h); }
+
+/* 사이드 + 본문 */
+.vw-row { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); column-gap: var(--side-gap); flex: 1 1 auto; min-height: 0; }
+.vw-side { display: flex; flex-direction: column; gap: 3.6mm; min-height: 0; }
+.vw-main { min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+
+/* 쪽 머리 (2026-11-16 사용자: 쪽 이름을 시중 교재처럼 맨 위에, 한눈에) — 왼쪽 Unit 번호 · 오른쪽 번호 + 쪽 이름 + 부제 */
+.vw-top { flex: none; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); column-gap: var(--side-gap); align-items: end; margin-bottom: 4.6mm; }
+.vw-top .ut { display: flex; align-items: center; gap: 2.2mm; padding-bottom: 1.2mm; }
+.vw-top .ut .u { background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 600; font-size: 12pt; line-height: 1; padding: 1.6mm 2.8mm; border-radius: 2.4mm 0 2.4mm 0; }
+.vw-top .ut .n { font-family: var(--f-en-display); font-weight: 600; font-size: 30pt; line-height: .8; color: var(--c-main); }
+.vw-top .pt { display: flex; align-items: center; gap: 2.6mm; border-bottom: .6mm solid var(--c-main); padding-bottom: 2mm; }
+.vw-top .sn { flex: none; width: 7.6mm; height: 7.6mm; border-radius: 50%; background: var(--c-lime); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 12pt; display: flex; align-items: center; justify-content: center; }
+.vw-top .en { font-family: var(--f-en-display); font-weight: 700; font-size: 20pt; line-height: 1; color: var(--c-navy); letter-spacing: .01em; white-space: nowrap; }
+.vw-top .ko { font-family: var(--f-ko-display); font-size: 12.5pt; line-height: 1; color: var(--c-main-deep); white-space: nowrap; }
+.vw-top .wd { margin-left: auto; font-family: "Source Serif 4", Georgia, serif; font-size: 12pt; color: #7A8A82; }
+
+.vw-card { border: .35mm solid var(--c-sky-line); border-radius: 3mm; padding: 2mm 2.4mm; font-size: 8.6pt; line-height: 1.45; }
+.vw-card .kk { display: block; font-family: var(--f-en-display); font-weight: 600; font-size: 8pt; color: var(--c-main-deep); letter-spacing: .04em; margin-bottom: .6mm; }
+.vw-card p { margin: 0; }
+.vw-card.word { text-align: center; background: var(--c-sky-pale); }
+.vw-card.word .big { display: block; font-family: var(--f-en-display); font-weight: 600; font-size: 26pt; color: var(--c-navy); line-height: 1.15; }
+.vw-card.word .pos { display: inline-block; font-size: 7.6pt; color: #fff; background: var(--c-main); border-radius: 1.2mm; padding: 0 1.6mm; }
+.vw-card.word .forms { display: block; font-size: 9pt; color: var(--c-sub); margin-top: 1mm; }
+.vw-card.steps ol { list-style: none; margin: 0; padding: 0; }
+.vw-card.steps li { display: flex; align-items: center; gap: 1.6mm; font-size: 8.2pt; color: #8A948F; padding: .45mm 0; }
+.vw-card.steps li b { display: inline-grid; place-items: center; width: 4mm; height: 4mm; border-radius: 50%; border: .3mm solid #B9C5BE; font-size: 7pt; font-family: var(--f-en-display); }
+.vw-card.steps li.done { color: var(--c-main-deep); }
+.vw-card.steps li.done b { background: var(--c-lime-pale); border-color: var(--c-main); }
+.vw-card.steps li.on { color: var(--c-navy); font-weight: 700; }
+.vw-card.steps li.on b { background: var(--c-main); border-color: var(--c-main); color: #fff; }
+.vw-side .nova-tip { position: static; }
+.vw-side .nova-tip img { height: 16mm; }
+.vw-card.clue .cl-h { font-size: 8.2pt; color: var(--c-sub); margin-bottom: .8mm; }
+.vw-card.clue ul { list-style: none; margin: 0; padding: 0; }
+.vw-card.clue li { display: flex; justify-content: space-between; gap: 1mm; border-top: 1px dotted var(--c-sky-line); padding: .9mm 0; }
+.vw-card.clue li span { font-size: 8pt; }
+.vw-card.clue li b { color: var(--c-main-deep); white-space: nowrap; }
+.vw-card.trap { background: #FFF6EA; border-color: #F5C98E; }
+.vw-card.trap .kk { color: #C9741B; }
+.vw-card.trap .en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.2pt; margin-bottom: .8mm; }
+.vw-card.trap .x { color: #C0504A; text-decoration: line-through; text-decoration-thickness: .2mm; }
+.vw-card.trap .o { color: var(--c-main-deep); font-weight: 700; }
+.vw-card.info .wn { margin-top: 1mm; }
+.timer .blank { display: inline-block; width: 7mm; border-bottom: 1px solid #999; margin: 0 .6mm; }
+.vw-card.words ul { list-style: none; margin: 0; padding: 0; }
+.vw-card.words li { display: flex; flex-direction: column; border-top: 1px dotted var(--c-sky-line); padding: .9mm 0; }
+.vw-card.words li b { font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; color: var(--c-navy); }
+.vw-card.words li span { font-size: 8pt; color: var(--c-sub); }
+.vw-card.qr { display: flex; align-items: center; gap: 2mm; }
+.qr-slot { flex: none; display: grid; place-items: center; width: 15mm; height: 15mm; border: .3mm dashed #B4C3C2; border-radius: 1.4mm; font-family: var(--f-en-display); font-size: 7pt; color: #A0A8A3; }
+.vw-card.check ul { list-style: none; margin: 0; padding: 0; }
+.vw-card.check li { display: flex; gap: 1.4mm; align-items: flex-start; padding: .7mm 0; font-size: 8.2pt; }
+.bx { flex: none; display: inline-block; width: 3.4mm; height: 3.4mm; border: .3mm solid #7A8780; border-radius: .6mm; margin-top: .4mm; }
+
+/* 본문 머리 */
+.vw-head { margin-bottom: 3mm; }
+.vw-head .grp { display: inline-block; font-family: var(--f-ko-display); font-size: 10pt; color: #fff; background: var(--c-navy); border-radius: 1.6mm; padding: .2mm 2.4mm; }
+.vw-head h1 { font-family: var(--f-ko-display); font-weight: 400; font-size: 21pt; color: var(--c-navy); margin: 2mm 0 0; line-height: 1.2; }
+.vw-head h1.en { font-family: var(--f-en-display); font-weight: 600; }
+.vw-head h1.core { font-size: 18pt; color: var(--c-main-deep); }
+.vw-head h2 { font-family: var(--f-ko-display); font-weight: 400; font-size: 12pt; color: var(--c-main-deep); margin: .6mm 0 0; }
+.vw-head .lead { margin: 1mm 0 0; font-size: 9pt; color: var(--c-sub); }
+
+/* 블록 */
+.vs { border-top: .45mm solid var(--c-main); padding-top: 2mm; }
+.vs + .vs { margin-top: 4mm; }
+.vs h3 { display: flex; align-items: baseline; gap: 2mm; flex-wrap: wrap; margin: 0 0 1.6mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 13pt; color: var(--c-navy); }
+.vs h3 .lt { display: inline-grid; place-items: center; min-width: 6mm; height: 6mm; border-radius: 1.4mm; background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 600; font-size: 10pt; padding: 0 1mm; }
+.vs h3 small { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); }
+.vs p { margin: 0; }
+.cn { display: inline-grid; place-items: center; flex: none; width: 5mm; height: 5mm; border-radius: 50%; background: var(--c-navy); color: #fff; font-family: var(--f-en-display); font-weight: 600; font-size: 8pt; margin-right: 1.6mm; }
+.cn.big { width: 7mm; height: 7mm; font-size: 11pt; background: var(--c-main); font-family: inherit; }
+.wl { display: inline-block; min-width: 40mm; border-bottom: .3mm solid #9AA59F; height: 5mm; vertical-align: bottom; }
+.wl.s { min-width: 22mm; }
+.wl.line { display: block; width: 100%; height: 9mm; }
+.hint { display: inline-block; margin-left: 2mm; font-size: 8.4pt; color: var(--c-main-deep); background: var(--c-sky-pale); border-radius: 1.2mm; padding: 0 1.6mm; }
+.en.nt { font-family: "Source Serif 4", Georgia, serif; font-size: 14pt; color: var(--c-navy); margin: 1.2mm 0 !important; }
+.scene { font-size: 9pt; color: var(--c-sub); }
+.ask { font-size: 9.4pt; }
+.ask .wl { min-width: 52mm; }
+.know { font-size: 11pt; }
+.know .wl { min-width: 70mm; }
+.know small { font-size: 8pt; color: var(--c-sub); margin-left: 1.5mm; }
+ol.first { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+ol.first li { padding: 1.4mm 0; }
+ol.first .q { display: flex; align-items: center; flex-wrap: wrap; font-size: 10.4pt; }
+.ftip { margin-top: 2mm !important; font-size: 8.6pt; background: #FFF6EA; border-radius: 1.6mm; padding: 1.2mm 2.4mm; }
+.ftip b { color: #C9741B; margin-right: 2mm; }
+
+/* CORE IMAGE */
+.core-row { display: grid; grid-template-columns: 86mm 1fr; gap: 4mm; align-items: center; }
+.core-fig { position: relative; width: 86mm; aspect-ratio: 1 / 1; }
+.core-fig img, .core-fig .figure-pending { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.qb { position: absolute; display: grid; place-items: center; width: 6.4mm; height: 6.4mm; border-radius: 50%; background: var(--c-main); color: #fff; font-size: 10pt; box-shadow: 0 0 0 .6mm #fff; }
+.qb.q1 { left: 1mm; top: 1mm; } .qb.q2 { left: calc(50% + 1mm); top: 1mm; }
+.qb.q3 { left: 1mm; top: calc(50% + 1mm); } .qb.q4 { left: calc(50% + 1mm); top: calc(50% + 1mm); }
+.core-why { margin: 0; font-size: 9pt; line-height: 1.6; color: #34433C; background: var(--c-sky-pale); border-radius: 2.4mm; padding: 2.4mm; }
+.map { margin-top: 3mm; }
+.map h3, .pair h3 { margin: 0 0 1mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 13pt; color: var(--c-navy); border-top: .45mm solid var(--c-main); padding-top: 1.6mm; }
+.map h3 small, .pair h3 small { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); margin-left: 2mm; }
+.map ul { list-style: none; margin: 0; padding: 0; }
+.map li { display: flex; gap: 2mm; padding: 1.2mm 0; border-bottom: 1px dotted var(--c-sky-line); }
+.map li .m { flex: 1; min-width: 0; }
+.map .lb { font-weight: 700; color: var(--c-main-deep); font-size: 9.6pt; margin: 0; }
+.map .ex { font-family: "Source Serif 4", Georgia, serif; font-size: 10.6pt; margin: .2mm 0 0; }
+.map .ko { font-size: 9.2pt; margin: 0; }
+.map .why { font-size: 8.2pt; color: var(--c-sub); margin: .2mm 0 0; }
+.map .why b { color: var(--c-lime); margin-right: 1.2mm; }
+.pair { margin-top: 3mm; }
+.pair .pr { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+.pair .pr p { margin: 0; background: var(--c-sky-pale); border-radius: 2mm; padding: 1.4mm 2.2mm; font-size: 8.8pt; }
+.pair .pr b { display: block; font-family: var(--f-en-display); font-weight: 600; font-size: 12pt; color: var(--c-navy); }
+.pair .pa { margin: 1.4mm 0 .6mm; font-size: 9pt; }
+.pair .pa small { color: var(--c-sub); }
+ol.pq { list-style: none; margin: 0; padding: 0; }
+ol.pq li { display: flex; align-items: center; padding: .8mm 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+
+/* READING */
+.vw-head h1.en + h2 { margin-top: .4mm; }
+.psg { font-family: "Source Serif 4", Georgia, serif; font-size: 12.6pt; line-height: 2.05; text-align: justify; }
+.psg p { margin: 0 0 1.4mm; text-indent: 4mm; }
+.tg { text-decoration: underline; text-decoration-thickness: .35mm; text-underline-offset: .7mm; font-weight: 600; color: var(--c-navy); }
+.nb { display: inline-block; width: 5mm; height: 5mm; border: .3mm solid var(--c-main); border-radius: .8mm; vertical-align: -.8mm; margin-left: .6mm; background: #fff; }
+.bk { display: inline-block; min-width: 22mm; border-bottom: .3mm solid #4F5A54; text-align: center; line-height: 1.3; }
+.bk i { font-style: normal; font-family: var(--f-body); font-size: 8.4pt; color: var(--c-main-deep); }
+.tasks { margin-top: 3mm; border-top: .45mm solid var(--c-main); padding-top: 2mm; font-size: 9.6pt; }
+.tasks p { margin: 0 0 1.4mm; }
+.tasks .cn { vertical-align: -.6mm; }
+.tasks small { color: var(--c-sub); margin-left: 2mm; }
+.tasks .bl { padding-left: 6.6mm; } .tasks .ba { margin-right: 8mm; }
+.tasks .ba { font-family: var(--f-body); }
+
+/* SECOND LOOK */
+ol.redo { list-style: none; margin: 0; padding: 0; }
+ol.redo li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 1mm; padding: .6mm 0; }
+ol.redo .ko { font-size: 9.4pt; }
+ol.redo .okb { font-size: 8pt; color: var(--c-sub); display: flex; align-items: center; gap: 1mm; }
+ol.redo .wl.line { grid-column: 1 / -1; height: 8mm; }
+.new { margin-top: 1.4mm; background: var(--c-sky-pale); border-radius: 2mm; padding: 1.4mm 2.4mm .4mm; }
+.new .nw { display: inline-block; font-size: 7.6pt; font-weight: 700; color: #fff; background: var(--c-lime); border-radius: 1mm; padding: 0 1.4mm; margin-right: 1.6mm; }
+.new .ko { font-size: 9.4pt; }
+.new .wl.line { height: 8mm; }
+.mh { font-size: 9pt; color: var(--c-sub); }
+.mh .en { font-family: "Source Serif 4", Georgia, serif; color: var(--c-navy); }
+ol.meet { list-style: none; margin: 0; padding: 0; }
+ol.meet li { display: flex; align-items: center; padding: 1mm 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+ol.meet .gl { margin-left: auto; font-family: var(--f-body); font-size: 8pt; color: var(--c-sub); white-space: nowrap; }
+ul.recall { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.6mm 4mm; }
+ul.recall li { display: flex; flex-direction: column; border-bottom: .3mm solid #9AA59F; padding-bottom: .6mm; }
+ul.recall .ko { font-size: 8.6pt; color: var(--c-sub); }
+ul.recall .fl { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; letter-spacing: .06em; color: #B4BCB7; }
+
+/* 넘칠 때 (vw-fit.js) */
+.tight .vs + .vs { margin-top: 2.6mm; }
+.tight .wl.line { height: 7.4mm !important; }
+.tight .psg { line-height: 1.85; }
+.tight .map li { padding: .7mm 0; }
+.tight2 .core-fig { width: 76mm; } .tight2 .core-row { grid-template-columns: 76mm 1fr; }
+
+.vw-card.check li > span:last-child { flex: 1; }
+ol.meet .en, ol.pq .en, .mh .en, ol.first .q .en:not(.hint) { font-family: "Source Serif 4", Georgia, serif; }
+
+/* 쪽 이름(영어 + 우리말 부제) · 2026-11-16 개정 */
+.vw-head h1.pn { display: flex; align-items: baseline; gap: 2.4mm; }
+.vw-head h1.pn .en { font-family: var(--f-en-display); font-weight: 600; font-size: 21pt; letter-spacing: .01em; }
+.vw-head h1.pn small { font-family: var(--f-ko-display); font-size: 13pt; color: var(--c-main-deep); }
+.vw-head .core { margin: 1.4mm 0 0; font-family: var(--f-ko-display); font-size: 15pt; color: var(--c-navy); background: var(--c-lime-pale); border-radius: 2mm; padding: 1mm 3mm; display: inline-block; }
+.vw-head .ttl { margin: 1.4mm 0 0; }
+.vw-head .ttl .en { font-family: var(--f-en-display); font-weight: 600; font-size: 15pt; color: var(--c-navy); }
+.vw-head .ttl small { font-family: var(--f-ko-display); font-size: 11pt; color: var(--c-main-deep); margin-left: 2mm; }
+.rq { font-size: 9pt; margin-top: 1.4mm !important; color: #34433C; }
+ul.relq { list-style: none; margin: 1.2mm 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; }
+ul.relq li { display: flex; align-items: baseline; gap: 1mm; background: var(--c-sky-pale); border-radius: 1.6mm; padding: 1mm 2mm; }
+ul.relq b { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; color: var(--c-navy); }
+.wl.xs { min-width: 8mm; height: 4.6mm; }
+.rel { margin-top: 3mm; }
+.rel h3, .wtab h3 { margin: 0 0 1mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 13pt; color: var(--c-navy); border-top: .45mm solid var(--c-main); padding-top: 1.6mm; }
+.rel h3 small, .wtab h3 small { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); margin-left: 2mm; }
+.rel table, .wtab table { width: 100%; border-collapse: collapse; }
+.rel td { border-bottom: 1px dotted var(--c-sky-line); padding: 1mm 1.2mm; vertical-align: top; font-size: 8.6pt; }
+.rel td.t { width: 13mm; padding-left: 0; }
+.rel td.w { width: 15mm; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 11pt; color: var(--c-navy); }
+.rel td.e p { margin: 0; } .rel td.e .en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.8pt; } .rel td.e .ko { color: var(--c-sub); font-size: 8.2pt; }
+.rel td.df { width: 44mm; font-size: 8pt; color: #4A5751; line-height: 1.45; }
+.rt { display: inline-block; font-size: 7.4pt; font-weight: 700; border-radius: 1mm; padding: 0 1.2mm; color: #fff; }
+.rt.syn { background: var(--c-main); } .rt.ant { background: var(--c-lime); }
+.wtab { margin-top: 2.6mm; }
+.wtab td { border-bottom: 1px dotted var(--c-sky-line); padding: .8mm 1.2mm; font-size: 8.8pt; vertical-align: baseline; }
+.wtab td.w { width: 17mm; padding-left: 0; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 10.4pt; color: var(--c-navy); }
+.wtab td.ps { width: 10mm; font-size: 7.8pt; color: var(--c-sub); font-style: italic; }
+.wtab td.df { font-family: "Source Serif 4", Georgia, serif; font-size: 9.4pt; }
+.wtab td.ko { width: 20mm; font-size: 8.4pt; color: var(--c-main-deep); text-align: right; padding-right: 0; }
+.new.my { margin-top: 1.2mm; }
+.bank { display: flex; flex-wrap: wrap; gap: 1.6mm; margin: 0 0 1mm !important; }
+.chip { font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; border: .3mm solid var(--c-main); color: var(--c-navy); border-radius: 3mm; padding: 0 2.6mm; }
+ul.recall { grid-template-columns: 1fr 1fr; gap: 1.6mm 5mm; }
+ul.recall .df { font-family: "Source Serif 4", Georgia, serif; font-size: 8.8pt; color: #3E4A44; line-height: 1.35; }
+.tight ul.recall .df { font-size: 8.2pt; }
+.tight .rel td, .tight .wtab td { padding-top: .6mm; padding-bottom: .6mm; }
+
+/* 촘촘한 배치 (2026-11-16, 유의어 · 반의어 · 영영 뜻을 넣은 뒤) */
+.core-row { grid-template-columns: 70mm 1fr; }
+.core-fig { width: 70mm; }
+.map li { padding: .9mm 0; }
+.map .l1 { margin: 0; display: flex; align-items: baseline; gap: 2.4mm; flex-wrap: wrap; }
+.map .l1 .lb { font-size: 9.4pt; color: var(--c-main-deep); }
+.map .l1 .ex { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+.map .why { margin-top: 0; }
+.rel td { padding: .9mm 1.2mm; }
+.rel td.e .en { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; }
+.rel td.e .df { display: block; font-size: 8pt; color: #4A5751; line-height: 1.4; }
+ul.recall { grid-template-columns: 1fr 1fr; gap: 1.4mm 5mm; }
+ul.recall li { display: grid; grid-template-columns: 1fr 22mm; align-items: end; column-gap: 2mm; border-bottom: none; padding: 0; }
+ul.recall .df { font-size: 8.4pt; line-height: 1.3; }
+ul.recall .fl { border-bottom: .3mm solid #9AA59F; font-size: 10pt; }
+ol.redo .wl.line { height: 7mm; }
+.new .wl.line { height: 7mm; }
+.vs + .vs { margin-top: 3mm; }
+.vw-head { margin-bottom: 2.4mm; }
+.vw-row { grid-template-rows: minmax(0, 1fr); }
+.tight .redo li { padding: .2mm 0; }
+.tight .new { padding-top: 1mm; }
+.tight2 ul.recall .df { font-size: 7.8pt; }
+.tight2 ol.meet li { padding: .5mm 0; }
+ul.recall li { grid-template-columns: 1fr auto; } ul.recall .fl { white-space: nowrap; min-width: 22mm; }
+
+.vw-head .grp + .lead { margin-top: 1.6mm; }
+.vw-head .core { margin: 0; display: flex; align-items: baseline; gap: 2.4mm; font-size: 17pt; padding: 1.4mm 3.2mm; }
+.vw-head .core .kk { font-family: var(--f-body); font-weight: 700; font-size: 8.4pt; color: #fff; background: var(--c-main); border-radius: 1.2mm; padding: 0 1.6mm; }
+.vw-head .ttl { margin: 0; }
+.vw-head .ttl .en { font-size: 19pt; }
+.vw-head .ttl small { font-size: 12.5pt; }
+.vw-main > .vs:first-child { border-top: none; padding-top: 0; }
+/* 9쪽(WORD PICTURE) 글자 키움 */
+.core-row { grid-template-columns: 78mm 1fr; gap: 5mm; }
+.core-fig { width: 78mm; }
+.core-why { font-size: 9.8pt; line-height: 1.7; padding: 3mm; }
+.map h3, .rel h3 { font-size: 14pt; }
+.map h3 small, .rel h3 small { font-size: 8.8pt; }
+.map li { padding: 1.5mm 0; gap: 2.4mm; }
+.map .l1 .lb { font-size: 10.2pt; }
+.map .l1 .ex { font-size: 11.4pt; }
+.map .ko { font-size: 10pt; margin-top: .4mm; }
+.map .why { font-size: 9pt; line-height: 1.5; margin-top: .3mm; }
+.rel td { padding: 1.5mm 1.2mm; }
+.rel td.t { width: 14mm; }
+.rel td.w { width: 17mm; font-size: 12pt; }
+.rel td.e .en { font-size: 11pt; }
+.rel td.e .df { font-size: 9pt; line-height: 1.5; margin-top: .3mm; }
+.rt { font-size: 8pt; padding: .2mm 1.4mm; }
+.tight .core-fig { width: 72mm; } .tight .core-row { grid-template-columns: 72mm 1fr; }
+.tight .map li { padding: 1mm 0; } .tight .rel td { padding: 1mm 1.2mm; }
+.rel td.w { width: 19mm; padding-left: 0; }
+.rel td.w .rt { display: block; width: max-content; margin-bottom: .4mm; }
+.rel td.w b { display: block; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 12pt; color: var(--c-navy); line-height: 1.2; }
+
+/* 쪽 머리를 위로 올린 뒤 WORD PICTURE 쪽 높이 맞춤 (2026-11-16) */
+.core-row { grid-template-columns: 64mm 1fr; } .core-fig { width: 64mm; }
+.tight .core-fig { width: 58mm; } .tight .core-row { grid-template-columns: 58mm 1fr; }
+.tight2 .core-fig { width: 54mm; } .tight2 .core-row { grid-template-columns: 54mm 1fr; }
+
+/* 뜻 번호: 초록 원 + 흰 숫자 (2026-11-16 사용자 — 원 안에 ① 글자를 넣어 숫자가 너무 작았음, 숫자만 크게) */
+.map .mn { flex: none; display: grid; place-items: center; width: 5.8mm; height: 5.8mm; border-radius: 50%; background: var(--c-main); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 11pt; line-height: 1; }
+.qb { width: 5.8mm; height: 5.8mm; font-family: var(--f-en-display); font-weight: 700; font-size: 11pt; line-height: 1; }
+
+/* 유의어 · 반의어 꼬리표 글꼴 (2026-11-16 사용자) — 작은 굵은 기본 고딕 대신 제목과 같은 Do Hyeon */
+.rt { font-family: var(--f-ko-display); font-weight: 400; font-size: 9pt; letter-spacing: .03em; padding: .3mm 1.6mm .1mm; }
+
+/* 뜻 고르는 단서: 뜻 없이 예문 번호 + 뒤에 오는 말 (2026-11-18) */
+.vw-card.clue li { justify-content: flex-start; align-items: baseline; gap: 1.6mm; }
+.vw-card.clue li .ci { color: var(--c-main-deep); font-size: 9pt; }
+.map .ex b { color: var(--c-main-deep); }
+/* 유의어 · 반의어 예문 해석: 영어 아래 한 줄 (2026-11-18) */
+.rel td.e .en { display: block; }
+.rel td.e .tr { display: block; font-size: 8.8pt; color: var(--c-navy); margin: .2mm 0 .2mm; }
+.wtab { border-top: .45mm solid var(--c-main); margin-top: 3mm; }
+/* READING 옆 뜻 번호 보기 (2026-11-18) */
+.vw-card.mean .cl-h { font-size: 8.2pt; color: var(--c-sub); margin-bottom: .8mm; }
+.vw-card.mean ul { list-style: none; margin: 0; padding: 0; }
+.vw-card.mean li { display: flex; gap: 1.4mm; align-items: baseline; border-top: 1px dotted var(--c-sky-line); padding: .9mm 0; font-size: 8.4pt; }
+.vw-card.mean li .ci { color: var(--c-main-deep); font-size: 10pt; }
+/* 한 번 더 보기: 뜻 쓰는 밑줄 (2026-11-18) */
+ol.meet .gl .wl.mw { display: inline-block; width: 24mm; }
+ol.meet .gl { flex: none; }
+ol.meet .gl .wl.mw { min-width: 20mm; width: 20mm; flex: none; }
+ol.meet .en .wl.s { min-width: 17mm; }
+/* READING 옆 여러 가지 뜻 카드 글자 키움 (2026-11-18) */
+.vw-card.mean .kk { font-family: var(--f-body); font-weight: 700; font-size: 10pt; letter-spacing: 0; }
+.vw-card.mean .kk .en { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; }
+.vw-card.mean .cl-h { font-size: 8.6pt; }
+.vw-card.mean li { font-size: 9.4pt; padding: 1.1mm 0; }
+.vw-card.mean li .ci { font-size: 11pt; }
+.vw-card.clue li .en { font-family: "Source Serif 4", Georgia, serif; font-size: 9pt; }
+/* MAKE IT MINE 1 우리말은 달라도 영어는 하나 (2026-11-18) */
+ol.redo li { grid-template-columns: auto auto 1fr; column-gap: 2mm; }
+ol.redo .ko b { color: var(--c-main-deep); text-decoration: underline; text-decoration-thickness: .3mm; text-underline-offset: .8mm; }
+ol.redo .hint { justify-self: start; font-size: 8pt; color: var(--c-main-deep); background: var(--c-sky-pale); border-radius: 1mm; padding: .2mm 1.6mm; }
+.vs h3 .en { font-family: "Source Serif 4", Georgia, serif; }
+/* 쪽 머리 Unit 글자를 숫자와 비슷한 크기로 (2026-11-18 사용자) */
+.vw-top .ut .u { font-size: 19pt; padding: 1.4mm 3.2mm 1.6mm; }
+/* MAKE IT MINE 3 (Unit 1) 해석 바르게 고치기 (2026-11-19) */
+ol.fix { list-style: none; margin: 0; padding: 0; }
+ol.fix li { display: grid; grid-template-columns: auto 1fr; column-gap: 1mm; align-items: baseline; padding: .8mm 0; }
+ol.fix li > .en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+ol.fix .fx { grid-column: 2; display: flex; align-items: baseline; gap: 1.6mm; font-size: 9pt; margin-top: .4mm; }
+ol.fix .fx .x { color: #A0453F; text-decoration: line-through; text-decoration-thickness: .2mm; white-space: nowrap; }
+ol.fix .fx .to { color: var(--c-sub); }
+ol.fix .fx .wl { flex: 1; min-width: 30mm; }
+.tgw { white-space: nowrap; }
+/* 핵심 그림 잇기 · 영영 · 처음 보는 뜻 (2026-11-19) */
+.map .ko { display: flex; align-items: baseline; gap: 2mm; }
+.map .ko .kt { flex: 1; min-width: 0; }
+.map .ko .lk { flex: none; font-size: 8pt; color: var(--c-main-deep); font-weight: 700; white-space: nowrap; }
+.map .ko .lk .wl.lkw { min-width: 26mm; width: 26mm; height: 4.6mm; }
+.core-why .core-en { margin-top: 1.6mm; padding-top: 1.4mm; border-top: 1px dashed #B5DCD9; font-size: 8.4pt; }
+.core-why .core-en b { display: block; font-family: var(--f-en-display); font-size: 7.6pt; color: var(--c-main-deep); letter-spacing: .03em; }
+.core-why .core-en .en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.4pt; color: var(--c-navy); }
+.tasks .nw-q { margin: .6mm 0 0 6.6mm; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 3mm; }
+.tasks .nw-q .en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.2pt; }
+.tasks .nw-q .en b { color: var(--c-main-deep); }
+.tasks .nw-q .ko { font-size: 9pt; }
+/* MAKE IT MINE 왼쪽 칸 ‘더 알아 두면 좋은 표현’(2026-11-19 사용자) */
+.vw-card.xmore ul { list-style: none; margin: .6mm 0 0; padding: 0; }
+.vw-card.xmore li { border-top: 1px dotted var(--c-sky-line); padding: 1mm 0; }
+.vw-card.xmore li b.en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.6pt; color: var(--c-main-deep); }
+.vw-card.xmore .mk { font-size: 8.2pt; }
+.vw-card.xmore .ex { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 8.4pt; line-height: 1.35; margin-top: .4mm; }
+.vw-card.xmore .xk { display: block; font-size: 7.6pt; color: var(--c-sub); line-height: 1.35; }
+/* WORD PICTURE 왼쪽 ‘어원’ 카드(2026-11-19 사용자, 오성호 오리엔테이션 영상 반영) */
+.vw-card.born p { margin: 0; font-size: 8pt; line-height: 1.45; }
+/* FIRST TRY B 유 · 반 칸: put down처럼 두 낱말도 괄호와 한 줄에(2026-11-20) */
+.relq li { white-space: nowrap; }
+/* PART REVIEW 2쪽(2026-11-20 사용자: 가장 효과적인 방법으로 — A 그림 · B 뜻 · C 헷갈리는 짝 / D 글 · E 우리말은 달라도) */
+.rv .vw-top .pt .en { margin-left: 0; }
+.vw-card.word .rv-pn { display: block; font-family: var(--f-ko-display); font-weight: 400; font-size: 14pt; color: var(--c-navy); margin: .6mm 0; }
+.vw-card.rv-how ol { margin: .4mm 0 0; padding-left: 4mm; font-size: 8.2pt; line-height: 1.45; }
+.vw-card.rv-how .rv-pass { margin: 1mm 0 0; font-size: 8.4pt; color: var(--c-main-deep); }
+.rv-figs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; }
+.rv-fig .rv-img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 1.4mm; border: .25mm solid var(--c-sky-line); }
+.rv-fig p { margin: .8mm 0 0; font-size: 8pt; line-height: 1.7; }
+.rv-fig .wl.rw { display: block; width: 100%; min-width: 0; height: 5mm; }
+.rv-cores { list-style: none; margin: 1.6mm 0 0; padding: 1mm 2mm; display: grid; grid-template-columns: 1fr 1fr; gap: .4mm 3mm; background: var(--c-sky-pale); border-radius: 1.4mm; font-size: 9pt; }
+.rv-cores .ci { color: var(--c-main-deep); margin-right: 1mm; }
+ol.rv-b, ol.rv-c { list-style: none; margin: 0; padding: 0; }
+ol.rv-b li { display: flex; align-items: center; gap: 2mm; padding: .9mm 0; border-bottom: 1px dotted var(--c-sky-line); font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+ol.rv-b li .en { flex: 1; }
+ol.rv-b .wl.rm { flex: none; width: 30mm; min-width: 30mm; }
+.rv-u { text-decoration: underline; text-decoration-thickness: .35mm; text-underline-offset: .8mm; font-weight: 600; color: var(--c-main-deep); }
+ol.rv-c { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4mm; }
+ol.rv-c li { display: flex; align-items: center; gap: 2mm; padding: .9mm 0; font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; line-height: 1.4; }
+.rv-pr { white-space: nowrap; color: var(--c-main-deep); }
+.rv-t { margin: 1.4mm 0 .6mm; }
+.rv-psg { font-size: 11.6pt; line-height: 2; }
+.rv-ans { display: flex; flex-wrap: wrap; gap: 1mm 4mm; margin: 1mm 0 0; font-size: 9pt; }
+.vw-card.rv-back ul { list-style: none; margin: 0; padding: 0; }
+.vw-card.rv-back li { display: flex; justify-content: space-between; border-top: 1px dotted var(--c-sky-line); padding: .9mm 0; font-size: 8.2pt; }
+.vw-card.rv-back li b { font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; color: var(--c-navy); }
+.vw-card.rv-rec p { margin: 0; font-size: 8.2pt; line-height: 1.45; }
+.rv-t .en { font-family: var(--f-en-display); font-weight: 600; font-size: 13pt; color: var(--c-navy); }
+.rv-t small { font-family: var(--f-ko-display); font-size: 10pt; color: var(--c-main-deep); margin-left: 2mm; }
+ol.rv-b .en, ol.rv-c .en { font-family: "Source Serif 4", Georgia, serif; }
+/* 더 알아 두면 좋은 표현: 핵심 그림과 잇는 한마디(2026-11-20 사용자, 오성호 맛보기 수업 one way or another) */
+.vw-card.xmore .im { display: block; font-size: 7.6pt; color: var(--c-main-deep); line-height: 1.35; margin-top: .2mm; }
+.vw-card.xmore .im::before { content: "그림 "; font-weight: 700; }
+/* REVIEW D: 빈칸 번호는 왼쪽, 빈칸에 바로 정답 쓰기(2026-11-20 사용자) */
+.rv-bk { white-space: nowrap; }
+.rv-bk b { font-family: var(--f-body); font-size: 8.4pt; font-weight: 700; color: var(--c-main-deep); margin-right: .8mm; }
+.rv-bk .ln { display: inline-block; width: 24mm; border-bottom: .3mm solid var(--c-navy); vertical-align: -.6mm; }
+/* REVIEW A: 밑줄 왼쪽에 (a)만, 핵심은 괄호만(2026-11-20 사용자) */
+.rv-fig .rw-row { display: flex; align-items: flex-end; gap: 1mm; margin-top: 1.2mm; }
+.rv-fig .rw-row b { flex: none; font-size: 8.6pt; }
+.rv-fig .rw-row .wl.rw { display: block; flex: 1; width: auto; height: 5.4mm; }
+.rv-fig .rc-row { margin-top: 1mm; font-size: 8.2pt; }
+.rv-fig .rc { font-family: var(--f-body); }
+.rv-fig .rc .sp { display: inline-block; width: 9mm; }
+
+/* ===== 전체 밸런스(2026-11-20 사용자: 글씨 크기 · 여백 · 간격, 영영 글씨가 너무 작음) =====
+   쪽마다 늘리기 전 남는 높이를 재 보니 WORD PICTURE · MAKE IT MINE이 늘 넘쳐 .tight로 줄고(영영 뜻 7.8pt까지),
+   FIRST TRY · REVIEW ①은 남았다. 위 여백 18 → 15mm, 본문 아래 끝 262 → 268mm(쪽번호까지 여유 9mm),
+   머리줄을 조금 작게, READING 기본 줄 간격 2.05 → 1.9(남으면 vw-fit.js가 다시 넓힘), 영영 뜻은 9.6pt(줄여도 8.8pt까지). */
+:root { --m-top: 15mm; --body-h: calc(var(--page-h) - 22mm); }
+.vw-top { margin-bottom: 3.2mm; }
+.vw-top .ut .u { font-size: 16pt; padding: 1.2mm 2.8mm 1.4mm; }
+.vw-top .ut .n { font-size: 26pt; }
+.vw-top .pt { padding-bottom: 1.6mm; gap: 2.2mm; }
+.vw-top .sn { width: 6.8mm; height: 6.8mm; font-size: 11pt; }
+.vw-top .en { font-size: 18pt; }
+.vw-top .ko { font-size: 11.5pt; }
+.vw-top .wd { font-size: 11pt; }
+.psg { line-height: 1.9; }
+.tight .psg { line-height: 1.8; }
+ul.recall .df { font-size: 9.6pt; line-height: 1.35; color: #2F3A35; }
+.tight ul.recall .df { font-size: 9.2pt; }
+.tight2 ul.recall .df { font-size: 8.8pt; }
+ul.recall .fl { font-size: 11pt; }
+.wtab td.df { font-size: 9.6pt; }
+/* WORD PICTURE 기본 크기를 조금 줄여 .tight 없이 들어가게(그림 64 → 60mm, 줄 위아래 1.5 → 1.1mm) */
+.core-row { grid-template-columns: 60mm 1fr; } .core-fig { width: 60mm; }
+.map li { padding: 1.1mm 0; }
+.rel td { padding: 1.1mm 1.2mm; }
+.tight .core-fig { width: 56mm; } .tight .core-row { grid-template-columns: 56mm 1fr; }
+.tight .map li { padding: .8mm 0; } .tight .rel td { padding: .8mm 1.2mm; }
+/* 여러 가지 뜻: 핵심 그림 잇기 칸을 빼서(2026-11-20 사용자) 빈칸을 넓게 */
+.map .ko .kt .wl.s { min-width: 34mm; }
+
+/* ---------- 앞부분 (gen_front.py, 2026-11-20) ---------- */
+.vf-toc .toc-ch { margin-bottom: 3mm; }
+.vf-toc .toc-ch .hd { margin-bottom: .8mm; padding-bottom: .8mm; }
+.vf-toc .toc-ch .tt { font-size: 12.5pt; }
+.vf-toc .toc-u { font-size: 9pt; padding: .5mm 0 .5mm 2mm; line-height: 1.45; gap: 1.8mm; }
+.vf-toc .toc-u .k { width: 13mm; flex: none; font-size: 8pt; }
+.vf-toc .toc-u b.en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 11pt; color: var(--c-navy); flex: none; min-width: 11mm; }
+.vf-toc .toc-u .core { font-size: 8pt; color: var(--c-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.vf-toc .toc-u .lead { min-width: 3mm; }
+.vf-toc .toc-u.test { margin-top: .6mm; }
+.vf-pv4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5mm 8mm; }
+.vf-pv4 .pv-card .shot { width: 62%; margin: 0 auto; }
+.vf-flow span { font-size: 8.6pt; }
+.vf-legend { display: grid; grid-template-columns: 30mm 1fr; gap: 1.8mm 3mm; font-size: 9.2pt; align-items: center; }
+.vf-legend .sym { font-weight: 600; color: var(--c-main-deep); white-space: nowrap; }
+.vf-plan { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.vf-plan th, .vf-plan td { border: 1px solid var(--c-sky-line); padding: .45mm 1mm; text-align: center; }
+.vf-plan thead th { background: var(--c-sky-pale); color: var(--c-navy); font-weight: 600; font-size: 8.2pt; line-height: 1.2; }
+.vf-plan tbody th { text-align: left; padding-left: 2.4mm; font-family: var(--f-en-display); color: var(--c-navy); white-space: nowrap; font-weight: 600; }
+.vf-plan tbody th small { margin-left: 1.6mm; font-family: "Source Serif 4", Georgia, serif; font-weight: 400; font-size: 9pt; color: var(--c-main-deep); }
+.vf-plan td { color: #B8C4BC; font-size: 9.6pt; line-height: 1.35; }
+.vf-plan td.d { color: #C4CEC8; font-size: 9pt; width: 18mm; }
+.vf-plan tr.mt th, .vf-plan tr.mt td { background: var(--c-sky-pale); }
+.vf-plan tr.mt th { color: var(--c-main-deep); }
+.vf-plan td.sc { color: #333; font-size: 9pt; }
+.vf-tbl { width: 100%; border-collapse: collapse; font-size: 9.4pt; margin-bottom: 2mm; }
+.vf-tbl th, .vf-tbl td { border-bottom: .3mm solid var(--c-sky-line); padding: 2mm 2mm; text-align: left; vertical-align: top; line-height: 1.5; }
+.vf-tbl thead th { background: var(--c-sky-pale); color: var(--c-navy); font-size: 8.6pt; font-weight: 600; border-bottom: .5mm solid var(--c-main); }
+.vf-tbl tbody th { width: 24mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 11pt; color: var(--c-main-deep); white-space: nowrap; }
+.vf-tbl td.en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.6pt; }
+.vf-tbl td.en b { color: var(--c-main-deep); }
+.vf-note { font-size: 9pt; color: #555; margin: 0 0 5mm; }
+.vf-grow { display: flex; align-items: stretch; gap: 1.6mm; }
+.vf-grow > div { flex: 1; border: .45mm solid var(--c-main); border-radius: 2.5mm; padding: 2.4mm 2.4mm; text-align: center; background: #fff; }
+.vf-grow > div b { display: inline-flex; width: 6mm; height: 6mm; border-radius: 50%; background: var(--c-lime); color: #fff; font-family: var(--f-en-display); align-items: center; justify-content: center; font-size: 10pt; }
+.vf-grow > div span { display: block; font-family: var(--f-ko-display); font-size: 11.5pt; color: var(--c-navy); margin: 1mm 0 .6mm; }
+.vf-grow > div small { display: block; font-size: 8pt; color: #555; line-height: 1.45; }
+.vf-grow > i { font-style: normal; align-self: center; color: var(--c-main); font-weight: 700; }
+.pv-extra .box.wide { grid-column: span 2; }
+.vf-toc .toc-ch { margin-bottom: 7mm; }
+.vf-toc .toc-u { padding: 1.25mm 0 1.25mm 2mm; }
+.vf .steps li { margin-bottom: 2.4mm; line-height: 1.55; }
+.vf .box-title { margin-top: 7mm; }
+.vf .pass { margin-top: 5mm !important; }
+.vf-legend { gap: 2.8mm 3mm; }
+.vf-tbl th, .vf-tbl td { padding: 2.5mm 2mm; }
+.vf-toc .toc-ch { margin-bottom: 10mm; }
+.vf-toc .toc-u { padding: 1.7mm 0 1.7mm 2mm; }
+
+/* ---------- 표지 (gen_covers.py, 2026-11-20) — 배지 글자가 숫자 하나가 아니라 Junior ---------- */
+.cover .cv-level.vc b { font-size: 21pt; line-height: 1; letter-spacing: -.01em; }
+
+/* READING 빈칸: (a) 글자는 밑줄 왼쪽, 답은 밑줄 위에 바로(2026-11-20 사용자) */
+.bkw { white-space: nowrap; }
+.bkw > i { font-style: normal; font-family: var(--f-body); font-size: 8.4pt; font-weight: 600; color: var(--c-main-deep); margin-right: .6mm; }
+.bkw .bk { min-width: 26mm; vertical-align: baseline; }
+
+/* READING 할 일(2026-11-20 사용자: 문항 간격이 좁고 글씨가 작음 → 본문 줄 간격은 2.1까지만 넓히고 할 일을 키움) */
+.tasks { font-size: 10.4pt; padding-top: 2.6mm; }
+.tasks p { margin: 0 0 2.4mm; line-height: 1.5; }
+.tasks small { font-size: 8.8pt; }
+.tasks .nw-q { margin-top: 1.2mm; }
+.tasks .nw-q .en { font-size: 11pt; }
+.tasks .nw-q .ko { font-size: 10pt; }
+/* 영영 뜻으로 떠올리기(2026-11-20 사용자: 두 단 좌우 밸런스): 답 칸 폭을 쪽마다 가장 긴 칸 하나로(vw-fit.js가 --aw), 밑줄은 행마다 아래에 맞춤 */
+ul.recall li { grid-template-columns: 1fr var(--aw, 24mm); align-items: end; }
+ul.recall .fl { min-width: 0; width: auto; white-space: nowrap; }
+ul.recall li { align-items: stretch; } ul.recall .df { align-self: start; } ul.recall .fl { align-self: end; }
+ul.recall .fl { white-space: normal; line-height: 1.25; }
+.tight .tasks p { margin-bottom: 1.6mm; } .tight2 .tasks { font-size: 9.8pt; } .tight2 .tasks p { margin-bottom: 1mm; }
+/* READING 할 일 정렬(2026-11-20 사용자): 번호는 왼쪽에 걸고, 줄이 넘어가도 글은 번호 오른쪽 같은 선에서 */
+.tasks > p:not(.nw-q) { position: relative; padding-left: 6.6mm; }
+.tasks > p:not(.nw-q) > .cn { position: absolute; left: 0; top: .15em; margin: 0; vertical-align: 0; }
+.tasks .nw-q { margin-left: 6.6mm; }
+.hint:empty { display: none; }  /* 영어로 쓰기 힌트는 모를 만한 낱말만 — 없으면 칸도 없음(2026-11-20 사용자) */
+/* 영영 뜻으로 떠올리기 정렬 다시(2026-11-20 사용자): 뜻의 마지막 줄과 첫 글자 칸을 같은 글줄에(last baseline), 칸 글자를 조금 줄여 뜻 칸을 넓힘 */
+ul.recall li { align-items: last baseline; }
+ul.recall .df, ul.recall .fl { align-self: last baseline; }
+ul.recall .fl { font-size: 10pt; letter-spacing: 0; padding-bottom: .4mm; }
+/* 영영 뜻 한 단으로(2026-11-20 사용자: 정렬 다시) — 두 단이면 뜻 칸이 좁아 2~3줄로 접혀 칸이 어긋남.
+   한 단 = 왼쪽 뜻(가장 긴 뜻만큼) · 오른쪽 첫 글자 칸(--aw)이 모든 줄에서 같은 자리, 뜻은 대부분 한 줄 */
+ul.recall { grid-template-columns: max-content var(--aw, 24mm); column-gap: 8mm; row-gap: 2.2mm; justify-content: start; }
+ul.recall li { display: contents; }
+ul.recall .df { white-space: normal; max-width: 120mm; align-self: last baseline; }
+ul.recall .fl { align-self: last baseline; }
+ul.recall .df::before { content: counter(rc) ". "; counter-increment: rc; color: var(--c-main-deep); font-weight: 600; }
+ul.recall { counter-reset: rc; }
+.qr-img { flex: none; width: 15mm; height: 15mm; }
+
+/* ===== Nova Vocabulary 1 — 두 단어 · 6쪽 (2026-11-22) ===== */
+.vw-card.word.two .w2 { padding: 1mm 0; }
+.vw-card.word.two .w2 + .w2 { border-top: 1px dotted var(--c-sky-line); }
+.vw-card.word.two .big { font-size: 21pt; }
+ol.nt2 { list-style: none; margin: 0; padding: 0; }
+ol.nt2 li { padding: .6mm 0 1.4mm; }
+ol.nt2 li + li { border-top: 1px dotted var(--c-sky-line); padding-top: 1.6mm; }
+ol.nt2 .en.nt { font-size: 12.6pt; margin: .6mm 0 !important; }
+ol.nt2 .en.nt b { color: var(--c-main-deep); }
+.know + .know { margin-top: 1mm !important; }
+.relq2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2mm 5mm; margin: 1mm 0 0 !important; font-size: 10pt; }
+.relq2 .rw { font-weight: 700; color: var(--c-main-deep); min-width: 14mm; }
+.relq2 .ri .en { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; margin-right: .8mm; }
+.vw-head .core .cw { font-family: "Source Serif 4", Georgia, serif; font-size: 15pt; color: var(--c-main-deep); margin-right: 1mm; }
+.cmp { margin-top: 3mm; }
+.cmp h3 { margin: 0 0 1mm; font-family: var(--f-ko-display); font-weight: 400; font-size: 13pt; color: var(--c-navy); border-top: .45mm solid var(--c-main); padding-top: 1.6mm; }
+.cmp h3 .en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; }
+.cmp h3 small { font-family: var(--f-body); font-size: 8.4pt; color: var(--c-sub); margin-left: 2mm; }
+.cmp table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.cmp th { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; color: #fff; background: var(--c-main); padding: .6mm 1.2mm; }
+.cmp th:first-child { background: none; width: 20mm; }
+.cmp td { border-bottom: 1px dotted var(--c-sky-line); padding: .9mm 1.2mm; vertical-align: top; font-size: 8.6pt; }
+.cmp td.k { font-weight: 700; color: var(--c-main-deep); padding-left: 0; }
+.cmp td .en { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 9.8pt; }
+.cmp td .en b { color: var(--c-main-deep); }
+.cmp td .tr { display: block; color: var(--c-sub); font-size: 8.2pt; }
+.cmp-t { margin: 1.4mm 0 0 !important; font-size: 8.8pt; background: #FFF6EA; border-radius: 1.6mm; padding: 1.2mm 2.4mm; }
+.tasks.top { margin: 0 0 2.4mm; border-top: none; padding-top: 0; font-size: 9.4pt; }
+.vw-card.mean.two .mw + .mw { margin-top: 1.4mm; }
+.vw-card.mean.two .mw > b.en { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; color: var(--c-navy); }
+.vw-card.mean.two li { font-size: 8.6pt; padding: .7mm 0; }
+.vw-card.info .sr { font-size: 7.8pt; color: var(--c-sub); margin-top: .6mm; }
+.vw-card.src p { font-size: 8.2pt; line-height: 1.5; }
+.wtab h3 { margin-top: 0; }
+ol.nw3, ol.ck { list-style: none; margin: 0; padding: 0; }
+ol.nw3 li { display: grid; grid-template-columns: auto 1fr; column-gap: 1.6mm; align-items: baseline; padding: 1mm 0; }
+ol.nw3 li .en { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; }
+ol.nw3 li .en b { color: var(--c-main-deep); }
+ol.nw3 li .ko { grid-column: 2; font-size: 10pt; margin-top: .4mm; }
+ol.ck li { display: grid; grid-template-columns: auto 1fr auto; column-gap: 1.6mm; align-items: baseline; padding: 1mm 0; border-bottom: 1px dotted var(--c-sky-line); }
+ol.ck li .en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; }
+ol.ck .tf { font-family: var(--f-en-display); font-weight: 600; font-size: 11pt; color: var(--c-main-deep); letter-spacing: .1em; }
+/* 글이 250–350단어라 글자 · 줄 간격을 줄임(남으면 vw-fit.js가 2.1까지 넓힘) */
+.psg { font-size: 11.4pt; line-height: 1.85; }
+.tight .psg { line-height: 1.7; }
+/* 둘째 WORD PICTURE(비교 표가 있는 쪽)는 그림을 조금 작게 */
+.vw-main:has(.cmp) .core-row { grid-template-columns: 62mm 1fr; }
+.vw-main:has(.cmp) .core-fig { width: 62mm; }
+/* 영영 뜻으로 떠올리기: 두 단 */
+ul.recall { grid-template-columns: minmax(0, 1fr) var(--aw, 22mm) minmax(0, 1fr) var(--aw, 22mm); column-gap: 3mm; row-gap: 2.4mm; }
+ul.recall .df { max-width: none; font-size: 9pt; }
+.vw-card.cmp2 .cr { border-top: 1px dotted var(--c-sky-line); padding: 1mm 0; display: flex; flex-direction: column; }
+.vw-card.cmp2 .cr b.en { font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; color: var(--c-navy); }
+.vw-card.cmp2 .fe { font-size: 8.4pt; font-weight: 700; color: var(--c-main-deep); }
+.vw-card.cmp2 .ex { font-family: "Source Serif 4", Georgia, serif; font-size: 9pt; }
+.vw-card.cmp2 .ex b { color: var(--c-main-deep); }
+.vw-card.cmp2 .tr { font-size: 7.8pt; color: var(--c-sub); }
+.vw-card.cmp2 .ct { margin-top: 1mm; font-size: 8pt; background: #FFF6EA; border-radius: 1.4mm; padding: 1mm 1.6mm; }
+ul.recall { grid-template-columns: max-content var(--aw, 24mm); column-gap: 8mm; row-gap: 2.2mm; }
+ul.recall .df { font-size: 9.6pt; }
+
+/* ===== 전체 폭 판면(2026-11-22 사용자: 사이드 칸 없이 Core 교재처럼, 종이 아끼기 — Unit 4쪽) ===== */
+.vf .vw-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.vt { flex: none; display: flex; align-items: center; gap: 2.4mm; border-bottom: .6mm solid var(--c-main); padding-bottom: 1.8mm; margin-bottom: 3mm; }
+.vt .ub { display: inline-flex; align-items: center; gap: 1.2mm; background: var(--c-navy); color: #fff; border-radius: 1.6mm; padding: .8mm 2.4mm; font-family: var(--f-en-display); }
+.vt .ub i { font-style: normal; font-weight: 600; font-size: 9pt; }
+.vt .ub b { font-weight: 700; font-size: 15pt; line-height: 1; }
+.vt .sn { flex: none; width: 7mm; height: 7mm; border-radius: 50%; background: var(--c-lime); color: #fff; font-family: var(--f-en-display); font-weight: 700; font-size: 11pt; display: grid; place-items: center; }
+.vt .en { font-family: var(--f-en-display); font-weight: 700; font-size: 18pt; line-height: 1; color: var(--c-navy); }
+.vt .ko { font-family: var(--f-ko-display); font-size: 12pt; color: var(--c-main-deep); }
+.vt .wd { margin-left: auto; font-family: "Source Serif 4", Georgia, serif; font-size: 12pt; color: #7A8A82; }
+.two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; }
+.vf .vs h3 { margin-bottom: 1.2mm; }
+.qrs { flex: none; display: flex; align-items: center; gap: 1.6mm; font-size: 7.8pt; line-height: 1.35; color: var(--c-sub); }
+.qrs p { margin: 0; } .qrs b { color: var(--c-navy); }
+.qrs .qr-slot, .qrs .qr-img { width: 14mm; height: 14mm; }
+/* FIRST TRY */
+.today { display: flex; align-items: center; flex-wrap: wrap; gap: 1.6mm 4mm; background: var(--c-sky-pale); border-radius: 2.4mm; padding: 1.8mm 3mm; }
+.today .kk { font-family: var(--f-en-display); font-weight: 600; font-size: 8pt; color: var(--c-main-deep); letter-spacing: .04em; }
+.today .tw { display: inline-flex; align-items: baseline; gap: 1.4mm; }
+.today .tw b { font-family: var(--f-en-display); font-weight: 600; font-size: 17pt; color: var(--c-navy); line-height: 1; }
+.today .tw i { font-style: normal; font-size: 7.4pt; color: #fff; background: var(--c-main); border-radius: 1mm; padding: 0 1.2mm; }
+.today .tw .fm { font-size: 8.6pt; color: var(--c-sub); }
+.today .th { flex-basis: 100%; font-size: 8.8pt; color: #34433C; }
+.today .th b { color: var(--c-lime); margin-right: 1mm; }
+.vf .lead { margin: 1.6mm 0 0; font-size: 8.8pt; color: var(--c-sub); display: flex; align-items: center; gap: 2mm; }
+.vf .lead .grp { flex: none; font-family: var(--f-ko-display); font-size: 9.4pt; color: #fff; background: var(--c-navy); border-radius: 1.2mm; padding: .3mm 2mm; }
+.vf .vs { margin-top: 3mm; }
+ol.nt2.two { column-gap: 6mm; }
+ol.nt2.two li, ol.nt2.two li + li { border-top: none; padding: 0; }
+ol.nt2 .ask .wl { min-width: 34mm; }
+.kc .know .wl { min-width: 62mm; }
+.kc .relq2 { margin-top: 1.2mm !important; }
+.vf ol.first li { padding: 1mm 0; }
+/* WORD PICTURE — 두 단어 나란히 */
+.wp2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; }
+.wpc { min-width: 0; display: flex; flex-direction: column; }
+.wpc .core { margin: 0 0 1.6mm; display: flex; align-items: baseline; gap: 2mm; background: var(--c-lime-pale); border-radius: 2mm; padding: 1.2mm 2.4mm; font-family: var(--f-ko-display); font-size: 11.6pt; color: var(--c-navy); line-height: 1.3; }
+.wpc .core .cw { flex: none; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 16pt; color: var(--c-main-deep); }
+.wpc .core-fig { position: relative; width: 100%; aspect-ratio: 1 / 1; }
+.wpc .core-why { margin: 1.6mm 0 0; font-size: 8.6pt; line-height: 1.55; color: #34433C; background: var(--c-sky-pale); border-radius: 2mm; padding: 1.6mm 2.2mm; }
+.wpc .core-en { display: block; margin-top: .6mm; font-size: 8.2pt; }
+.wpc .core-en b { color: var(--c-main-deep); }
+.wpc .core-en .en { font-family: "Source Serif 4", Georgia, serif; }
+.wpc .born { margin: 1mm 0 0; font-size: 8pt; } .wpc .born b { color: var(--c-lime); margin-right: 1.4mm; }
+.wpc .map { margin-top: 2mm; }
+.wpc .map h3, .wpc .rel h3 { font-size: 11.6pt; margin: 0 0 .6mm; padding-top: 1.2mm; }
+.wpc .map li { padding: .7mm 0; }
+.wpc .map .ex { font-size: 9.8pt; }
+.wpc .map .ko { font-size: 8.8pt; }
+.wpc .map .wl.s { min-width: 18mm; }
+.wpc .clue { margin: 1mm 0 0; font-size: 8pt; line-height: 1.6; color: var(--c-sub); }
+.wpc .clue > b { color: var(--c-main-deep); margin-right: 1.4mm; }
+.wpc .clue .cw2 { white-space: nowrap; margin-right: 1.6mm; } .wpc .clue .ci { color: var(--c-main-deep); margin-right: .6mm; }
+.wpc .clue .en { font-family: "Source Serif 4", Georgia, serif; color: #34433C; }
+.wpc .rel { margin-top: 2mm; }
+.wpc .rel ul { list-style: none; margin: 0; padding: 0; }
+.wpc .rel li { border-bottom: 1px dotted var(--c-sky-line); padding: .8mm 0; font-size: 8.2pt; line-height: 1.4; }
+.wpc .rel li .rw { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; color: var(--c-navy); margin: 0 1.6mm 0 1mm; }
+.wpc .rel li > .en:not(.rw) { font-family: "Source Serif 4", Georgia, serif; font-size: 9.2pt; }
+.wpc .rel li .tr { display: block; color: var(--c-sub); font-size: 7.8pt; }
+.wpc .rel li .df { display: block; color: #4A5751; font-size: 7.8pt; }
+.cmpb { margin-top: 3mm; display: grid; grid-template-columns: 26mm 1fr 1fr auto; column-gap: 3mm; align-items: center; border: .35mm solid var(--c-sky-line); border-radius: 2.4mm; padding: 1.8mm 2.6mm; }
+.cmpb .ch { font-family: var(--f-ko-display); font-size: 10pt; color: var(--c-navy); line-height: 1.3; }
+.cmpb .ch b { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 11pt; }
+.cmpb .cr { display: flex; flex-direction: column; font-size: 8pt; }
+.cmpb .cr b.en { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; color: var(--c-navy); }
+.cmpb .fe { font-weight: 700; color: var(--c-main-deep); }
+.cmpb .ex { font-family: "Source Serif 4", Georgia, serif; font-size: 9pt; } .cmpb .ex b { color: var(--c-main-deep); }
+.cmpb .tr { color: var(--c-sub); font-size: 7.6pt; }
+.cmpb .ct { grid-column: 1 / 4; margin: 1.2mm 0 0; font-size: 8.4pt; background: #FFF6EA; border-radius: 1.4mm; padding: .8mm 2mm; }
+.cmpb .qrs { grid-column: 4; grid-row: 1 / 3; }
+/* READING */
+.rh { display: flex; align-items: center; justify-content: space-between; gap: 4mm; }
+.rh .ttl { margin: 0; }
+.rh .ttl .en { font-family: var(--f-en-display); font-weight: 600; font-size: 17pt; color: var(--c-navy); }
+.rh .ttl small { font-family: var(--f-ko-display); font-size: 11.5pt; color: var(--c-main-deep); margin-left: 2mm; }
+.rh .gn { margin: .6mm 0 0; font-size: 8pt; color: var(--c-sub); }
+.rh .gn b { color: var(--c-main-deep); font-family: var(--f-en-display); letter-spacing: .03em; margin-right: 1mm; }
+.vf .tasks.top { margin: 2mm 0 2mm; font-size: 9pt; }
+.vf .tasks.top p { margin: 0 0 .8mm; }
+.tasks .means { padding-left: 0 !important; display: flex; flex-wrap: wrap; gap: .6mm 5mm; font-size: 8.4pt; background: var(--c-sky-pale); border-radius: 1.6mm; padding: 1mm 2.4mm !important; }
+.tasks .means .mw { display: inline-flex; flex-wrap: wrap; gap: .4mm 2.2mm; align-items: baseline; }
+.tasks .means .mw > b { font-family: "Source Serif 4", Georgia, serif; font-size: 10pt; color: var(--c-navy); }
+.tasks .means .ci { color: var(--c-main-deep); margin-right: .5mm; }
+.vf .psg { font-size: 11.2pt; line-height: 1.8; }
+.src { margin: 1mm 0 0; font-size: 7.8pt; color: var(--c-sub); }
+.src b { color: var(--c-main-deep); margin-right: 1.4mm; }
+.vf .wtab { margin-top: 2.4mm; }
+.vf .wtab h3 { font-size: 11.6pt; padding-top: 1.2mm; }
+.vf .wtab table { width: 100%; border-collapse: collapse; }
+.vf .wtab td { padding: .6mm 1mm; font-size: 8.2pt; vertical-align: baseline; }
+.vf .wtab td.w { width: 16mm; font-size: 9.6pt; padding-left: 0; }
+.vf .wtab td.df { font-size: 8.4pt; }
+.vf .wtab td.ko { width: 15mm; font-size: 7.8pt; }
+.two.low .vs { margin-top: 2.4mm; }
+.vf ol.nw3 li .en { font-size: 9.8pt; } .vf ol.nw3 li .ko { font-size: 8.8pt; }
+.vf ol.ck li .en { font-size: 9.4pt; }
+/* MAKE IT MINE */
+.rh.mh2 .lead { margin: 0; }
+.vf ol.meet.two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 5mm; }
+.xmore2 { margin-top: 2.6mm; display: flex; flex-wrap: wrap; gap: .8mm 5mm; align-items: baseline; font-size: 8pt; border-top: 1px dotted var(--c-sky-line); padding-top: 1.4mm; color: #34433C; }
+.xmore2 .kk { font-family: var(--f-body); color: var(--c-main-deep); }
+.xmore2 .xm b.en { font-family: "Source Serif 4", Georgia, serif; font-size: 9.4pt; color: var(--c-main-deep); }
+.xmore2 .ex { font-family: "Source Serif 4", Georgia, serif; }
+.xmore2 .xk { color: var(--c-sub); }
+.vf ul.recall { grid-template-columns: max-content var(--aw, 24mm) max-content var(--aw, 24mm); column-gap: 5mm; }
+.vf ul.recall .df { max-width: 58mm; font-size: 8.8pt; }
+/* 넘침 조정(2026-11-22) */
+.wpc .core-fig { width: 66mm; margin: 0 auto; }
+.vf.tight .wpc .core-fig { width: 58mm; }
+.vf.tight2 .wpc .core-fig { width: 52mm; }
+.vf .psg { font-size: 10.9pt; line-height: 1.75; }
+.vf.tight .psg { line-height: 1.62; }
+.wgrid { margin-top: 2mm; display: grid; grid-template-columns: auto repeat(4, 1fr); gap: .8mm 3mm; align-items: baseline; font-size: 8.4pt; border-top: .45mm solid var(--c-main); padding-top: 1.4mm; }
+.wgrid .kk { grid-row: span 2; font-family: var(--f-ko-display); font-weight: 400; font-size: 11pt; color: var(--c-navy); }
+.wgrid span b { font-family: "Source Serif 4", Georgia, serif; font-size: 9.8pt; color: var(--c-navy); margin-right: 1.4mm; }
+.vf ol.fix li { grid-template-columns: auto auto 1fr; column-gap: 2mm; padding: .9mm 0; }
+.vf ol.fix .fx { grid-column: 3; margin-top: 0; }
+.vf ul.recall .df { font-size: 8.2pt; max-width: 64mm; }
+.qrs .qr-slot, .qrs .qr-img { width: 12.5mm; height: 12.5mm; }
+.vf ol.meet.mt li { display: grid; grid-template-columns: auto 1fr; column-gap: 1.4mm; }
+.vf ol.meet.mt .gl { grid-column: 2; }
+.rh.mh2 { margin-bottom: -1mm; }
+.rh.mh2 .qr-slot, .rh.mh2 .qr-img { width: 11mm; height: 11mm; }
+.rh.lec { margin-top: 3mm; border: .35mm dashed var(--c-sky-line); border-radius: 2.4mm; padding: 1.4mm 2.4mm; }
+.rh.lec .lead { margin: 0; }
+.vf .new.my { display: flex; align-items: flex-end; gap: 2mm; padding: 1.2mm 2.4mm; }
+.vf .new.my .wl.line { flex: 1; width: auto; height: 7mm !important; }
+.vf .new.my .mh { white-space: nowrap; }
+/* 그림 키움(2026-11-22 사용자): 단서 줄을 빼고 핵심 설명을 두 줄 안으로 */
+.wpc .core-fig { width: 64mm; }
+.vf.tight .wpc .core-fig { width: 60mm; }
+.vf.tight2 .wpc .core-fig { width: 56mm; }
+.wpc .rel li .tr { display: inline; margin-left: 1.4mm; }
+.wpc .map h3 small { font-size: 7.8pt; }
+.vf.tight .wpc .core-why { font-size: 8.2pt; line-height: 1.45; padding: 1.2mm 2mm; }
+.vf.tight .wpc .map li { padding: .5mm 0; }
+.vf.tight .cmpb { margin-top: 2mm; padding: 1.2mm 2.4mm; }
+.vf.tight .wpc .rel li { padding: .5mm 0; }
+/* 글자 크기 바닥(2026-11-22 사용자: 너무 작아 안 보이는 글자) — 학생이 읽는 글 9pt 이상, 안내 · 해석 8.6pt 이상 */
+.vf .vs h3 small { font-size: 8.8pt; }
+.vf .hint, .vf ol.redo .hint { font-size: 8.8pt; }
+.vf .scene { font-size: 9.2pt; }
+.vf .lead { font-size: 9.2pt; }
+.today .th { font-size: 9.4pt; } .today .tw .fm { font-size: 9pt; }
+.wpc .core-why, .vf.tight .wpc .core-why { font-size: 9pt; line-height: 1.5; }
+.wpc .core-en { font-size: 8.8pt; }
+.wpc .map .ko { font-size: 9.2pt; }
+.wpc .rel li { font-size: 8.8pt; }
+.wpc .rel li .tr, .wpc .rel li .df { font-size: 8.6pt; }
+.wpc .rel li > .en:not(.rw) { font-size: 9.6pt; }
+.cmpb .cr { font-size: 8.8pt; } .cmpb .tr { font-size: 8.6pt; } .cmpb .ex { font-size: 9.6pt; } .cmpb .ct { font-size: 9pt; }
+.qrs { font-size: 8.4pt; }
+.rh .gn { font-size: 8.6pt; } .src { font-size: 8.6pt; }
+.vf .tasks.top { font-size: 9.6pt; } .tasks .means { font-size: 9pt; }
+.wgrid { font-size: 9.2pt; }
+.vf ol.nw3 li .ko { font-size: 9.4pt; }
+.vf ul.recall { grid-template-columns: minmax(0, 1fr) var(--aw, 22mm) minmax(0, 1fr) var(--aw, 22mm); column-gap: 4mm; }
+.vf ul.recall .df { max-width: none; font-size: 9pt; }
+.xmore2 { font-size: 8.8pt; } .xmore2 .xm { display: block; } .xmore2 .xm b.en, .xmore2 .ex { font-size: 9.4pt; } .xmore2 .kk { flex-basis: 100%; }
+.ftip { font-size: 9pt; }
+.vf ol.meet li { align-items: baseline; }
+.vf ol.meet li > .cn { align-self: baseline; transform: translateY(.9mm); }
+/* 글 각주(2026-11-22 사용자: 바탕 자료는 해설에만, 어려운 말은 각주) */
+.vf .psg sup.gst { font-size: .62em; color: var(--c-main-deep); margin-left: .2mm; }
+.vgl { margin: 1.2mm 0 0; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .4mm 3.6mm; font-size: 8.6pt; color: var(--c-sub); }
+.vgl b.en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; color: var(--c-navy); margin-right: .6mm; }
+/* 더 알아 둘 유의어 · 반의어 — 예문 없이 한 줄(2026-11-22 사용자: 개수를 더) */
+.wpc .relx { margin: 1mm 0 0; display: flex; flex-wrap: wrap; gap: .6mm 2.6mm; align-items: baseline; font-size: 8.8pt; color: #34433C; }
+.wpc .relx .kk { font-size: 8.6pt; color: var(--c-main-deep); }
+.wpc .relx span { white-space: nowrap; }
+.wpc .relx i { font-style: normal; font-size: 7.6pt; color: #fff; border-radius: .8mm; padding: 0 .9mm; margin-right: .8mm; background: var(--c-main); }
+.wpc .relx i.ant { background: var(--c-lime); }
+.wpc .relx b.en { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 9.8pt; color: var(--c-navy); margin-right: .8mm; }
+.wpc .relx { gap: .6mm 3.4mm; font-size: 8.6pt; }
+.wpc .relx .g { white-space: nowrap; }
+.wpc .relx b.en { font-size: 9.6pt; margin-right: .6mm; }
+/* 2026-11-22 사용자: TODAY'S WORDS 단어 크게 · 영어로 써 보기 간격 좁게 · 글 속 단어에 어려운 말까지 */
+.today .tw b { font-size: 23pt; }
+.today .tw i { font-size: 8.4pt; }
+.today .tw .fm { font-size: 9.6pt; }
+.today .kk { font-size: 8.8pt; }
+.vf ol.first li { padding: .8mm 0; }
+.vf ol.first .wl.line { height: 9.5mm; }
+.wgrid { display: flex; gap: 3mm; align-items: baseline; }
+.wgrid .kk { flex: none; }
+.wgrid .wg { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8mm 3mm; }
+.wgrid .wg span { white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.vf ol.first .q { margin-bottom: 0; }
+.wgrid .wg { display: flex; flex-wrap: wrap; gap: .9mm 5mm; }
+.wgrid .wg span { overflow: visible; }
+.today .tw b { font-size: 26pt; }
+/* READING 글 밑줄 간격(2026-11-23 사용자: 빈칸 · 밑줄 단어 모두 조금 더 아래로) */
+.vf .psg .tg { text-underline-offset: 1.3mm; text-decoration-skip-ink: none; }
+.vf .psg .bkw .bk { vertical-align: -1mm; }
+
+/* Vocabulary 1 PART REVIEW(2026-11-23): 그림 여덟 장은 조금 작게, 전체 폭 */
+.rv .rv-figs.v8 { column-gap: 6mm; row-gap: 2.4mm; }
+.rv .rv-figs.v8 .rv-img { width: 33mm; margin: 0 auto; }
+.rv .rv-figs.v8 .rv-fig p { width: 33mm; margin-left: auto; margin-right: auto; }
+.rv ol.rv-b .wl.rm { width: 52mm; min-width: 52mm; }
+.rv .rv-back2 { margin-top: 3mm; }
+.rv .rv-figs.v8 .rv-img, .rv .rv-figs.v8 .rv-fig p { width: 31mm; }
+/* TODAY’S WORDS 줄 맞춤(2026-11-23 사용자: 단어가 커져 밸런스가 깨짐) — 표시는 맨 위 한 줄, 두 단어는 같은 폭 두 칸, 변화형은 단어 아래 */
+.vf .today { display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; row-gap: 1.2mm; align-items: start; }
+.vf .today .kk { grid-column: 1 / -1; }
+.vf .today .tw { display: grid; grid-template-columns: max-content 1fr; column-gap: 2mm; row-gap: .6mm; align-items: center; justify-items: start; }
+.vf .today .tw b { grid-row: 1; }
+.vf .today .tw i { grid-row: 1; }
+.vf .today .tw .fm { grid-column: 1 / -1; font-size: 9.6pt; }
+.vf .today .tw .fm:empty { display: none; }
+.vf .today .th { grid-column: 1 / -1; margin-top: .4mm; }
+/* 1권 앞표지 말풍선(2026-11-23 사용자: 글자를 말풍선 가운데로) — vb1-cover-main의 말풍선 몸통 한가운데(그림 카드 기준 가로 약 67% · 세로 약 18%) */
+.cover.l2 .cv-bubble { left: 137mm; top: 27mm; width: 100mm; transform: translate(-50%, -50%); text-align: center; }
+/* 뒤표지(2026-11-23 사용자: 미리 보기 없음) — 특징 카드 넷을 한 줄씩 크게, 아래 구성 띠까지 고르게 */
+.back-cover .bc-feats { top: 128mm; bottom: 42mm; grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 5mm; }
+.back-cover .bc-feat { display: flex; flex-direction: column; justify-content: center; padding: 5mm 7mm; }
+.back-cover .bc-feat h3 { font-size: 14pt; margin-bottom: 2mm; }
+.back-cover .bc-feat p { font-size: 10.8pt; line-height: 1.6; }
+/* TODAY’S WORDS — 변화형은 단어 오른쪽에(2026-11-23 사용자). 두 단어는 같은 폭 두 칸, 단어 · 품사 · 변화형이 한 줄 */
+.vf .today .tw { grid-template-columns: max-content max-content 1fr; align-items: baseline; }
+.vf .today .tw .fm { grid-column: auto; grid-row: 1; font-size: 10pt; margin-left: 1mm; }
+.vf .today .tw i { align-self: center; }
+.vf .today .tw .fm { white-space: nowrap; font-size: 9.6pt; }
+.vf .today { column-gap: 4mm; }
+.vf .today .tw .fm { min-width: 0; overflow: hidden; }
+.vf .today { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.vf .today .tw { grid-template-columns: max-content max-content minmax(0, 1fr); min-width: 0; }
+.vf .today .tw .fm { overflow: visible; }
+.vf .today .tw .fm { justify-self: stretch; }
+/* TODAY’S WORDS — 단어 · 품사 · 변화형을 세로 가운데로 줄 맞춤(2026-11-23 사용자) */
+.vf .today .tw { align-items: center; }
+.vf .today .tw b, .vf .today .tw i, .vf .today .tw .fm { align-self: center; line-height: 1.15; }
+/* REVIEW A 보기 상자를 눈에 띄게(2026-11-23 사용자: 아래 보기를 못 봄) */
+.rv-cores { position: relative; padding-top: 5.4mm; border: .35mm solid var(--c-sky-line); }
+.rv-cores::before { content: "보기 — 핵심 한 줄"; position: absolute; left: 2mm; top: 1mm; font-size: 8.4pt; font-weight: 700; color: var(--c-main-deep); }
+/* REVIEW 쪽(2026-11-23 사용자): 맨 위 구역은 머리줄 바로 아래로 올리고, 구역 제목을 조금 크게 */
+.rv .vt { margin-bottom: 1.8mm; }
+.rv .vw-main > .vs:first-child { border-top: 0; padding-top: 0; }
+.rv .vs h3 { font-size: 14.2pt; }
+.rv .vs h3 .lt { min-width: 6.6mm; height: 6.6mm; font-size: 10.8pt; }
+.rv .vs h3 small { font-size: 8.8pt; }
+/* WORD PICTURE 영영 뜻풀이(In English) 키우기 (2026-11-24 사용자) */
+.wpc .core-en, .vf.tight .wpc .core-en { font-size: 10pt; line-height: 1.45; margin-top: 1mm; }
+.wpc .core-en b { font-size: 8.6pt; }
+.wpc .core-en .en { font-size: 10.4pt; color: var(--c-navy); }
+/* 기본 간격을 조금 줄여 .tight 없이 들어가게(2026-11-24) — 남는 자리는 vw-fit.js가 칸 사이에 다시 나눔 */
+.vs + .vs, .tight .vs + .vs { margin-top: 2.2mm; }
+/* 다시 쓰기(SECOND LOOK, 2026-11-25): FIRST TRY C 아래 두 줄 — 강의 · 채점 뒤 틀린 문장만. 남는 자리는 vw-fit.js가 줄을 넓힘 */
+.relook { margin-top: 2.4mm; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 2.6mm; row-gap: .4mm; align-items: end; border-top: .45mm solid var(--c-main); padding-top: 1.6mm; }
+.relook .kk { grid-row: span 2; align-self: center; font-family: var(--f-ko-display); font-size: 11pt; color: var(--c-navy); white-space: nowrap; }
+.relook .rl { display: flex; align-items: flex-end; gap: 2mm; }
+.relook .no { font-size: 9pt; color: var(--c-sub); white-space: nowrap; padding-bottom: .6mm; }
+.relook .wl.line { flex: 1; min-width: 0; height: 8mm; }
+/* 흔히 외우는 뜻(2 · 3권 · High FIRST TRY B) */
+.know .kn { color: var(--c-sub); font-size: 9.4pt; margin-right: 1.2mm; white-space: nowrap; }
+.know .kn i { font-style: normal; font-size: 8.4pt; color: var(--c-main-deep); margin-right: .8mm; }
+.relook .rl { align-items: flex-end !important; }
+.relook .no { align-self: flex-end; line-height: 1; }
+.relook { margin-top: 1.6mm; padding-top: 1mm; row-gap: 0; }
+.relook .wl.line { height: 7mm; }
+.relook .kk { font-size: 10.5pt; }
+/* 흔히 외우는 뜻이 들어가도 B 한 줄 유지(2026-11-25) */
+.kc .know { display: flex; align-items: flex-end; white-space: nowrap; }
+.kc .know .wl { flex: 1 1 auto; min-width: 16mm; width: auto !important; }

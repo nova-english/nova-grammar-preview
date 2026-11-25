@@ -1046,3 +1046,8 @@
 .wb2.mt { margin-top: 1.4mm; }
 .page-body:has(> .wb2.mt) > .wb-info { margin-top: 1.4mm; padding-top: 1.2mm; padding-bottom: 1.2mm; }
 .page-body:has(> .wb2.mt) .rd-qhead { margin-bottom: 0; }
+
+/* 생략된 that — 회색 ∧접that(접속사) · ∧목관대(목적격 관계대명사), Nova Core와 같은 표시(2026-11-24) */
+.hid { color: #8E9893; font-style: normal; font-weight: 700; font-size: .66em; vertical-align: -.55em; margin: 0 .1em; white-space: nowrap; letter-spacing: 0; font-family: "Pretendard", "Noto Sans KR", sans-serif; }
+.hid::before { content: "∧"; margin-right: .08em; font-weight: 400; }
+.fr-lv .hid, small .hid { font-size: .9em; vertical-align: -.3em; }
